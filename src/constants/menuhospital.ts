@@ -68,30 +68,58 @@ const MENU_ITEMS: MenuItemTypes[] = [
   },
   { key: "DOCTER", label: "DOCTER", isTitle: true },
   {
-    key: "dashboard-1",
-    label: "Manage book access rights",
+    key: "examine patient",
+    label: "Examine Patient",
     isTitle: false,
-    icon: "calendar",
-    url: "/dashboard-1",
-  },
-  {
-    key: "dashboard-1",
-    label: "Patient management",
-    isTitle: false,
-    icon: "calendar",
-
-    url: "/dashboard-1",
+    icon: "user",
+    url: "/examine-patient",
   },
   { key: "NURSE", label: "NURSE", isTitle: true },
 
   {
-    key: "request-medical",
-    label: "Request Medical",
+    key: "reception nurse",
+    label: "Reception Nurse",
     isTitle: false,
     icon: "calendar",
-
-    url: "/hospital/request-medical",
+    url: "/reception-nurse",
   },
+  {
+    key: "General nurse",
+    label: "General Nurse",
+    isTitle: false,
+    icon: "calendar",
+    url: "/general-nurse",
+  },
+  {
+    key: "internal medicine nurse",
+    label: "Internal medicine Nurse",
+    isTitle: false,
+    icon: "calendar",
+    url: "/internal-medicine-nurse",
+  },
+  {
+    key: "Blood test Nurse",
+    label: "Blood test Nurse",
+    isTitle: false,
+    icon: "calendar",
+    url: "/Blood-test-Nurse",
+  },
+  {
+    key: "Urine test Nurse",
+    label: "Urine test Nurse",
+    isTitle: false,
+    icon: "calendar",
+    url: "/Urine-test-urse",
+  },
+  {
+    key: "Xray Nurse",
+    label: "X-ray Nurse",
+    isTitle: false,
+    icon: "calendar",
+    url: "/Xray-nurse",
+  },
+
+
   { key: "BRACH", label: "BRACH", isTitle: true },
 
   {
