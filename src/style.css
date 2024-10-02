@@ -1,0 +1,7 @@
+.custom-card {
+    margin-top: 0; /* Loại bỏ khoảng cách trên */
+  }
+  .custom-card-body {
+    padding-top: 0; /* Loại bỏ padding trên */
+  }
+  
