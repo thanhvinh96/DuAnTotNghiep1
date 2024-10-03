@@ -12,24 +12,12 @@ import { RootState, AppDispatch } from "../redux/store";
 //constants
 import { LayoutTypes, SideBarTypes } from "../constants/layout";
 
-// components
-import TopbarSearch from "../components/TopbarSearch";
-import MaximizeScreen from "../components/MaximizeScreen";
-import AppsDropdown from "../components/AppsDropdown/";
 // import SearchDropdown from '../components/SearchDropdown';
 import LanguageDropdown from "../components/LanguageDropdown";
 import NotificationDropdown from "../components/NotificationDropdown";
 import ProfileDropdown from "../components/ProfileDropdown";
-import CreateNew from "../components/CreateNew";
-import MegaMenu from "../components/MegaMenu";
-
 import profilePic from "../assets/images/users/user-1.jpg";
 import avatar4 from "../assets/images/users/user-4.jpg";
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
 import { useViewport } from "../hooks/useViewPort";
 
 export interface NotificationItem {

@@ -49,10 +49,7 @@ const UserBox = () => {
   ];
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-
-  /*
-   * toggle dropdown
-   */
+  
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };

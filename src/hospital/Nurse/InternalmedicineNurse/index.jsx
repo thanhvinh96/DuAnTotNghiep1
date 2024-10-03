@@ -1,108 +1,197 @@
 import React, { useState } from 'react';
-import { Card, Form, Button, Container, Row, Col } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Card, Form, Row, Col, Button, Table } from 'react-bootstrap';
 
-function MedicalRecordForm() {
-    const [formData, setFormData] = useState({
-        patientId: '',
-        fullName: '',
-        age: '',
-        gender: '',
-        address: '',
-        insuranceBookNumber:'',
-        admissionDate: '',
-        room: '',
-        diagnosis: '',
-        reasonForAdmission: '',
-        bloodPressure: '',
-        heartRate: '',
-        height: '',
-        bloodatype: '',
-        medicalHistory: '',
-        examinationResults: '',
-        treatmentPlan: '',
-        doctorName: '',
-        followUpNotes: ''
-    });
+const Internalmedicine = () => {
+    const [tableData, setTableData] = useState([]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+    // Hàm để xử lý khi thay đổi giá trị input
+    const handleInputChange = (index, field, value) => {
+        const newData = [...tableData];
+        newData[index][field] = value;
+        setTableData(newData);
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form Data Submitted:', formData);
-    };
-
     return (
         <>
-            <Card>
-                <Card.Body>
-                    <Container>
-                        <h2 className="my-4 text-center">Enter patient information</h2>
-                        <Form onSubmit={handleSubmit}>
-                            <Row>
-                                <Col md={3}>
-                                    <Form.Group controlId="patientId">
-                                        <Form.Label>patientId</Form.Label>
-                                        <Form.Control type="text" name="patientId" value={formData.patientId} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                                <Col md={3}>
-                                    <Form.Group controlId="fullName">
-                                        <Form.Label>fullName</Form.Label>
-                                        <Form.Control type="text" name="fullName" value={formData.fullName} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                                <Col md={3}>
-                                    <Form.Group controlId="age">
-                                        <Form.Label>age</Form.Label>
-                                        <Form.Control type="number" name="age" value={formData.age} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                                <Col md={3}>
-                                    <Form.Group controlId="gender">
-                                        <Form.Label>gender</Form.Label>
-                                        <Form.Control type="text" name="gender" value={formData.gender} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <Form.Group controlId="address">
-                                        <Form.Label>address</Form.Label>
-                                        <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Group controlId="insuranceBookNumber">
-                                        <Form.Label>Insurance Book Number</Form.Label>
-                                        <Form.Control type="text" name="insuranceBookNumber" value={formData.insuranceBookNumber} onChange={handleChange} />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Form.Group controlId="admissionDate">
-                                <Form.Label>Admission Date</Form.Label>
-                                <Form.Control type="date" name="admissionDate" value={formData.admissionDate} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group controlId="room">
-                                <Form.Label>Room</Form.Label>
-                                <Form.Control type="text" name="room" value={formData.room} onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group controlId="reasonForAdmission">
-                                <Form.Label>Lý do vào viện</Form.Label>
-                                <Form.Control type="text" name="reasonForAdmission" value={formData.reasonForAdmission} onChange={handleChange} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">Submit</Button>
-                        </Form>
-                    </Container>
-                </Card.Body>
-            </Card>
+            <div className='container'>
+                <Card>
+                    <Card.Body>
+                        <h2 className='text-center'>PHIẾU KHÁM NGOẠI KHOA</h2>
+                        <div className="container border p-4">
+                            <Form>
+                                <Form.Group>
+                                    <Row>
+                                        <Col md={4}>
+                                            <Form.Label>Full Name</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                        <Col md={4}>
+                                            <Form.Label>Age</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                        <Col md={4}>
+                                            <Form.Label>Gender</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Form.Label>Address</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Insurance number</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Form.Label>Date</Form.Label>
+                                            <Form.Control type="date" />
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Doctor Name</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Nhịp Mạch</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Huyết Áp</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Nhiệt Độ Cơ Thể</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Nhịp Thở</Form.Label>
+                                            <Form.Control type="text" />
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <h3 className='text-start'>Hệ Tim mạch</h3>
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Tim</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Mạch Máu</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Điện Tâm Đồ</Form.Label>
+                                            <Form.Control type='file'></Form.Control>
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <h3 className='text-start'>Hệ Hô Hấp</h3>
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Phổi</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Đường Hô Hấp</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Đo Chức Năng Hô Hấp</Form.Label>
+                                            <Form.Control type='file'></Form.Control>
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <h3 className='text-start'>Hệ Tiêu Hóa</h3>
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Dạ Dày</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Ruột</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Gan</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Túi Mật</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <h3 className='text-start'>Hệ Tiết Niệu</h3>
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Thận</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Bàng Quang</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Hình Ảnh Siêu Âm</Form.Label>
+                                            <Form.Control type='file'></Form.Control>
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <h3 className='text-start'>Hệ Thần Kinh</h3>
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Đánh Giá Các Phản Xạ</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Đánh Giá Các Cảm Giác</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Tình Trạng Vận Động</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <h3 className='text-start'>Hệ Nội Tiết</h3>
+                                    <Row>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Tuyến Giáp</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Label>Tình Trạng Tuyến Tụy</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Label>Tình Trạng Tuyến Nội Tiết Khác</Form.Label>
+                                            <Form.Control type='text'></Form.Control>
+                                        </Col>
+                                    </Row>
+                                    <hr />
+                                    <Row>
+                                        <Col md={12}>
+                                            <Form.Label>Diagnose</Form.Label>
+                                            <Form.Control type='text' />
+                                        </Col>
+                                        <Col md={12}>
+                                            <Form.Label>Notes</Form.Label>
+                                            <Form.Control as="textarea" />
+                                        </Col>
+                                    </Row>
+                                    <Button style={{ fontSize: '12px', padding: '4px 10px', width: '100px' }} type='submit' className='btn btn primary mt-3 float-end'> Submit </Button>
+                                </Form.Group>
+                            </Form>
+                        </div>
+                    </Card.Body>
+                </Card>
+            </div>
         </>
     );
-}
-
-export default MedicalRecordForm;
+};
+export default Internalmedicine;

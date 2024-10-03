@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-function MedicalRecordForm() {
+function ReceptionForm() {
     const [formData, setFormData] = useState({
         patientId: '',
         fullName: '',
@@ -105,4 +105,4 @@ function MedicalRecordForm() {
     );
 }
 
-export default MedicalRecordForm;
+export default ReceptionForm;
