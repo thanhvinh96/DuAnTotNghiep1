@@ -286,93 +286,23 @@ const Topbar = ({
     }
   }
 
-  /**
-   * Toggles the right sidebar
-   */
   const handleRightSideBar = () => {
     dispatch(showRightSidebar());
   };
-
-  /**
-   * Toggles the left sidebar width
-   */
-  // const toggleLeftSidebarWidth = () => {
-  //   if (leftSideBarType === 'default' || leftSideBarType === 'compact')
-  //     dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED));
-  //   if (leftSideBarType === 'condensed') dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
-  // };
 
   return (
     <React.Fragment>
       <div className={`navbar-custom ${navbarCssClasses}`}>
         <div className={`topbar ${containerCssClasses}`}>
           <div className="topbar-menu d-flex align-items-center gap-1">
-            {!hideLogo && (
-              <div className="logo-box">
-                <Link to="/" className="logo logo-dark text-center">
-                  <span className="logo-sm">
-                    <img src={logoSm} alt="" height="22" />
-                  </span>
-                  <span className="logo-lg">
-                    <img
-                      src={
-                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoDark2
-                          : logoDark
-                      }
-                      alt=""
-                      height="20"
-                    />
-                  </span>
-                </Link>
-                <Link to="/" className="logo logo-light text-center">
-                  <span className="logo-sm">
-                    <img src={logoSm} alt="" height="22" />
-                  </span>
-                  <span className="logo-lg">
-                    <img
-                      src={
-                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoLight2
-                          : logoLight
-                      }
-                      alt=""
-                      height="20"
-                    />
-                  </span>
-                </Link>
-              </div>
-            )}
-
             <button
               className="button-toggle-menu"
               onClick={handleLeftMenuCallBack}
             >
               <i className="mdi mdi-menu" />
             </button>
-
-            <div className="dropdown d-none d-xl-block">
-              <CreateNew otherOptions={otherOptions} />
-            </div>
-
-            <div className="dropdown dropdown-mega d-none d-xl-block">
-              <MegaMenu subMenus={MegaMenuOptions} />
-            </div>
           </div>
-
           <ul className="topbar-menu d-flex align-items-center">
-            <li className="app-search dropdown d-none d-lg-block">
-              <TopbarSearch items={SearchResults} />
-            </li>
-            {/* <li className="dropdown d-inline-block d-lg-none">
-              <SearchDropdown />
-            </li> */}
-            <li className="dropdown d-none d-lg-inline-block">
-              <MaximizeScreen />
-            </li>
-            <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
-              <AppsDropdown />
-            </li>
             <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
               <LanguageDropdown />
             </li>

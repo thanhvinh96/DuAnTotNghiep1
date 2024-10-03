@@ -64,11 +64,11 @@ const ManagentMedical = React.lazy(()=>import("../hospital/brach/medical/managem
 const Rightmedical = React.lazy(()=>import("../hospital/brach/medical/rightmedical"));
 // Nurse api
 const ReceptionNurse = React.lazy(()=>import("../hospital/Nurse/ReceptionNurse/index"));
-// const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
+const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
 const GeneralNurse = React.lazy(()=>import("../hospital/Nurse/GeneralNurse/index"));
-// const InternalmedicineNurse = React.lazy(()=>import("../hospital/Nurse/InternalmedicineNurse/index"));
+const InternalmedicineNurse = React.lazy(()=>import("../hospital/Nurse/InternalmedicineNurse/index"));
 // const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
-// const XrayNurse = React.lazy(()=>import("../hospital/Nurse/XrayNurse/index"));
+const XrayNurse = React.lazy(()=>import("../hospital/Nurse/XrayNurse/index"));
 
 
 export interface RoutesProps {
@@ -171,16 +171,16 @@ const hospitalRouter: RoutesProps = {
     },
     {
 
-      path: "/hospital/brach/index",
-      name: "personnel management",
-      element: <RequestMedical />,
+      path: "/internal-medicine-nurse",
+      name: "internal-medicine-nurse",
+      element: <InternalmedicineNurse />,
       route: PrivateRoute,
     },
     {
 
-      path: "/hospital/brach/personnel-management",
-      name: "personnel management",
-      element: <PersonnelManagent />,
+      path: "/Blood-test-Nurse",
+      name: "Blood-test-Nurse",
+      element: <BloodTestNurse />,
       route: PrivateRoute,
     },
     {
@@ -192,9 +192,9 @@ const hospitalRouter: RoutesProps = {
     },
     {
 
-      path: "/hospital/brach/right-to-medical",
-      name: "personnel management",
-      element: <RequestMedical />,
+      path: "/Xray-nurse",
+      name: "Xray-nurse",
+      element: <XrayNurse />,
       route: PrivateRoute,
     },
   
