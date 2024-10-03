@@ -16,7 +16,7 @@ const Internalmedicine = () => {
             <div className='container'>
                 <Card>
                     <Card.Body>
-                        <h2 className='text-center'>PHIẾU KHÁM NGOẠI KHOA</h2>
+                        <h2 className='text-center'>PHIẾU KHÁM NỘI KHOA</h2>
                         <div className="container border p-4">
                             <Form>
                                 <Form.Group>
