@@ -32,6 +32,7 @@ interface DecodedToken {
   email: string;
   name: string;
   cccd: string;
+  tokenmedical: string;
 }
 
 const BottomLink = () => {
@@ -132,26 +133,28 @@ const Login2 = () => {
 
       if (response.ok) {
         const data = await response.json();
-
-        // Decode and store JWT token
-        try {
-          const decoded = jwtDecode<DecodedToken>(data.transactionResult.token);
-
-          // Save token in localStorage
-          console.log(data.transactionResult.token);
-          localStorage.setItem("jwtToken", data.transactionResult.token);
-
-          console.log("User info:", decoded);
-          navigate('/dashboard-1');
-        } catch (decodeError) {
-          console.error("Token decoding error:", decodeError);
+        console.log(data);
+        const decoded = jwtDecode<DecodedToken>(data.transactionResult);
+        console.log(decoded);
+        if (decoded.tokenmedical != null) {
+          try {
+            // Save token in localStorage
+            localStorage.setItem("jwtToken", data.transactionResult)
+            console.log("User info:", decoded);
+            navigate('/medical');
+          } catch (decodeError) {
+            console.error("Token decoding error:", decodeError);
+          }
         }
+
       } else {
         const error = await response.json();
         console.error("Error:", error);
+        alert("Đăng nhập thất bại");
       }
     } catch (err) {
       console.error("Network error:", err);
+      alert("Đăng nhập thất bại");
     }
   };
 

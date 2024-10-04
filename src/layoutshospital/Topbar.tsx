@@ -105,7 +105,7 @@ const ProfileMenus = [
   {
     label: "Logout",
     icon: "fe-log-out",
-    redirectTo: "/auth/logout",
+    redirectTo: "/hospital/auth/logout",
   },
 ];
 
