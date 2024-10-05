@@ -198,7 +198,7 @@ export default function Timetable() {
     <>
       <BannerSectionStyle5
         bgUrl="/images/timetable/banner_bg.svg"
-        imgUrl="/images/timetable/banner_img.png"
+        imgUrl="/images/img/timetables.png"
         title="ProHealth <br>Timetable"
         subTitle="Get to know the complete info of our <br>doctors’ schedule"
       />

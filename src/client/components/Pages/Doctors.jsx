@@ -6,7 +6,7 @@ import Section from '../Section';
 import { pageTitle } from '../../helpers/PageTitle';
 const teamData = [
   {
-    imgUrl: '/images/doctors/doctor_1.png',
+    imgUrl: '/images/img/doctor1.png',
     department: 'Emergency Department',
     name: 'Dr. Lisa Chen, MD',
     designation: 'Emergency Medicine Specialist',
@@ -21,9 +21,9 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_2.png',
+    imgUrl: '/images/img/doctor2.png',
     department: 'Emergency Department',
-    name: 'Dr. Michael Johnson, MD',
+    name: 'Dr. Michael Johnson',
     designation: 'Emergency Medicine Specialist',
     description:
       'Dr. Johnson is a highly experienced emergency medicine physician with over 15 years of experience. He is board-certified in emergency medicine and has a special interest in disaster management.',
@@ -36,7 +36,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_3.png',
+    imgUrl: '/images/img/doctor3.png',
     department: 'Emergency Department',
     name: 'Dr. Karen Lee, MD',
     designation: 'Emergency Medicine Specialist',
@@ -51,7 +51,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_4.png',
+    imgUrl: '/images/img/doctor4.png',
     department: 'Pediatric Department',
     name: 'Dr. Sarah Patel, MD',
     designation: 'Pediatrician',
@@ -66,7 +66,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_5.png',
+    imgUrl: '/images/img/doctor5.png',
     department: 'Pediatric Department',
     name: 'Dr. David Nguyen, MD',
     designation: 'Pediatrician',
@@ -81,7 +81,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_6.png',
+    imgUrl: '/images/img/doctor6.png',
     department: 'Pediatric Department',
     name: 'Dr. Susan Bones, MD',
     designation: 'Pediatrician',
@@ -96,7 +96,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_7.png',
+    imgUrl: '/images/img/doctor7.png',
     department: 'Emergency Department',
     name: 'Dr. Lisa Chen, MD',
     designation: 'Cardiologist',
@@ -111,7 +111,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_8.png',
+    imgUrl: '/images/img/doctor8.png',
     department: 'Emergency Department',
     name: 'Dr. Michelle Kim, MD',
     designation: 'Cardiologist',
@@ -126,7 +126,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_9.png',
+    imgUrl: '/images/img/doctor9.png',
     department: 'Emergency Department',
     name: 'Dr. John Smith, MD',
     designation: 'Cardiologist',
@@ -141,7 +141,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_10.png',
+    imgUrl: '/images/img/doctor10.png',
     department: 'Psychiatry Department',
     name: 'Dr. Sarah Lee, MD',
     designation: 'Psychiatrist',
@@ -156,7 +156,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_11.png',
+    imgUrl: '/images/img/doctor11.png',
     department: 'Psychiatry Department',
     name: 'Dr. David Park, MD',
     designation: 'Psychiatrist',
@@ -171,7 +171,7 @@ const teamData = [
     href: '/doctors/doctor-details',
   },
   {
-    imgUrl: '/images/doctors/doctor_12.png',
+    imgUrl: '/images/img/doctor12.png',
     department: 'Psychiatry Department',
     name: 'Dr. Maria Rodriguez, MD',
     designation: 'Psychiatrist',
@@ -193,7 +193,7 @@ export default function Doctors() {
     <>
       <BannerSectionStyle5
         bgUrl="/images/doctors/banner_bg.svg"
-        imgUrl="/images/doctors/banner_img.png"
+        imgUrl="/images/img/introducedoctor.png"
         title="Introduce You to <br />Our Experts"
         subTitle="The list of certified doctors with years of <br />professional experiences"
       />

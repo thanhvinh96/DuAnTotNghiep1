@@ -17,10 +17,10 @@ export default function BannerSectionStyle4({
           backgroundImage: `url(${bgUrl})`,
         }}
       >
-        <h2 className="cs_banner_title cs_white_color cs_fs_72">
+        <h2 className="cs_banner_title cs_black_color cs_fs_72">
           {parser(title)}
         </h2>
-        <p className="cs_banner_subtitle cs_white_color cs_fs_20 m-0">
+        <p className="cs_banner_subtitle cs_smoker_color cs_fs_20 m-0">
           {parser(subTitle)}
         </p>
       </div>

@@ -125,8 +125,8 @@ const galleryData = [
   { imgUrl: '/images/about/portfolio_2_lg.jpeg' },
   { imgUrl: '/images/about/portfolio_3_lg.jpeg' },
   { imgUrl: '/images/about/portfolio_1_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_4_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_5_lg.jpeg' },
+  // { imgUrl: '/images/about/portfolio_4_lg.jpeg' },
+  { imgUrl: '/images/img/prohealth1.png' },
 ];
 const awardData = [
   {

@@ -10,7 +10,7 @@ import { pageTitle } from '../../helpers/PageTitle';
 
 const featureData = [
   {
-    title: 'Vaccinations Department',
+    title: 'Vaccinsations Department',
     subTitle:
       'The Pediatric Department provides vaccinations to help protect children from a range of illnesses and diseases, including measles.',
     iconUrl: '/images/departments/icon_9.svg',
@@ -115,7 +115,7 @@ export default function DepartmentDetails() {
         <AboutSectionStyle2
           title="Pediatric Department"
           subTitle="This department specializes in the care of infants, children, adolescents, and provides a range of services including preventive care, developmental screenings, and treatment of childhood illnesses and conditions."
-          imgUrl="/images/departments/department_img_1.png"
+          imgUrl="/images/img/department.png"
         />
       </Section>
 
@@ -143,7 +143,7 @@ export default function DepartmentDetails() {
         <AppointmentSection
           sectionTitle="Appointment"
           sectionTitleUp="BOOK AN"
-          imgUrl="/images/home_1/appointment.jpeg"
+          imgUrl="/images/img/book.png"
         />
       </Section>
       {/* End Appointment Section */}

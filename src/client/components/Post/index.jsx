@@ -13,9 +13,9 @@ export default function Post({
 }) {
   return (
     <div className={`cs_post cs_style_1 ${variant}`}>
-      <Link to={href} className="cs_post_thumb cs_view_mouse">
+      {/* <Link to={href} className="cs_post_thumb cs_view_mouse">
         <img src={thumbUrl} alt={title} />
-      </Link>
+      </Link> */}
       <div className="cs_post_info">
         <div>
           <div className="cs_post_meta">

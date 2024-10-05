@@ -8,7 +8,7 @@ const blogData = [
   {
     title:
       'The Importance of Mental Health: Understanding and Managing Anxiety Disorders',
-    thumbUrl: 'images/blog/post_1.jpeg',
+    thumbUrl: 'assets/images/bg-auth.jpg',
     date: 'March 12',
     btnText: 'Learn More',
     href: '/blog/blog-details',
@@ -94,7 +94,6 @@ export default function Blog() {
         <BannerSectionStyle9
           title="Don’t Let Your Health <br />Take a Backseat!"
           subTitle="Schedule an appointment with one of our experienced <br />medical professionals today!"
-          imgUrl="/images/doctors/banner_img_3.png"
         />
       </Section>
     </>

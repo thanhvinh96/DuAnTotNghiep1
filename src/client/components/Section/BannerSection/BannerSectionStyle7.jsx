@@ -15,9 +15,9 @@ export default function BannerSectionStyle7({
           backgroundImage: `url(${bgUrl})`,
         }}
       >
-        <div className="cs_banner_img">
+        {/* <div className="cs_banner_img">
           <img src={imgUrl} alt="Banner" />
-        </div>
+        </div> */}
         <h2 className="cs_banner_title cs_fs_72">{parse(title)}</h2>
         <p className="cs_banner_subtitle cs_fs_20 m-0 cs_medium">
           {parse(subTitle)}

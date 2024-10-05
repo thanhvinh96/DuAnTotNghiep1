@@ -34,7 +34,7 @@ const featureListData = [
     iconSrc: '/images/home_1/respect.svg',
     title: 'Respect',
     subTitle:
-      'We treat all individuals with respect and dignity, regardless of their background, beliefs, or circumstances. We believe that every person deserves to be treated with compassion and kindness.',
+      'We treat all individuals with respect and dignity, regardless of their background, beliefs, or circumstances. We believe that every person deserves to be treated .',
   },
   {
     iconSrc: '/images/home_1/teamwork.svg',
@@ -83,7 +83,7 @@ const faqData = [
 const blogData = [
   {
     title: 'The Benefits of Mindfulness Meditation for Stress and Anxiety',
-    thumbUrl: 'images/img/background.png',
+    thumbUrl: 'images/img/benifes.png',
     date: 'May 1, 2023',
     btnText: 'Learn More',
     href: '/blog/blog-details',
@@ -91,7 +91,7 @@ const blogData = [
   },
   {
     title: 'Healthy Eating on a Budget: Tips and Strategies',
-    thumbUrl: 'images/img/background.png',
+    thumbUrl: 'images/img/eating.png',
     date: 'May 4, 2023',
     btnText: 'Learn More',
     href: '/blog/blog-details',
@@ -99,7 +99,7 @@ const blogData = [
   },
   {
     title: 'The Importance of Regular Cancer Screenings and Early Detection',
-    thumbUrl: 'images/img/background.png',
+    thumbUrl: 'images/img/impotance.png',
     date: 'May 1, 2023',
     btnText: 'Learn More',
     href: '/blog/blog-details',
@@ -111,25 +111,25 @@ const awardData = [
     title: 'Malcolm Baldrige National Quality Award',
     subTitle:
       'This award recognizes healthcare organizations that have demonstrated excellence in leadership, strategic planning, customer and employee satisfaction, and operational efficiency.',
-    iconUrl: 'images/icons/award.svg',
+    iconUrl: 'images/img/malcolm.png',
   },
   {
     title: 'HIMSS Davies Award',
     subTitle:
       'This award recognizes healthcare organizations that have used health information technology to improve patient outcomes and reduce costs.',
-    iconUrl: 'images/icons/award.svg',
+    iconUrl: 'images/img/himss.png',
   },
   {
     title: 'Healthgrades National’s Best Hospital',
     subTitle:
       'This recognition is given to hospitals that have achieved high ratings for clinical quality and patient safety across multiple specialties and procedures.',
-    iconUrl: 'images/icons/award.svg',
+    iconUrl: 'images/img/hospitalaward.png',
   },
   {
     title: 'Joint Commission Gold Seal of Approval',
     subTitle:
       'This recognition is given to hospitals that have met rigorous standards for patient safety and quality of care.',
-    iconUrl: 'images/icons/award.svg',
+    iconUrl: 'images/img/jaintgold.png',
   },
 ];
 const departmentData = [
@@ -211,7 +211,7 @@ export default function Home() {
       {/* Start About Section */}
       <Section>
         <AboutSection
-          imgUrl="/images/img/mobileapp.png"
+          imgUrl="/images/img/teamdoctor.png"
           spiningImgUrl="/images/home_1/about_mini.svg"
           title="About Us"
           subTitle="PRO HEALTH"
@@ -251,7 +251,7 @@ export default function Home() {
       <Section>
         <Banner
           bgUrl="images/home_1/cta_bg.svg"
-          imgUrl="images/img/anh2.png"
+          imgUrl="images/img/healthtake.png"
           title="Don’t Let Your Health Take a Backseat!"
           subTitle="Schedule an appointment with one of our experienced medical professionals today!"
         />

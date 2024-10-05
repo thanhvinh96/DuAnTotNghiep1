@@ -327,7 +327,7 @@ export default function HomeStyle4() {
         <FaqSectionStyle4
           sectionTitle="Frequently Asked <br />Questions"
           data={faqData}
-          faqImgUrl="/images/home_4/faq_img.jpeg"
+          faqImgUrl="/images/img/faq.png"
           spiningImgUrl="/images/home_1/about_mini.svg"
         />
       </Section>
