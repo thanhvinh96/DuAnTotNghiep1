@@ -5,13 +5,13 @@ import Section from '../Section';
 import GallerySectionStyle2 from '../Section/GallerySection/GallerySectionStyle2';
 import { pageTitle } from '../../helpers/PageTitle';
 const galleryData = [
-  { imgUrl: '/images/about/portfolio_4_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_5_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_2_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_3_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_5_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_5_lg.jpeg' },
-  { imgUrl: '/images/about/portfolio_4_lg.jpeg' },
+  // { imgUrl: '/images/about/portfolio_4_lg.jpeg' },
+  { imgUrl: '/images/img/prohealth1.png' },
+  { imgUrl: '/images/img/prohealth2.png' },
+  { imgUrl: '/images/img/prohealth3.png' },
+  { imgUrl: '/images/img/prohealth4.png' },
+  { imgUrl: '/images/img/prohealth5.png' },
+  // { imgUrl: '/images/about/portfolio_4_lg.jpeg' },
 ];
 
 export default function Gallery() {
@@ -20,7 +20,7 @@ export default function Gallery() {
     <>
       <BannerSectionStyle3
         bgUrl="/images/about/banner_bg.svg"
-        imgUrl="/images/about/banner_img.png"
+        imgUrl="/images/img/prohealthgallery.png"
         title="Welcome to <br>ProHealth Gallery"
         subTitle="The special moment of our hospital"
       />

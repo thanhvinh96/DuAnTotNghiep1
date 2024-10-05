@@ -61,6 +61,13 @@ const departmentData = [
       'This department provides immediate medical care to patients with acute illnesses or injuries that require immediate attention.',
     href: '/departments/department-details',
   },
+  {
+    iconUrl: 'images/departments/icon_1.svg',
+    title: 'Physical Therapy Department',
+    subTitle:
+      'This department provides immediate medical care to patients with acute illnesses or injuries that require immediate attention.',
+    href: '/departments/department-details',
+  },
 ];
 
 export default function Departments() {
@@ -69,7 +76,7 @@ export default function Departments() {
     <>
       <BannerSectionStyle5
         bgUrl="/images/departments/banner_bg.svg"
-        imgUrl="/images/departments/banner_img.png"
+        imgUrl="/images/img/emergency.png"
         title="Get to Know <br>ProHealth Departments"
         subTitle="At ProHealth, we offer a wide range of medical and healthcare services that are designed to meet your individual needs and help you achieve optimal health."
       />
@@ -78,7 +85,7 @@ export default function Departments() {
       </Section>
       <Section className="cs_footer_margin_0">
         <BannerSectionStyle6
-          imgUrl="/images/departments/banner_img_2.png"
+          // imgUrl="/images/departments/banner_img_2.png"
           title="Don’t Let Your Health Take a Backseat!"
           subTitle="Schedule an appointment with one of our <br />experienced medical professionals today!"
         />

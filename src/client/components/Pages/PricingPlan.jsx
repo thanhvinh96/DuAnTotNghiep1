@@ -136,7 +136,7 @@ export default function PricingPlan() {
     <>
       <BannerSectionStyle3
         bgUrl="/images/pricing_plan/banner_bg.svg"
-        imgUrl="/images/pricing_plan/banner_img.png"
+        imgUrl="/images/img/find.png"
         title="Find the Right Plan <br>for You"
         subTitle="Explore Our Membership Options and Start Your Journey to Better Health"
         btnText="Get Starter"
@@ -167,7 +167,7 @@ export default function PricingPlan() {
         <FaqSectionStyle4
           sectionTitle="Frequently Asked <br />Questions"
           data={faqData}
-          faqImgUrl="/images/home_4/faq_img.jpeg"
+          faqImgUrl="/images/img/faq.jpg"
           spiningImgUrl="/images/home_1/about_mini.svg"
         />
       </Section>
@@ -178,7 +178,7 @@ export default function PricingPlan() {
         className="cs_footer_margin_0"
       >
         <BannerSectionStyle10
-          imgUrl="/images/pricing_plan/banner_img_2.png"
+          // imgUrl="/images/pricing_plan/banner_img_2.png"
           title="Choose Your Plan and Invest in Your Health Today!"
         />
       </Section>

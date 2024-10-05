@@ -1,8 +1,8 @@
 import React from 'react';
 import AppointmentForm from '../../AppointmentForm';
 const contactInfo = [
-  { title: 'Phone', subTitle: '123-456-7890' },
-  { title: 'Email Us', subTitle: 'hellocallcenter@gmail.com' },
+  { title: 'Phone', subTitle: '0389219213' },
+  { title: 'Email Us', subTitle: 'prohealth11022000@gmail.com' },
   { title: 'Our Location', subTitle: '123 Anywhere St., Any City, 12345' },
 ];
 

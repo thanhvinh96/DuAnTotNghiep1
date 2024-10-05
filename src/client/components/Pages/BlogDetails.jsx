@@ -22,7 +22,7 @@ const relatedBlog = [
   {
     title:
       'The Importance of Mental Health: Understanding and Managing Anxiety Disorders',
-    thumbUrl: '/images/blog/post_1.jpeg',
+    thumbUrl: '/images/img/anh1.png',
     date: 'March 12',
     btnText: 'Learn More',
     href: '/blog/blog-details',

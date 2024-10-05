@@ -14,7 +14,7 @@ export default function DoctorDetails() {
       <Section bottomMd={190} bottomLg={150} bottomXl={110}>
         <DoctorDetailsSection
           bgUrl="/images/doctors/doctor_details_bg.svg"
-          imgUrl="/images/doctors/doctor_details.jpeg"
+          imgUrl="/images/img/doctor7.png"
           name="Dr. Sarah Lee, MD, MPH, FAPA"
           department="Psychiatry Department"
           designation="Board-certified Psychiatrist"
@@ -85,7 +85,7 @@ export default function DoctorDetails() {
       <Section bottomMd={200} bottomLg={150} bottomXl={110}>
         <AppointmentSectionStyle2
           bgUrl="/images/home_2/appointment_bg.svg"
-          imgUrl="/images/home_2/appointment_img.png"
+          imgUrl="/images/img/book.png"
           sectionTitle="Appointment"
           sectionTitleUp="BOOK AN"
         />
@@ -95,7 +95,7 @@ export default function DoctorDetails() {
         <BannerSectionStyle9
           title="Don’t Let Your Health <br />Take a Backseat!"
           subTitle="Schedule an appointment with one of our experienced <br />medical professionals today!"
-          imgUrl="/images/doctors/banner_img_3.png"
+          // imgUrl="/images/doctors/banner_img_3.png"
         />
       </Section>
     </>

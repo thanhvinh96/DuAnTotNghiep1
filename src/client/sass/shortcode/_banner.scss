@@ -31,8 +31,11 @@
   }
   .cs_banner_img {
     position: absolute;
-    bottom: -30px;
+    bottom: -15px;
     right: -15px;
+    width: 450px;
+    height: 450px;
+    border-radius: 20px;
     @media (max-width: 1700px) {
       max-width: 535px;
     }
@@ -116,7 +119,8 @@
     justify-content: center;
     padding-top: 110px;
     img {
-      max-height: 100%;
+      height: 500px;
+      border-radius: 10px;
     }
     @media (max-width: 991px) {
       display: none;
