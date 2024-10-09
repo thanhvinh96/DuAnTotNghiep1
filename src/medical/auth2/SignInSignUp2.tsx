@@ -9,12 +9,9 @@ import classNames from "classnames";
 
 // actions
 import { resetAuth, loginUser, signupUser } from "../../redux/actions";
-
 import { RootState, AppDispatch } from "../../redux/store";
-
 // components
 import { VerticalForm, FormInput } from "../../components";
-
 import AuthLayout from "./AuthLayout";
 
 interface UserData {
@@ -28,7 +25,6 @@ interface UserData {
 /* bottom link */
 const BottomLink = () => {
   const { t } = useTranslation();
-
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
@@ -88,7 +84,6 @@ const SocialLinks = () => {
 const SignInSignUp2 = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-
   const { user, userSignUp, loading, error } = useSelector(
     (state: RootState) => ({
       user: state.Auth.user,
@@ -139,9 +134,7 @@ const SignInSignUp2 = () => {
   return (
     <>
       {user ? <Navigate to="/"></Navigate> : null}
-
       {userSignUp ? <Navigate to={"/auth/confirm2"}></Navigate> : null}
-
       <AuthLayout isCombineForm={true} bottomLinks={<BottomLink />}>
         <Tab.Container id="left-tabs-example" defaultActiveKey="login">
           <Nav variant="tabs" className="nav-bordered">
@@ -156,7 +149,6 @@ const SignInSignUp2 = () => {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-
           <Tab.Content>
             {/* login form */}
             <Tab.Pane eventKey="login">
@@ -195,14 +187,12 @@ const SignInSignUp2 = () => {
                     <small>{t("Forgot your password?")}</small>
                   </Link>
                 </FormInput>
-
                 <FormInput
                   label="Remember me"
                   type="checkbox"
                   name="checkbox"
                   containerClass={"mb-3"}
                 />
-
                 <div className="d-grid mb-0 text-center">
                   <Button variant="primary" type="submit" disabled={loading}>
                     {t("Log In")}

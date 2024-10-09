@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import ErrorPage from './components/Pages/ErrorPage';
 // import LoginP from '';
 import LoginP from '../medical/auth2/Login2';
-import LoginH from '../hospital/auth2/Login2';
+import LoginH from '../hospital/Organizationlogin/Login';
 import Patient from './components/patient/HomeP';
 import Hospital from './components/Hospital/Hospital';
 import PatientDetaill from './components/patient/PatientDetaill';
@@ -49,11 +49,6 @@ function App() {
       </Route>
         <Route path="LoginH" element={<LoginH />} />
         <Route path="LoginP" element={<LoginP />} />
-      {/* <Route element={<Layout2 />}>
-        <Route path="patient" element={<Patient />} />
-        <Route path="patient/1" element={<PatientDetaill />} />
-        <Route path="hospital" element={<Hospital/>} />
-      </Route> */}
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

@@ -49,9 +49,9 @@ const AuthLayout = ({
                     to="/"
                     className="logo logo-dark text-center outline-none"
                   >
-                    <span className="logo-lg">
+                    {/* <span className="logo-lg">
                       <img src={LogoDark} alt="" height="22" />
-                    </span>
+                    </span> */}
                   </Link>
 
                   <Link to="/" className="logo logo-light text-center">

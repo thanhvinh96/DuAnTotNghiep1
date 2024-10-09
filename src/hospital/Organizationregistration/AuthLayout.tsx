@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import LogoDark from "../../assets/images/logo-dark.png";
+import LogoDark from "../../assets/images/Logo.png";
 import LogoLight from "../../assets/images/logo-light.png";
 
 interface AccountLayoutProps {

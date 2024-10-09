@@ -146,7 +146,6 @@ const Login2 = () => {
             console.error("Token decoding error:", decodeError);
           }
         }
-
       } else {
         const error = await response.json();
         console.error("Error:", error);
