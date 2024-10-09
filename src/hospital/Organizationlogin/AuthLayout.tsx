@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import LogoDark from "../../assets/images/logo-dark.png";
+import LogoDark from "../../assets/images/Logo.png";
 import LogoLight from "../../assets/images/logo-light.png";
 
 interface AccountLayoutProps {
@@ -46,13 +46,7 @@ const AuthLayout = ({
                     <div className="auth-brand">
                       <Link to="/" className="logo logo-dark text-center">
                         <span className="logo-lg">
-                          <img src={LogoDark} alt="" height="22" />
-                        </span>
-                      </Link>
-
-                      <Link to="/" className="logo logo-light text-center">
-                        <span className="logo-lg">
-                          <img src={LogoLight} alt="" height="22" />
+                          <img src={LogoDark} alt="" style={{height:"120px"}} />
                         </span>
                       </Link>
                     </div>
@@ -63,18 +57,13 @@ const AuthLayout = ({
 
                 </Card.Body>
               </Card>
-
-              {/* bottom links */}
             </Col>
           </Row>
         </Container>
       </div>
 
       <footer className="footer footer-alt">
-        2015 - {new Date().getFullYear()} &copy; UBold theme by{" "}
-        <Link to="#" className="text-white-50">
-          Coderthemes
-        </Link>
+        {new Date().getFullYear()} &copy; ELECTRONIC HEALTH RECORD{" "}  
       </footer>
     </>
   );

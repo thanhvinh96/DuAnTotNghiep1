@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Alert } from "react-bootstrap";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
@@ -32,16 +32,16 @@ interface DecodedToken {
   email: string;
   name: string;
   cccd: string;
+  tokenhospital: string;
 }
 
 const BottomLink = () => {
   const { t } = useTranslation();
-
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
         {t("Don't have an account?")}{" "}
-        <Link to={"/auth/register2"} className="text-muted ms-1">
+        <Link to={"/auth2/register2"} className="text-muted ms-1">
           <b>{t("Sign Up")}</b>
         </Link>
       </p>
@@ -93,7 +93,7 @@ const SocialLinks = () => {
 const Login2 = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
   const query = useQuery();
   const next = query.get("next");
 
@@ -131,25 +131,26 @@ const Login2 = () => {
 
       if (response.ok) {
         const data = await response.json();
-
-        // Decode and store JWT token
-        try {
-          const decoded = jwtDecode<DecodedToken>(data.transactionResult.token);
-
-          // Save token in localStorage
-          console.log(data.transactionResult.token);
-          localStorage.setItem("jwtToken", data.transactionResult.token);
-
-          console.log("User info:", decoded);
-        } catch (decodeError) {
-          console.error("Token decoding error:", decodeError);
+        console.log('datahospital', data);
+        const decoded = jwtDecode<DecodedToken>(data.transactionResult);
+        console.log(decoded);
+        if(decoded.tokenhospital != null){
+          try {
+            localStorage.setItem("JwtToken",data.transactionResult);
+            console.log('doctor infor', decoded);
+            navigate('/hospital/home');
+          } catch (decodeError) {
+            console.error("Token decoding error:", decodeError);
+          }
         }
       } else {
         const error = await response.json();
         console.error("Error:", error);
+        alert("Đăng nhập thất bại");
       }
     } catch (err) {
       console.error("Network error:", err);
+      alert("Đăng nhập thất bại");
     }
   };
 
