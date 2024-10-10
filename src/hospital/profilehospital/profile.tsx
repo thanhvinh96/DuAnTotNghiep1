@@ -1,20 +1,8 @@
-import React, { useEffect, ChangeEvent, FormEvent, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Navigate, Link } from "react-router-dom";
-import { Button, Alert, Row, Col, Form, Modal } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
 import jwtDecode from 'jwt-decode';
-
-//actions
-import { resetAuth, signupUser } from "../../redux/actions";
-
-import { RootState, AppDispatch } from "../../redux/store";
-
-// components
-import { VerticalForm, FormInput } from "../../components/";
 import PageTitle from "../../components/PageTitle";
 
 /* social links */
@@ -29,15 +17,15 @@ const Profile = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
- const [orgData,setorgData] = useState({
-  nameorg: '',
-  phoneadmin: '',
-  emailadmin: '',
-  addressadmin: '',
-  tokeorg: '',
-  businessBase64: '',
-  timestamp: '' 
-});
+  const [orgData, setorgData] = useState({
+    nameorg: '',
+    phoneadmin: '',
+    emailadmin: '',
+    addressadmin: '',
+    tokeorg: '',
+    businessBase64: '',
+    timestamp: ''
+  });
   const getData = async () => {
     const token = localStorage.getItem('tokenadmin');
     if (token) {
@@ -45,14 +33,14 @@ const Profile = () => {
         const decodedToken: any = jwtDecode(token);
         // console.log("phanthuyen"+decodedToken['branch']);
         console.log(decodedToken['tokeorg']);
-        console.log("tê tổ chức"+decodedToken['nameorg']);
-  
+        console.log("tê tổ chức" + decodedToken['nameorg']);
+
         const tokeorg = decodedToken['tokeorg'];
-        if(tokeorg){
+        if (tokeorg) {
           const dataorg = {
             "tokenorg": tokeorg
           };
-    
+
           const response = await fetch('http://127.0.0.1:8000/api/organizations', {
             method: 'POST',
             body: JSON.stringify(dataorg),
@@ -60,36 +48,36 @@ const Profile = () => {
               "Content-Type": "application/json",
             },
           });
-    
+
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-    
+
           const data = await response.json();
           console.log(data.result)
           console.log(data.result.nameorg);
           setorgData({
-            nameorg: data.result.nameorg|| '',
-            phoneadmin: data.result.phoneadmin|| '',
-            emailadmin: data.result.emailadmin|| '',
-            addressadmin: data.result.addressadmin|| '',
-            tokeorg: data.result.tokeorg|| '',
-            businessBase64: data.result.businessBase64|| '',
-            timestamp: data.result.timestamp|| '',
+            nameorg: data.result.nameorg || '',
+            phoneadmin: data.result.phoneadmin || '',
+            emailadmin: data.result.emailadmin || '',
+            addressadmin: data.result.addressadmin || '',
+            tokeorg: data.result.tokeorg || '',
+            businessBase64: data.result.businessBase64 || '',
+            timestamp: data.result.timestamp || '',
           });
           // Xử lý dữ liệu nhận được tại đây
         }
-        
-  
+
+
       } catch (error) {
         console.error('Có lỗi xảy ra:', error);
       }
     }
   };
-  
+
   useEffect(() => {
     getData()
-  },[])
+  }, [])
   return (
     <>
       <PageTitle
@@ -122,7 +110,7 @@ const Profile = () => {
                       className="form-control"
                       value={orgData.nameorg}
                       placeholder="Enter organization name"
-                      // defaultValue="trasnminhfhong" // Pre-filled from JSON
+                    // defaultValue="trasnminhfhong" // Pre-filled from JSON
                     />
                   </div>
                 </div>
@@ -152,7 +140,7 @@ const Profile = () => {
               <div className="col-md-6">
                 <div className="mb-4">
                   <label className="form-label">
-                  Email Organization (<span className="text-danger">*</span>)
+                    Email Organization (<span className="text-danger">*</span>)
                   </label>
                   <div className="input-group">
                     <span className="input-group-text">
@@ -193,7 +181,7 @@ const Profile = () => {
                 <label className="form-label">
                   Token Hospital (<span className="text-danger">*</span>)
                 </label>
-                <div className="mb-4">
+                <div className="mb-2">
                   <div className="input-group">
                     <input
                       type={passwordVisible ? "text" : "password"} // Điều chỉnh type dựa trên trạng thái
@@ -201,7 +189,7 @@ const Profile = () => {
                       placeholder="Enter admin password"
                       value={orgData.tokeorg}
                     />
-                    <button
+                    <button style={{ width: '80px' }}
                       type="button"
                       className="btn btn-primary"
                       onClick={togglePasswordVisibility}
@@ -231,9 +219,8 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-
               {/* Admin Password */}
-             
+
               {/* Business License (Base64 Image) */}
               <div className="col-6">
                 <div className="mb-4">
@@ -241,12 +228,11 @@ const Profile = () => {
                     Business License (<span className="text-danger">*</span>)
                   </label>
                   <div className="input-group">
-                    <Button variant="primary" onClick={handleShow}>
+                    <Button style={{ width: '80px' }} variant="primary" onClick={handleShow}>
                       Show
                     </Button>
                   </div>
                 </div>
-
                 {/* Modal */}
                 <Modal show={show} onHide={handleClose} centered>
                   <Modal.Header closeButton>
@@ -267,30 +253,25 @@ const Profile = () => {
                   </Modal.Footer>
                 </Modal>
               </div>
-           
               <div>
-      {/* Nút "Back" */}
-      <a
-        type="button"
-        className="btn btn-danger"
-        href="https://zshopclone7.cmsnt.net/?module=admin&action=users"
-        style={{ marginRight: '10px' }} // Thêm khoảng cách giữa các nút
-
-      >
-        <i className="fa fa-fw fa-undo"></i> Back
-      </a>
-
-      {/* Nút "Save" */}
-      <button type="submit" className="btn btn-primary">
-        <i className="bi bi-download"></i> Save
-      </button>
-    </div>
-       
+                {/* Nút "Save" */}
+                <button type="submit" className="btn btn-primary float-end" style={{ width: '80px', marginTop: '-70px' }}>
+                  <i className="bi bi-download"></i> Save
+                </button>
+              </div>
             </div>
           </div>
+          {/* Nút "Back" */}
+          <Link to='/hospital/home'>
+            <div
+              className="btn btn-danger"
+              style={{ width: '100px', marginRight: '10px' }} // Thêm khoảng cách giữa các nút
+            >
+              <i className="fa fa-fw fa-undo"></i> Back
+            </div>
+          </Link>
         </div>
       </div>
-
     </>
   );
 };

@@ -2,18 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col } from "react-bootstrap";
 
 // components
-import HyperDatepicker from "../../../components/Datepicker";
-
 import Statistics from "./Statistics";
-import RevenueChart from "./RevenueChart";
-import SalesAnalyticsChart from "./SalesAnalyticsChart";
 import UsersBalances from "./UsersBalances";
-import RevenueHistory from "./RevenueHistory";
 import jwtDecode from 'jwt-decode'; // Sử dụng thư viện jwt-decode để giải mã token
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate} from 'react-router-dom';
-import { balances, revenueHistory } from "./data";
-import { log } from 'console';
+import { balances,  } from "./data";
 
 const Dashboard1 = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
