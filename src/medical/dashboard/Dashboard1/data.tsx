@@ -1,3 +1,28 @@
+// fetch("http://42.96.2.80:3002/update-record", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify(data),
+// })
+// .then(response => response.json())
+// .then(result => {
+//   localStorage.removeItem("jwtToken");
+// // Lưu JWT token vào localStorage
+// const decoded = jwtDecode<DecodedToken>(result.transactionResult.token);
+
+// // Save token in localStorage
+// console.log(result.transactionResult.token);
+// localStorage.setItem("jwtToken", result.transactionResult.token);
+// console.log("User info:", decoded);
+
+//   console.log('Success:', result);
+// })
+// .catch(error => {
+//   console.error('Error:', error);
+// });
+
+
 const balances = [
   {
     id: 1,

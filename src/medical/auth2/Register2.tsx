@@ -128,7 +128,9 @@ const Register2 = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Success:", data);
-        alert('Success')
+        alert('Success');
+        // <Navigate to={"login2"}></Navigate>
+        // Navigate('/medical');
         // You can add navigation or success handling here
       } else {
         const error = await response.json();

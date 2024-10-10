@@ -53,7 +53,7 @@ const Profile = () => {
             "tokenorg": tokeorg
           };
     
-          const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
+          const response = await fetch('http://127.0.0.1:8000/api/organizations', {
             method: 'POST',
             body: JSON.stringify(dataorg),
             headers: {
@@ -66,6 +66,7 @@ const Profile = () => {
           }
     
           const data = await response.json();
+          console.log(data.result)
           console.log(data.result.nameorg);
           setorgData({
             nameorg: data.result.nameorg|| '',
@@ -75,7 +76,6 @@ const Profile = () => {
             tokeorg: data.result.tokeorg|| '',
             businessBase64: data.result.businessBase64|| '',
             timestamp: data.result.timestamp|| '',
-         
           });
           // Xử lý dữ liệu nhận được tại đây
         }
