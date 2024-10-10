@@ -14,7 +14,7 @@ export default function CreatePersonnel() {
         fullname: "",
         address: "",
         phone: "",
-        typeusers: "admin",
+        typeusers: "Doctor",
         branch: "",
         password: "",
         tokeorg: "",
@@ -105,12 +105,12 @@ export default function CreatePersonnel() {
             console.log(formData)
 
             // Gửi yêu cầu POST đến server
-            const response = await fetch('http://42.96.2.80:3002/create-user', {
+            const response = await fetch('http://127.0.0.1:8000/api/doctors', {
                 method: 'POST',
-                body: JSON.stringify(formData),
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify(formData)
             });
 
             if (response.ok) {
@@ -182,7 +182,7 @@ export default function CreatePersonnel() {
                                     <Form.Label>Full Name</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Nguyen Van A"
+                                        placeholder={formData.fullname}
                                         name="fullname"
                                         value={formData.fullname}
                                         onChange={handleChange}
@@ -194,7 +194,7 @@ export default function CreatePersonnel() {
                                     <Form.Label>Address</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="123 ABC Street, XYZ District, H City"
+                                        placeholder={formData.address}
                                         name="address"
                                         value={formData.address}
                                         onChange={handleChange}
@@ -206,7 +206,7 @@ export default function CreatePersonnel() {
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="34534345345345"
+                                        placeholder={formData.phone}
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
@@ -217,7 +217,7 @@ export default function CreatePersonnel() {
                                     <Form.Label>cccd Number</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="34534345345345"
+                                        placeholder={formData.cccd}
                                         name="cccd"
                                         value={formData.cccd}
                                         onChange={handleChange}

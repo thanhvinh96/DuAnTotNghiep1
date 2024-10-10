@@ -13,6 +13,7 @@ import jwtDecode from 'jwt-decode'; // Sử dụng thư viện jwt-decode để 
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate} from 'react-router-dom';
 import { balances, revenueHistory } from "./data";
+import { log } from 'console';
 
 const Dashboard1 = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());

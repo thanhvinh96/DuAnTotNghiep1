@@ -87,24 +87,29 @@ export default function CreateBranch() {
         setShowModal(true); // Show the modal
 
         try {
-            const response = await fetch('http://42.96.2.80:3002/create-brach', {
+            const response = await fetch('http://127.0.0.1:8000/api/branches', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(dataBranch),
-            });
-            console.log(response);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            })
+            
+            if(response.ok){
+                const data = await response.json();
+                console.log(data);
+            }else{
+                const error = await response.json();
+                console.error(error);
             }
 
-            const data = await response.json();
-            console.log(data);
+            // const data = await response.json();
+            // console.log(data.result);
             setModalContent({ title: 'Success', body: 'Branch created successfully!' });
 
         } catch (error) {
             setModalContent({ title: 'Error', body: 'Failed to create branch. Please try again later.' });
+            console.error(error);
         }
     };
 
