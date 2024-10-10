@@ -56,12 +56,12 @@ const Detailbranch = React.lazy(() => import("../hospital/hospitalbranch/detailb
 const Personnelhospital = React.lazy(() => import("../hospital/personnel/index"));
 const CreatePersonnel = React.lazy(() => import("../hospital/personnel/createpersonnel"));
 const EditPersonnel = React.lazy(() => import("../hospital/personnel/editprersonnel"));
-const RequestMedical = React.lazy(() => import("../hospital/requestmedical/index"));
+// const RequestMedical = React.lazy(() => import("../hospital/requestmedical/index"));
 const ExaminePatient = React.lazy(() => import("../hospital/examinePatient/index"));
-const HospitalBrach = React.lazy(()=>import("../hospital/brach/index/index"));
-const PersonnelManagent = React.lazy(()=>import("../hospital/brach/personnel/personnelmanagent"));
+// const HospitalBrach = React.lazy(()=>import("../hospital/brach/index/index"));
+// const PersonnelManagent = React.lazy(()=>import("../hospital/brach/personnel/personnelmanagent"));
 const ManagentMedical = React.lazy(()=>import("../hospital/brach/medical/managemedical"));
-const Rightmedical = React.lazy(()=>import("../hospital/brach/medical/rightmedical"));
+// const Rightmedical = React.lazy(()=>import("../hospital/brach/medical/rightmedical"));
 // Nurse api
 const ReceptionNurse = React.lazy(()=>import("../hospital/Nurse/ReceptionNurse/index"));
 const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
