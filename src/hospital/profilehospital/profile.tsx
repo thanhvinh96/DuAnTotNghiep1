@@ -45,7 +45,7 @@ const Profile = () => {
         const decodedToken: any = jwtDecode(token);
         // console.log("phanthuyen"+decodedToken['branch']);
         console.log(decodedToken['tokeorg']);
-        console.log("tê tổ chức" + decodedToken['nameorg']);
+        console.log("tên tổ chức" + decodedToken['nameorg']);
 
         const tokeorg = decodedToken['tokeorg'];
         if (tokeorg) {
@@ -202,14 +202,14 @@ const Profile = () => {
                       value={orgData.tokeorg}
                     />
                   </div>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={togglePasswordVisibility}
-                      style={{width:'80px'}}
-                    >
-                      {passwordVisible ? "Hide" : "Show"} {/* Hiển thị "Show" hoặc "Hide" */}
-                    </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={togglePasswordVisibility}
+                    style={{ width: '80px' }}
+                  >
+                    {passwordVisible ? "Hide" : "Show"} {/* Hiển thị "Show" hoặc "Hide" */}
+                  </button>
                 </div>
               </div>
 
@@ -241,7 +241,7 @@ const Profile = () => {
                   <label className="form-label">
                     Business License (<span className="text-danger">*</span>)
                   </label> <br />
-                  <div className="btn" style={{width:'110px', marginLeft:'-14px'}}>
+                  <div className="btn" style={{ width: '110px', marginLeft: '-14px' }}>
                     <Button variant="primary" onClick={handleShow}>
                       Show
                     </Button>
@@ -276,6 +276,10 @@ const Profile = () => {
                     <i className="fa fa-fw fa-undo"></i> Back
                   </div>
                 </Link>
+                {/* Nút "Save" */}
+                <button type="submit" className="btn btn-primary">
+                  <i className="bi bi-download"></i> Save
+                </button>
               </div>
 
             </div>
