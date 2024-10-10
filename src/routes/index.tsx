@@ -262,6 +262,12 @@ const authRoutes: RoutesProps[] = [
     route: PrivateRoute,
   },
   {
+    path: "/hospital/auth/logout",
+    name: "Logout",
+    element: <Logout />,
+    route: Route,
+  },
+  {
     path: "/medical/auth/login",
     name: "Login",
     element: <Login />,

@@ -165,7 +165,7 @@ export default function Index() {
                   <h4 className="header-title">Search</h4>
                   <p className="text-muted font-14 mb-4">A Table allowing search</p>
                 </div>
-                <Button variant="primary" onClick={handleCreateMember}>
+                <Button style={{width:'130px'}} variant="primary" onClick={handleCreateMember}>
                   Tạo thành viên
                 </Button>
               </div>
