@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
-import Layout2 from './components/Layout/Layout2';
 import Home from './components/Pages/Home';
 import About from './components/Pages/About';
 import Doctors from './components/Pages/Doctors';
@@ -19,9 +18,6 @@ import ErrorPage from './components/Pages/ErrorPage';
 // import LoginP from '';
 import LoginP from '../medical/auth2/Login2';
 import LoginH from '../hospital/Organizationlogin/Login';
-import Patient from './components/patient/HomeP';
-import Hospital from './components/Hospital/Hospital';
-import PatientDetaill from './components/patient/PatientDetaill';
 import 'slick-carousel/slick/slick.css';
 import './sass/client.scss';
 function App() {
