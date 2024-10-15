@@ -1,11 +1,11 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-
 // componets
 import StatisticsWidget from "../../../components/StatisticsWidget";
 import StatisticsWidgetvv from "../../../components/StatisticsWidgetvv";
 
 const Statistics = () => {
+  
   return (
     <>
       <Row>
