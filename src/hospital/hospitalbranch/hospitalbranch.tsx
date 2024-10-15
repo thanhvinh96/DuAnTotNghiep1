@@ -52,7 +52,6 @@ export default function Hospitalbranch() {
     },
   ];
 
-
   const [branches, setbranches] = useState<Branch[]>([]);
   const navigate = useNavigate(); // Di chuyển useNavigate vào trong component
 

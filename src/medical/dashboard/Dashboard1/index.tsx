@@ -6,8 +6,8 @@ import Statistics from "./Statistics";
 import UsersBalances from "./UsersBalances";
 import jwtDecode from 'jwt-decode'; // Sử dụng thư viện jwt-decode để giải mã token
 import { Modal, Button } from 'react-bootstrap';
-import { useNavigate} from 'react-router-dom';
-import { balances,  } from "./data";
+import { useNavigate } from 'react-router-dom';
+import { balances, } from "./data";
 
 const Dashboard1 = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -15,17 +15,16 @@ const Dashboard1 = () => {
   const [missingFields, setMissingFields] = useState<string[]>([]);
   const navigate = useNavigate(); // Khai báo biến navigate
 
-
-  const checkToken = ()=>{
+  const checkToken = () => {
     const token = localStorage.getItem('jwtToken');
-    if(token){
-      try{
-        const decodedToken:any = jwtDecode(token);
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
         console.log(jwtDecode(token));
         const requiredFields = ['gender', 'address', 'phoneNumber', 'identityCard'];
-        const missing = requiredFields.filter(field=> !decodedToken[field]);
+        const missing = requiredFields.filter(field => !decodedToken[field]);
         console.log(missing);
-        if(missing.length>0){
+        if (missing.length > 0) {
           setMissingFields(missing);
 
           setShowModal(true);
@@ -38,7 +37,7 @@ const Dashboard1 = () => {
   /*
    * handle date change
    */
-  const handlaNavigate=()=>{
+  const handlaNavigate = () => {
     navigate('/medical/examination-history');
   }
   const onDateChange = (date: Date) => {
@@ -46,17 +45,17 @@ const Dashboard1 = () => {
       setSelectedDate(date);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     checkToken();
-  },[])
+  }, [])
   return (
-    <> 
-            <Statistics />
+    <>
+      <Statistics />
       <Row>
         <Col xl={12}>
-          <UsersBalances balances={balances}/>
+          <UsersBalances balances={balances} />
         </Col>
-      </Row>   
+      </Row>
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Missing Information</Modal.Title>
@@ -74,7 +73,7 @@ const Dashboard1 = () => {
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={()=>handlaNavigate()}>
+          <Button variant="primary" onClick={() => handlaNavigate()}>
             Update
           </Button>
         </Modal.Footer>

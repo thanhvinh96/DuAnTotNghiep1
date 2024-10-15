@@ -4,6 +4,7 @@ export interface MenuItemTypes {
   isTitle?: boolean;
   icon?: string;
   url?: string;
+  role?:String;
   badge?: {
     variant: string;
     text: string;
@@ -14,27 +15,32 @@ export interface MenuItemTypes {
 }
 
 const MENU_ITEMS: MenuItemTypes[] = [
-  { key: "MAIN", label: "MAIN", isTitle: true },
+  { key: "MAIN", label: "MAIN",role: "hospital", isTitle: true },
   {
     key: "/hospital/home",
     label: "Home",
     isTitle: false,
     icon: "calendar",
     url: "/hospital/home",
+    role: "hospital",
+
   },
-  { key: "HOSPITAL", label: "HOSPITAL", isTitle: true },
+  { key: "HOSPITAL", label: "HOSPITAL",role: "hospital", isTitle: true },
   {
     key: "/hospital/profile-hospital",
     label: "Organizational information",
     isTitle: false,
     icon: "calendar",
-    url: "/hospital/profile-hospital",
+    role: "hospital",
+    url: "/hospital/profile-hospital?mode=hospital",
+
   },
   {
     key: "Hospital branch",
     label: "Hospital branch",
     isTitle: false,
     icon: "calendar",
+    role: "hospital",
     url: "/hospital/hospital-branch",
   },
   {
@@ -42,6 +48,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Personnel management",
     isTitle: false,
     icon: "user",
+    role: "hospital",
     url: "/hospital/personnel-management",
   },
   {
@@ -49,6 +56,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "patient management",
     isTitle: false,
     icon: "user",
+    role: "hospital",
     url: "/hospital/patient-management",
   },
   {
@@ -56,78 +64,87 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Manage book access rights",
     isTitle: false,
     icon: "book",
+    role: "hospital",
     url: "/dashboard-1",
   },
-  { key: "PHARMACY", label: "PHARMACY", isTitle: true },
+
+  { key: "PHARMACY", label: "PHARMACY",role: "hospital", isTitle: true },
   {
     key: "dashboard-1",
     label: "Manage prescriptions",
     isTitle: false,
     icon: "calendar",
+    role: "hospital",
     url: "/dashboard-1",
   },
-  { key: "DOCTER", label: "DOCTER", isTitle: true },
+  { key: "DOCTER", label: "DOCTER",role: "doctor", isTitle: true },
   {
     key: "examine patient",
     label: "Examine Patient",
     isTitle: false,
     icon: "user",
-    url: "/examine-patient",
+    role: "doctor",
+    url: "/examine-patient?mode=doctor",
   },
-  { key: "NURSE", label: "NURSE", isTitle: true },
+  { key: "NURSE", label: "NURSE",role: "doctor", isTitle: true },
 
   {
     key: "reception nurse",
     label: "Reception Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/reception-nurse",
+    role: "doctor",
+    url: "/reception-nurse?mode=doctor",
   },
   {
     key: "General nurse",
     label: "General Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/general-nurse",
+    role: "doctor",
+    url: "/general-nurse?mode=doctor",
   },
   {
     key: "internal medicine nurse",
     label: "Internal medicine Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/internal-medicine-nurse",
+    role: "doctor",
+    url: "/internal-medicine-nurse?mode=doctor",
   },
   {
     key: "Blood test Nurse",
     label: "Blood test Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/Blood-test-Nurse",
+    role: "doctor",
+    url: "/Blood-test-Nurse?mode=doctor",
   },
   {
     key: "Urine test Nurse",
     label: "Urine test Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/Urine-test-urse",
+    role: "doctor",
+    url: "/Urine-test-Nurse?mode=doctor",
   },
   {
     key: "Xray Nurse",
     label: "X-ray Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/Xray-nurse",
+    role: "doctor",
+    url: "/Xray-nurse?mode=doctor",
   },
 
-
-  { key: "BRACH", label: "BRACH", isTitle: true },
+  { key: "BRACH", label: "BRACH",role: "hospital", isTitle: true },
 
   {
     key: "home",
     label: "Home",
     isTitle: false,
     icon: "calendar",
-
+    role: "hospital",
     url: "/hospital/brach/index",
   },
   {
@@ -135,7 +152,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Personnel management",
     isTitle: false,
     icon: "calendar",
-
+    role: "hospital",
     url: "/hospital/brach/personnel-management",
   },
   {
@@ -143,7 +160,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Manage medical records",
     isTitle: false,
     icon: "calendar",
-
+    role: "hospital",
     url: "/hospital/brach/manage-medical-records",
   },
   {
@@ -151,7 +168,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Right to medical ",
     isTitle: false,
     icon: "calendar",
-
+    role: "hospital",
     url: "/hospital/brach/right-to-medical ",
   },
 ];

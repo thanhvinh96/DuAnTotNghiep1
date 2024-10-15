@@ -8,7 +8,7 @@ import FeatherIcon from "feather-icons-react";
 import { findAllParent, findMenuItem } from "../helpers/menu";
 
 // constants
-import { MenuItemTypes } from "../constants/menumedical";
+import { MenuItemTypes } from "../constants/menuhospital";
 
 interface SubMenus {
   item: MenuItemTypes;
@@ -154,13 +154,27 @@ interface AppMenuProps {
   menuItems: MenuItemTypes[];
 }
 
+
 const AppMenu = ({ menuItems }: AppMenuProps) => {
   let location = useLocation();
-
   const menuRef: any = useRef(null);
-
   const [activeMenuItems, setActiveMenuItems] = useState<Array<string>>([]);
 
+  // Lấy giá trị 'mode' từ URL
+  const searchParams = new URLSearchParams(location.search);
+  const mode = searchParams.get("mode");
+  let mainMenuItems = [];
+  switch (mode) {
+    case "main":
+      mainMenuItems = menuItems.filter((item) => item.role === "hospital");
+      break;
+    case "admin":
+      mainMenuItems = menuItems.filter((item) => item.role === "doctor");
+      break;
+    default:
+      mainMenuItems = menuItems; // Hiển thị tất cả các mục nếu không có mode cụ thể
+      break;
+  } 
   /*
    * toggle the menus
    */
@@ -178,13 +192,10 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
   const activeMenu = useCallback(() => {
     const div = document.getElementById("main-side-menu");
     let matchingMenuItem = null;
-    // ;
     if (div) {
       let items: any = div.getElementsByClassName("side-nav-link-ref");
       for (let i = 0; i < items.length; ++i) {
         let trimmedURL = location?.pathname?.replaceAll(process.env.PUBLIC_URL, "");
-        // console.log(trimmedURL);
-        // console.log("pathname",items[i].pathname.replaceAll(process.env.PUBLIC_URL, ""));
         if (trimmedURL === items[i]?.pathname?.replaceAll(process.env.PUBLIC_URL, "")) {
           matchingMenuItem = items[i];
           break;
@@ -206,53 +217,54 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
 
   useEffect(() => {
     activeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeMenu]);
 
   return (
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
-        {(menuItems || []).map((item, idx) => {
-          //
-          return (
-            <React.Fragment key={idx}>
-              {item.isTitle ? (
-                <li
-                  className={classNames("menu-title", {
-                    "mt-2": idx !== 0,
-                  })}
-                >
-                  {item.label}
-                </li>
-              ) : (
-                <>
-                  {item.children ? (
-                    <MenuItemWithChildren
-                      item={item}
-                      toggleMenu={toggleMenu}
-                      subMenuClassNames="sub-menu"
-                      activeMenuItems={activeMenuItems}
-                      linkClassName="menu-link"
-                    />
-                  ) : (
-                    <MenuItem
-                      item={item}
-                      linkClassName="menu-link"
-                      className={
-                        activeMenuItems!.includes(item.key)
-                          ? "menuitem-active"
-                          : ""
-                      }
-                    />
-                  )}
-                </>
-              )}
-            </React.Fragment>
-          );
-        })}
+        {(mainMenuItems || [])
+          .filter((item) => !item.role || item.role === mode) // Lọc các mục menu dựa trên role và mode
+          .map((item, idx) => {
+            return (
+              <React.Fragment key={idx}>
+                {item.isTitle ? (
+                  <li
+                    className={classNames("menu-title", {
+                      "mt-2": idx !== 0,
+                    })}
+                  >
+                    {item.label}
+                  </li>
+                ) : (
+                  <>
+                    {item.children ? (
+                      <MenuItemWithChildren
+                        item={item}
+                        toggleMenu={toggleMenu}
+                        subMenuClassNames="sub-menu"
+                        activeMenuItems={activeMenuItems}
+                        linkClassName="menu-link"
+                      />
+                    ) : (
+                      <MenuItem
+                        item={item}
+                        linkClassName="menu-link"
+                        className={
+                          activeMenuItems!.includes(item.key)
+                            ? "menuitem-active"
+                            : ""
+                        }
+                      />
+                    )}
+                  </>
+                )}
+              </React.Fragment>
+            );
+          })}
       </ul>
     </>
   );
 };
+
 
 export default AppMenu;

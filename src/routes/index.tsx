@@ -67,9 +67,8 @@ const ReceptionNurse = React.lazy(()=>import("../hospital/Nurse/ReceptionNurse/i
 const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
 const GeneralNurse = React.lazy(()=>import("../hospital/Nurse/GeneralNurse/index"));
 const InternalmedicineNurse = React.lazy(()=>import("../hospital/Nurse/InternalmedicineNurse/index"));
-// const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
+const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
 const XrayNurse = React.lazy(()=>import("../hospital/Nurse/XrayNurse/index"));
-
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -142,6 +141,12 @@ const hospitalRouter: RoutesProps = {
       route: PrivateRoute,
     },
     {
+      path: "/hospital/patient-management",
+      name: "patient management",
+      element: <CreatePersonnel />,
+      route: PrivateRoute,
+    },
+    {
 
       path: "/hospital/edit-personnel",
       name: "personnel management",
@@ -181,6 +186,12 @@ const hospitalRouter: RoutesProps = {
       path: "/Blood-test-Nurse",
       name: "Blood-test-Nurse",
       element: <BloodTestNurse />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/Urine-test-Nurse",
+      name: "Urine-test-Nurse",
+      element: <UrineTestNurse />,
       route: PrivateRoute,
     },
     {
@@ -244,8 +255,6 @@ const dashboardRoutes: RoutesProps = {
     }
   ],
 };
-
-
 
 // auth
 const authRoutes: RoutesProps[] = [
@@ -412,7 +421,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 
 // All routes
 const authProtectedRoutes = [
-  dashboardRoutes,
+  dashboardRoutes
  
 ];
 const adminhospitalRouter = [

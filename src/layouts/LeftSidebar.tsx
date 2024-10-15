@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SimpleBar from "simplebar-react";
-
 import { getMenuItems } from "../helpers/menu";
 
 // store
@@ -14,7 +13,6 @@ import { LayoutTypes } from "../constants/layouthospital";
 
 // components
 import AppMenu from "./Menu";
-
 import profileImg from "../assets/images/users/user-1.jpg";
 import logoSm from "../assets/images/logo-sm.png";
 import logoDark from "../assets/images/logo-dark.png";
@@ -98,6 +96,10 @@ const UserBox = () => {
 
 /* sidebar content */
 const SideBarContent = () => {
+  
+  useEffect(()=>{
+    console.log(getMenuItems())
+  },[])
   return (
     <>
       <UserBox />
