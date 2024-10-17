@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Container, Row, Col } from 'react-bootstrap';
+import jwtDecode from 'jwt-decode';
+
 
 function ReceptionForm() {
     const [formData, setFormData] = useState({
@@ -8,7 +10,7 @@ function ReceptionForm() {
         age: '',
         gender: '',
         address: '',
-        insuranceBookNumber:'',
+        insuranceBookNumber: '',
         admissionDate: '',
         room: '',
         diagnosis: '',
@@ -24,6 +26,8 @@ function ReceptionForm() {
         followUpNotes: ''
     });
 
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -32,9 +36,27 @@ function ReceptionForm() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form Data Submitted:', formData);
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/medical-record-books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+            } else {
+                const error = await response.json();
+                console.error(error);
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
     };
 
     return (
