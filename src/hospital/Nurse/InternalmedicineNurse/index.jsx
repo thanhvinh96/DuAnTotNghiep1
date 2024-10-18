@@ -4,6 +4,7 @@ import { Card, Form, Row, Col, Button, Table, FormLabel } from 'react-bootstrap'
 
 const InternalmedicineNurse = () => {
     const [tableData, setTableData] = useState([]);
+    let id = '67115977deb595fcd5044e42';
     
     // Hàm để thêm dòng mới vào bảng
     const addRow = () => {
@@ -16,6 +17,29 @@ const InternalmedicineNurse = () => {
         newData[index][field] = value;
         setTableData(newData);
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/medical-records/',id,'/addServiceKNO', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tableData),
+            })
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+            } else {
+                const error = await response.json();
+                console.error(error);
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     
     return (
         <>
@@ -36,7 +60,7 @@ const InternalmedicineNurse = () => {
                         </Form>
                     </div>
                     <div className="container border p-4">
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
                             <Table className='table table-bordered text-center mt-5'>
                                 <thead className="thead-light">
                                     <tr>
