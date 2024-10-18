@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
 import jwtDecode from "jwt-decode";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -94,6 +96,8 @@ const SocialLinks = () => {
 const Login2 = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
+  const MySwal = withReactContent(Swal);
+
   const navigate = useNavigate(); // Initialize useNavigate
 
   const query = useQuery();
@@ -123,6 +127,16 @@ const Login2 = () => {
   // OnSubmit handler
   const onSubmit = async (formData: UserData) => {
     try {
+      const loadingSwal:any = MySwal.fire({
+        title: 'Please wait...',
+        text: 'Login medical, please wait!',
+        icon: 'info',
+        allowOutsideClick: false, // Prevent closing the modal while loading
+        showConfirmButton: false, // Hide the confirmation button
+        didOpen: () => {
+          Swal.showLoading(); // Show the loading animation
+        }
+      });
       const response = await fetch("http://42.96.2.80:3002/login-record", {
         method: "POST",
         headers: {
@@ -141,20 +155,43 @@ const Login2 = () => {
             // Save token in localStorage
             localStorage.setItem("jwtToken", data.transactionResult)
             console.log("User info:", decoded);
-            navigate('/medical');
+            loadingSwal.close();
+            Swal.fire({
+              title: 'Login Success!',
+              text: 'Your Login  successful.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            }).then(() => {
+              window.location.href = '/medical';
+    
+            });
           } catch (decodeError) {
-            console.error("Token decoding error:", decodeError);
+
+        Swal.fire({
+          title: 'Registration Error!',
+          text: 'Error'+decodeError,
+          icon: 'error',  // Fixed typo
+          confirmButtonText: 'OK',
+        });
           }
         }
       } else {
         const error = await response.json();
         console.error("Error:", error);
-        alert("Đăng nhập thất bại");
-      }
+        Swal.fire({
+          title: 'Registration Error!',
+          text: 'Error'+error,
+          icon: 'error',  // Fixed typo
+          confirmButtonText: 'OK',
+        });      }
     } catch (err) {
       console.error("Network error:", err);
-      alert("Đăng nhập thất bại");
-    }
+      Swal.fire({
+        title: 'Registration Error!',
+        text: 'Error'+error,
+        icon: 'error',  // Fixed typo
+        confirmButtonText: 'OK',
+      });      }
   };
 
   return (
