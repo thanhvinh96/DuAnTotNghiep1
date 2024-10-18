@@ -87,7 +87,7 @@ export default function CreateBranch() {
         setShowModal(true); // Show the modal
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/branches', {
+            const response = await fetch('http://42.96.2.80:3002/create-brach', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -86,6 +88,8 @@ const SocialLinks = () => {
 };
 
 const Register2 = () => {
+  const MySwal = withReactContent(Swal);
+
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -116,7 +120,18 @@ const Register2 = () => {
    */
   const onSubmit = async (formData: UserData) => {
     console.log(formData);
+  
     try {
+      const loadingSwal:any = MySwal.fire({
+        title: 'Please wait...',
+        text: 'Register medical, please wait!',
+        icon: 'info',
+        allowOutsideClick: false, // Prevent closing the modal while loading
+        showConfirmButton: false, // Hide the confirmation button
+        didOpen: () => {
+          Swal.showLoading(); // Show the loading animation
+        }
+      });
       const response = await fetch("http://42.96.2.80:3002/register-record", {
         method: "POST",
         headers: {
@@ -128,18 +143,35 @@ const Register2 = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Success:", data);
-        alert('Success');
-        // <Navigate to={"login2"}></Navigate>
-        // Navigate('/medical');
-        // You can add navigation or success handling here
+        loadingSwal.close();
+        Swal.fire({
+          title: 'Register Success!',
+          text: 'Your registration was successful.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          window.location.href = '/LoginP';
+
+        });
       } else {
         const error = await response.json();
         console.error("Error:", error);
-        // Handle error response from server
+  
+        Swal.fire({
+          title: 'Registration Error!',
+          text: 'There was an error during registration. Please try again.',
+          icon: 'error',  // Fixed typo
+          confirmButtonText: 'OK',
+        });
       }
     } catch (err) {
       console.error("Network error:", err);
-      // Handle network errors here
+      Swal.fire({
+        title: 'Network Error',
+        text: 'Could not reach the server. Please try again later.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     }
   };
   

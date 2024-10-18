@@ -17,7 +17,7 @@ interface PageTitleProps {
  */
 const PageTitle = (props: PageTitleProps) => {
   return (
-    <Row style={{marginTop:'-100px'}}>
+    <Row >
       <Col>
         <div className="page-title-box">
           <h4 className="page-title">{props["title"]}</h4>

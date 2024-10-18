@@ -105,7 +105,7 @@ export default function CreatePersonnel() {
             console.log(formData)
 
             // Gửi yêu cầu POST đến server
-            const response = await fetch('http://127.0.0.1:8000/api/doctors', {
+            const response = await fetch('http://42.96.2.80:3002/create-user ', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

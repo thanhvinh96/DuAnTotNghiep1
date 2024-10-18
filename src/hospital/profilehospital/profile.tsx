@@ -41,7 +41,7 @@ const Profile = () => {
             "tokenorg": tokeorg
           };
 
-          const response = await fetch('http://127.0.0.1:8000/api/organizations', {
+          const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
             method: 'POST',
             body: JSON.stringify(dataorg),
             headers: {

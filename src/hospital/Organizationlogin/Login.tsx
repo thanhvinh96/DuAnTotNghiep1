@@ -4,7 +4,8 @@ import { Link, Navigate,useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { VerticalForm, FormInput, FormSelectBootstrap } from "../../components/";
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 // actions
 import { resetAuth } from "../../redux/actions";
 
@@ -84,9 +85,20 @@ const Login2 = () => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
+  const MySwal = withReactContent(Swal);
 
   const onSubmit = async (formData: UserData) => {
     try {
+      const loadingSwal: any = MySwal.fire({
+        title: 'Please wait...',
+        text: 'Login Hospital, please wait!',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       setModalContent({ title: 'time loading...', body: 'Login hospitab,' });
       const updatedFormData = { ...formData, tokeorg: selectedOption };
       fetch('http://42.96.2.80:3002/login-org',{
@@ -101,18 +113,36 @@ const Login2 = () => {
         console.log(data.token);
         localStorage.setItem('tokenadmin', data.token);
         setModalContent({ title: 'Success...', body: 'Login hospitab,' });
+        loadingSwal.close();
+
         window.location.href = "/hospital/home"; // Thay đổi "/new-page" thành URL bạn muốn chuyển đến
+        Swal.fire({
+          title: 'Login Hospital Success!',
+          text: 'Your Login Hospital was successful.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
         // alert('success')
       })
       .catch((error) => console.error('Error fetching data:', error));
       console.log("Updated Form Data:", updatedFormData);
       setModalContent({ title: 'Enroll...', body: 'Login hospitab,' });
+      Swal.fire({
+        title: 'Lpoin Error!',
+        text:  'Login Error Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
 
       // Thực hiện xử lý với updatedFormData ở đây
     } catch (err) {
       console.error("Network error:", err);
-      alert("Network error:"+err);
-    }
+      Swal.fire({
+        title: 'Lpoin Error!',
+        text:  'Login Error Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });    }
   };
 
   return (
