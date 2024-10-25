@@ -3,7 +3,8 @@ import { Form, Button, Card, Row, Col,Modal } from 'react-bootstrap';
 import PageTitle from "../../components/PageTitle";
 import { useLocation } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
-
+import {GetInfoHospital} from '../../controller/HospitalController'
+import {GetInfoFullPersonnel,GetpersonnelByToken} from '../../controller/PersonnelController'
 export default function UserForm() {
   const [formData, setFormData] = useState({
     address: '',
@@ -51,43 +52,28 @@ export default function UserForm() {
         const tokeorg = decodedToken['tokeorg'];
         const dataorg = { tokenorg: tokeorg };
   
-        const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
-          method: 'POST',
-          body: JSON.stringify(dataorg),
-          headers: { 'Content-Type': 'application/json' },
-        });
-  
-        if (!response.ok) {
+        const response = await GetInfoHospital(dataorg);
+        console.log(response);
+        if (!response) {
           throw new Error('Network response was not ok');
         }
   
-        const _data = await response.json();
+        // const _data = await response.json();
         const tokenuser = getQueryParams(); // Đảm bảo getQueryParams() được định nghĩa
   
         if (tokenuser) {
-          // Cập nhật trạng thái với dữ liệu mới
+        //   // Cập nhật trạng thái với dữ liệu mới
           const updatedDataget = {
             tokenuser: tokenuser,
-            tokeorg: _data.result.tokeorg,
+            tokeorg: response.result.tokeorg,
             value: 'org1',
             // value: _data.result.nameorg,
           };
-  
-          // Gọi fetch với dữ liệu đã cập nhật
-          const _response = await fetch('http://42.96.2.80:3002/getpersonnel-bytoken/', {
-            method: 'POST',
-            body: JSON.stringify(updatedDataget),
-            headers: { 'Content-Type': 'application/json' },
-          });
-  
-          if (_response.ok) {
-            const personnelData = await _response.json();
-            console.log(personnelData.data);
-            if (personnelData.data && typeof personnelData.data === 'object' && !Array.isArray(personnelData.data)) {
-                // Nếu là đối tượng, tiếp tục cập nhật dữ liệu vào formData
-                const data = personnelData.data;
-
-                setFormData({
+          const _response:any = await GetpersonnelByToken(updatedDataget)
+          console.log(_response);
+          if(_response.success===true){
+            const data = _response.data
+                            setFormData({
                     address: data.address,
                     branch: data.branch,
                     cccd: data.cccd,
@@ -99,13 +85,40 @@ export default function UserForm() {
                     timecreats: data.timecreats, // Chuyển đổi thành đối tượng Date
                     typeusers: data.typeusers,
                 });
-            } else {
-                // Xử lý khi personnelData.data không phải là đối tượng hoặc không tồn tại
-                console.error('Expected an object but got:', personnelData.data);
-            }
-          } else {
-            throw new Error('Network response was not ok');
           }
+        //   // Gọi fetch với dữ liệu đã cập nhật
+        //   const _response = await fetch('http://42.96.2.80:3002/getpersonnel-bytoken/', {
+        //     method: 'POST',
+        //     body: JSON.stringify(updatedDataget),
+        //     headers: { 'Content-Type': 'application/json' },
+        //   });
+  
+        //   if (_response.ok) {
+        //     const personnelData = await _response.json();
+        //     console.log(personnelData.data);
+        //     if (personnelData.data && typeof personnelData.data === 'object' && !Array.isArray(personnelData.data)) {
+        //         // Nếu là đối tượng, tiếp tục cập nhật dữ liệu vào formData
+        //         const data = personnelData.data;
+
+        //         setFormData({
+        //             address: data.address,
+        //             branch: data.branch,
+        //             cccd: data.cccd,
+        //             fullname: data.fullname,
+        //             imgidentification: data.imgidentification,
+        //             password: data.password,
+        //             phone: data.phone,
+        //             tokenuser: data.tokenuser,
+        //             timecreats: data.timecreats, // Chuyển đổi thành đối tượng Date
+        //             typeusers: data.typeusers,
+        //         });
+        //     } else {
+        //         // Xử lý khi personnelData.data không phải là đối tượng hoặc không tồn tại
+        //         console.error('Expected an object but got:', personnelData.data);
+        //     }
+        //   } else {
+        //     throw new Error('Network response was not ok');
+        //   }
         }
       }
     } catch (error) {

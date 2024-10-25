@@ -10,6 +10,8 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 // Define an interface for the record object
+import { showdataprofiles ,updataprofiles} from '../../controller/MedicalController'; // Import controller
+
 interface Record {
   tokenmedical: string;
   name: string;
@@ -87,44 +89,39 @@ const ProfileMedical: React.FC = () => {
 const showdataprofile = async () => {
   try {
     // Gửi dữ liệu đến endpoint
-    const response = await fetch("http://42.96.2.80:3002/getinfo-record", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datacheckprofile), // Chuyển đổi đối tượng thành chuỗi JSON
-    });
+    const response:any = await showdataprofiles(datacheckprofile);
+    console.log("kq"+response);
 
     // Kiểm tra nếu phản hồi không thành công
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    // if (!response.ok) {
+    //   throw new Error('Network response was not ok');
+    // }
 
-    // Chuyển đổi phản hồi thành JSON
-    const result = await response.json();
-    // const data:any = JSON.stringify(result)
-    // Xử lý kết quả nhận được
-    if(result.success===true){
+    // // Chuyển đổi phản hồi thành JSON
+    // const result = await response.json();
+    // // const data:any = JSON.stringify(result)
+    // // Xử lý kết quả nhận được
+    if(response.success===true){
       console.log('thành công');
-      console.log('Data received:', result.record);
+      console.log('Data received:', response.record);
       setRecord({
-        tokenmedical: result.record.tokenmedical || '',
-        name: result.record.name || '',
-        email: result.record.email || '',
-        birthDate: result.record.birthDate || '',
-        gender: result.record.gender || '',
-        address: result.record.address || '',
-        phoneNumber: result.record.phoneNumber || '',
-        cccd: result.record.cccd || '',
-        avatarImagebase64: result.record.avatarImagebase64 || '', // Ensure this is included
-        height: result.record.height || '', // New field
-        weight: result.record.weight || '', // New field
-        medicalinsurance: result.record.medicalinsurance || '', // New field
-        avatar: result.record.avatar || '', // New field
+        tokenmedical: response.record.tokenmedical || '',
+        name: response.record.name || '',
+        email: response.record.email || '',
+        birthDate: response.record.birthDate || '',
+        gender: response.record.gender || '',
+        address: response.record.address || '',
+        phoneNumber: response.record.phoneNumber || '',
+        cccd: response.record.cccd || '',
+        avatarImagebase64: response.record.avatarImagebase64 || '', // Ensure this is included
+        height: response.record.height || '', // New field
+        weight: response.record.weight || '', // New field
+        medicalinsurance: response.record.medicalinsurance || '', // New field
+        avatar: response.record.avatar || '', // New field
       });
     }
     
-    // Bạn có thể cập nhật state hoặc làm gì đó với dữ liệu nhận được ở đây
+    // // Bạn có thể cập nhật state hoặc làm gì đó với dữ liệu nhận được ở đây
 
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -203,40 +200,56 @@ useEffect(() => {
     console.log('Submitted data:', data);
   
     try {
-      const response = await fetch("http://42.96.2.80:3002/update-record", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-  
-      const result = await response.json();
-      loadingSwal.close();
-  
-      if (response.ok) {
+      updataprofiles(data)
+      .then((response) => {
+        loadingSwal.close();
+
+        console.log(response.transactionResult.success); // Bây giờ response sẽ là kết quả thực tế
+        if(response.transactionResult.success===true){
         Swal.fire({
           title: 'Update Success!',
           text: 'Your Update Profile was successful.',
           icon: 'success',
           confirmButtonText: 'OK',
         });
-  
-        // localStorage.removeItem("jwtToken");
-  
-        // const decoded = jwtDecode<DecodedToken>(result.transactionResult.token);
-        // console.log(result.transactionResult.token);
-        // localStorage.setItem("jwtToken", result.transactionResult.token);
-        // console.log("User info:", decoded);
-        console.log('Success:', result);
-      } else {
-        Swal.fire({
+        }else{
+                  Swal.fire({
           title: 'Update Error!',
-          text: result.message || 'There was an error during registration. Please try again.',
+          text: 'There was an error during registration. Please try again.',
           icon: 'error',
           confirmButtonText: 'OK',
         });
-      }
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+      });
+    
+      // const result = await response;
+  
+      // if (response.ok) {
+      //   Swal.fire({
+      //     title: 'Update Success!',
+      //     text: 'Your Update Profile was successful.',
+      //     icon: 'success',
+      //     confirmButtonText: 'OK',
+      //   });
+  
+      //   // localStorage.removeItem("jwtToken");
+  
+      //   // const decoded = jwtDecode<DecodedToken>(result.transactionResult.token);
+      //   // console.log(result.transactionResult.token);
+      //   // localStorage.setItem("jwtToken", result.transactionResult.token);
+      //   // console.log("User info:", decoded);
+      //   console.log('Success:', result);
+      // } else {
+      //   Swal.fire({
+      //     title: 'Update Error!',
+      //     text: result.message || 'There was an error during registration. Please try again.',
+      //     icon: 'error',
+      //     confirmButtonText: 'OK',
+      //   });
+      // }
     } catch (error) {
       loadingSwal.close();
       Swal.fire({

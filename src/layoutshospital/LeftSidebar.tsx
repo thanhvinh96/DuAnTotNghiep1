@@ -95,9 +95,6 @@ const UserBox = () => {
 
 /* sidebar content */
 const SideBarContent = () => {
-  useEffect(()=>{
-    // console.log(getMenuItems())
-  },[])
   return (
     <>
       <UserBox />
