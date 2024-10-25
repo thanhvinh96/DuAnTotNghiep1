@@ -1,10 +1,10 @@
 import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
-
 // components
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
 import '../../style.css';
+import { Link } from "react-router-dom";
 
 // Define type for row data
 interface RowData {
@@ -92,12 +92,14 @@ function Index(): JSX.Element {
       Header: 'Action',
       accessor: 'action',
       Cell: ({ row }: { row: { original: RowData } }) => (
+        <Link to='/medical/medical-record-detail'>
         <button
           className="btn btn-primary"
           onClick={() => handleAction(row.original)}
         >
           Xem Chi Tiết
         </button>
+        </Link>
       ),
     },
   ];
@@ -126,24 +128,14 @@ function Index(): JSX.Element {
       <PageTitle
         breadCrumbItems={[
           { label: "Tables", path: "/features/tables/advanced" },
-          {
-            label: "Advanced Tables",
-            path: "/features/tables/advanced",
-            active: true,
-          },
         ]}
-        title={"Advanced Tables"}
+        title={"Medical-History"}
       />
 
       <Row>
         <Col>
           <Card>
             <Card.Body>
-              <h4 className="header-title">Expand Row</h4>
-              <p className="text-muted font-14 mb-4">
-                Expand row to see more additional details
-              </p>
-
               <Table
                 columns={columns}
                 data={expandableRecords}

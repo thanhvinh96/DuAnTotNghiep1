@@ -108,7 +108,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Urine test Nurse",
     isTitle: false,
     icon: "calendar",
-    url: "/Urine-test-urse",
+    url: "/Urine-test-Nurse",
   },
   {
     key: "Xray Nurse",

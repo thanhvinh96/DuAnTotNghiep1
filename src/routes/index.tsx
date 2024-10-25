@@ -61,7 +61,7 @@ const ManagentMedical = React.lazy(()=>import("../hospital/brach/medical/managem
 const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
 const GeneralNurse = React.lazy(()=>import("../hospital/Nurse/GeneralNurse/index"));
 const InternalmedicineNurse = React.lazy(()=>import("../hospital/Nurse/InternalmedicineNurse/index"));
-// const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
+const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
 const XrayNurse = React.lazy(()=>import("../hospital/Nurse/XrayNurse/index"));
 const ManagentRequest = React.lazy(()=>import("../hospital/Nurse/Requestmedical/ManagentRequest"));
 
@@ -166,10 +166,15 @@ const hospitalRouter: RoutesProps = {
       route: PrivateRoute,
     },
     {
-
-      path: "/Blood-test-Nurse",
-      name: "Blood-test-Nurse",
+    path: "/Blood-test-Nurse",
+    name: "Blood-test-Nurse",
       element: <BloodTestNurse />,
+      route: PrivateRoute,
+    },
+    {
+    path: "/Urine-test-Nurse",
+    name: "Urine-test-Nurse",
+      element: <UrineTestNurse />,
       route: PrivateRoute,
     },
     {
@@ -204,11 +209,11 @@ const dashboardRoutes: RoutesProps = {
     {
       path: "/medical/",
       name: "Root",
-      element: <Navigate to="/medical/medical record" />,
+      element: <Navigate to="/medical/medical-record" />,
       route: PrivateRoute,
     },
     {
-      path: "/medical/medical record",
+      path: "/medical/medical-record",
       name: "medical record",
       element: <Dashboard1 />,
       route: PrivateRoute,
@@ -220,7 +225,7 @@ const dashboardRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/medical/medical-examination",
+      path: "/medical/medical-history",
       name: "medical-examination",
       element: <Medicalexamination />,
       route: PrivateRoute,
@@ -228,12 +233,6 @@ const dashboardRoutes: RoutesProps = {
     {
       path: "/medical/profile-medical",
       name: "profile-medical",
-      element: <ProfileMedical />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/medical/examination-history",
-      name: "examination-history",
       element: <ProfileMedical />,
       route: PrivateRoute,
     },

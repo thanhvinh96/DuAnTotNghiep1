@@ -30,18 +30,18 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/medical/profile-medical",
   },
   {
-    key: "appointment schedule",
-    label: "Appointment schedule",
-    isTitle: false,
-    icon: "calendar",
-    url: "/medical/medical-examination",
-  },
-  {
     key: "examination history",
     label: "Examination history",
     isTitle: false,
     icon: "calendar",
-    url: "/medical/examination-history",
+    url: "/medical/medical-history",
+  },
+  {
+    key: "ManagentApprove",
+    label: "ManagentApprove",
+    isTitle: false,
+    icon: "calendar",
+    url: "/medical/medical-managent-approve",
   },
 ];
 
@@ -112,13 +112,6 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
-  // {
-  //     key: 'widgets',
-  //     label: 'Widgets',
-  //     isTitle: false,
-  //     icon: 'gift',
-  //     url: '/ui/widgets',
-  // },
 ];
 
 export { MENU_ITEMS, TWO_COl_MENU_ITEMS, HORIZONTAL_MENU_ITEMS };

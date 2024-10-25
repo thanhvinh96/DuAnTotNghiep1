@@ -3,7 +3,7 @@ import { CreateMedical, LoginMedical } from '../model/MedicalModel'; // Import m
 // Controller để tạo hồ sơ y tế
 export const handleCreateMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://localhost:3002/register-record`, {
+    const response = await fetch(`http://103.179.185.78:3002/register-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const handleCreateMedical = async (formData: any) => {
 };
 export const CheckInfoMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://localhost:3002/medical/checkinfo`, {
+    const response = await fetch(`http://103.179.185.78:3002/medical/checkinfo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const CheckInfoMedical = async (formData: any) => {
 // Controller để đăng nhập vào hồ sơ y tế
 export const handleLoginMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://localhost:3002/login-record`, {
+    const response = await fetch(`http://103.179.185.78:3002/login-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export const handleLoginMedical = async (formData: any) => {
  export const showdataprofiles = async (datacheckprofile: any) => { 
   try {
     // Gửi dữ liệu đến endpoint
-    const response = await fetch("http://localhost:3002/getinfo-record", {
+    const response = await fetch("http://103.179.185.78:3002/getinfo-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export const handleLoginMedical = async (formData: any) => {
  };
  export const updataprofiles = async (data: any) => { 
   try {
-    const response = await fetch("http://localhost:3002/update-record", {
+    const response = await fetch("http://103.179.185.78:3002/update-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
