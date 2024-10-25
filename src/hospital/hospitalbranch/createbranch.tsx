@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PageTitle from "../../components/PageTitle";
-
+import {CreateBranchs} from "../../controller/BranchController";
+import {GetInfoHospital} from "../../controller/HospitalController";
 export default function CreateBranch() {
     const navigate = useNavigate(); // Initialize useNavigate
 
@@ -29,28 +30,30 @@ export default function CreateBranch() {
             
                 const tokeorg = decodedToken['tokeorg'];
                 const dataorg = {
-                  "tokenorg": tokeorg
-                };
+                    "tokenorg": tokeorg
+                  };
+                const res = await GetInfoHospital(dataorg);
+                  console.log(res);
             
-                const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
-                  method: 'POST',
-                  body: JSON.stringify(dataorg),
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                });
+                // const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
+                //   method: 'POST',
+                //   body: JSON.stringify(dataorg),
+                //   headers: {
+                //     "Content-Type": "application/json",
+                //   },
+                // });
             
-                if (!response.ok) { 
-                  throw new Error('Network response was not ok');
-                }
+                // if (!response.ok) { 
+                //   throw new Error('Network response was not ok');
+                // }
             
-                const data = await response.json();
-                console.log('giá trị data');
-                console.log(data.result.nameorg);
+                // const data = await response.json();
+                // console.log('giá trị data');
+                // console.log(data.result.nameorg);
                 setDataBranch(prevState => ({
                     ...prevState,
-                    value: data.result.nameorg,
-                    tokeorg: data.result.tokeorg,
+                    value: res.result.nameorg,
+                    tokeorg: res.result.tokeorg,
                 }));
             }
         };
@@ -87,25 +90,18 @@ export default function CreateBranch() {
         setShowModal(true); // Show the modal
 
         try {
-            const response = await fetch('http://42.96.2.80:3002/create-brach', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataBranch),
-            })
-            
-            if(response.ok){
-                const data = await response.json();
-                console.log(data);
+            console.log(dataBranch);
+            const response:any = await CreateBranchs(dataBranch);
+            console.log(response);
+            if(response.success===true){
+                setModalContent({ title: 'Success', body: 'Branch created successfully!' });
+
             }else{
                 const error = await response.json();
-                console.error(error);
+                setModalContent({ title: 'Error', body: 'Failed to create branch. Please try again later.' });
             }
 
-            // const data = await response.json();
-            // console.log(data.result);
-            setModalContent({ title: 'Success', body: 'Branch created successfully!' });
+          
 
         } catch (error) {
             setModalContent({ title: 'Error', body: 'Failed to create branch. Please try again later.' });
@@ -193,23 +189,23 @@ export default function CreateBranch() {
                                     />
                                 </Form.Group>
 
-                                <div className="mt-2">
-                                    <Button
-                                        variant="secondary"
-                                        className="btn-sm"
-                                        style={{ marginRight: '20px' }}
-                                        onClick={backlink}
-                                    >
-                                        Back
-                                    </Button>
-                                    <Button
-                                        variant="primary"
-                                        type="submit"
-                                        className="btn-sm"
-                                    >
-                                        Save
-                                    </Button>
-                                </div>
+                                <div className="d-flex justify-content-start mt-2">
+    <Button
+        variant="secondary"
+        className="btn-sm me-2" // Sử dụng me-2 để tạo khoảng cách giữa các nút
+        onClick={backlink}
+    >
+        Back
+    </Button>
+    <Button
+        variant="primary"
+        type="submit"
+        className="btn-sm"
+    >
+        Save
+    </Button>
+</div>
+
                             </Form>
                         </Card.Body>
                     </Card>

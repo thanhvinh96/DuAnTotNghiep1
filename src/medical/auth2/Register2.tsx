@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { handleCreateMedical, handleLoginMedical } from '../../controller/MedicalController'; // Import controller
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -132,17 +133,18 @@ const Register2 = () => {
           Swal.showLoading(); // Show the loading animation
         }
       });
-      const response = await fetch("http://42.96.2.80:3002/register-record", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Success:", data);
+      // const response = await fetch("http://42.96.2.80:3002/register-record", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      const response = await handleCreateMedical(formData);
+      console.log(response);
+      if (response.success===true) {
+        // const data = await response.json();
+        // console.log("Success:", data);
         loadingSwal.close();
         Swal.fire({
           title: 'Register Success!',
@@ -154,8 +156,7 @@ const Register2 = () => {
 
         });
       } else {
-        const error = await response.json();
-        console.error("Error:", error);
+      
   
         Swal.fire({
           title: 'Registration Error!',
@@ -167,9 +168,9 @@ const Register2 = () => {
     } catch (err) {
       console.error("Network error:", err);
       Swal.fire({
-        title: 'Network Error',
-        text: 'Could not reach the server. Please try again later.',
-        icon: 'error',
+        title: 'Registration Error!',
+        text: 'There was an error during registration. Please try again.',
+        icon: 'error',  // Fixed typo
         confirmButtonText: 'OK',
       });
     }

@@ -3,9 +3,12 @@ import { Row, Col, Card, Button, Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import jwtDecode from 'jwt-decode';
+import { GetInfoFullPersonnel,CreatePersonnels } from '../../controller/PersonnelController'
+import { GetInfoHospital } from '../../controller/HospitalController'
+import { GetFullBranch } from '../../controller/BranchController'
 
 interface Branch {
-    tokenbrach: string;
+    tokenbranch: string;
     branchname: string;
 }
 
@@ -18,7 +21,7 @@ export default function CreatePersonnel() {
         branch: "",
         password: "",
         tokeorg: "",
-        value:"",
+        value: "",
         cccd: "",
         imgidentification: "", // Đã cập nhật tên biến cho phù hợp
     });
@@ -40,38 +43,29 @@ export default function CreatePersonnel() {
                     const dataorg = {
                         "tokenorg": tokeorg
                     };
+                    const response: any = await GetInfoHospital(dataorg);
+                    console.log(response);
+                    if (response.result != null) {
+                        const _data = await response.result;
+                        console.log(_data.tokeorg);
+                        setFormData({
+                            ...formData,
+                            tokeorg: _data.tokeorg,
+                            value: _data.nameorg,
+                        });
+                        const datagetFullBranch={
+                            tokeorg: _data.tokeorg,
+                            value: _data.nameorg,
+                        }
+                        const _response = await GetFullBranch(datagetFullBranch);
+                    if (_response.success === true) {
+                      const DataBranch = _response.data;
+                      setBranches(_response.data);
+                      console.log(DataBranch);
 
-                    const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
-                        method: 'POST',
-                        body: JSON.stringify(dataorg),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
                     }
-
-                    const _data = await response.json();
-                    setFormData({
-                        ...formData,
-                        tokeorg: _data.result.tokeorg,
-                        value: _data.result.nameorg,
-                    });
-
-                    const _response = await fetch("http://42.96.2.80:3002/getfull-brach", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            tokeorg: _data.result.tokeorg,
-                            value: _data.result.nameorg,
-                        }),
-                    });
-                    const data = await _response.json();
-                    setBranches(data.data);
+                    }
+                   
                 }
             } catch (error) {
                 console.error("Error fetching branches:", error);
@@ -97,33 +91,24 @@ export default function CreatePersonnel() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+    
         try {
             // Hiển thị modal thông báo đang xử lý
             setModalContent({ title: 'Processing...', body: 'Creating branch, please wait...' });
             setShowModal(true);
-            console.log(formData)
-
+            console.log(formData);
+            
             // Gửi yêu cầu POST đến server
-            const response = await fetch('http://42.96.2.80:3002/create-user ', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
-                // Xử lý phản hồi nếu yêu cầu thành công
-                const result = await response.json();
-                console.log("User created successfully:", result);
-                // Đóng modal hoặc xử lý thêm nếu cần
-                setModalContent({ title: 'successfully', body: 'User created successfully:' });
-
-                // setShowModal(false);
+            const response: any = await CreatePersonnels(formData);
+            
+            // Kiểm tra phản hồi từ server
+            console.log(response.success);
+            if (response.success === true) {
+                // Không cần chuyển đổi response thành JSON lần nữa
+                console.log("User created successfully:", response.result);
+                setModalContent({ title: 'Success', body: 'User created successfully: ' + response.result });
+    
             } else {
-                // Xử lý lỗi nếu yêu cầu không thành công
-                console.error("Error creating user:", response.statusText);
                 setModalContent({ title: 'Error', body: 'Failed to create user. Please try again.' });
             }
         } catch (error) {
@@ -132,7 +117,7 @@ export default function CreatePersonnel() {
             setModalContent({ title: 'Error', body: 'An unexpected error occurred. Please try again.' });
         }
     };
-
+    
 
     const handleBack = () => {
         navigate(-1); // Go back to the previous page
@@ -262,7 +247,7 @@ export default function CreatePersonnel() {
                                     >
                                         <option value="">Select a branch</option>
                                         {branches.map((branch) => (
-                                            <option key={branch.tokenbrach} value={branch.tokenbrach}>
+                                            <option key={branch.tokenbranch} value={branch.tokenbranch}>
                                                 {branch.branchname}
                                             </option>
                                         ))}

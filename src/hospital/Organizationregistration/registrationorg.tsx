@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
+import {RegisterHospital} from "../../controller/HospitalController";
 
 //actions
 import { resetAuth, signupUser } from "../../redux/actions";
@@ -16,7 +17,8 @@ import { RootState, AppDispatch } from "../../redux/store";
 import { VerticalForm, FormInput } from "../../components/";
 
 import AuthLayout from "./AuthLayout";
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 interface UserData {
   fullname: string;
   email: string;
@@ -44,6 +46,8 @@ const BottomLink = () => {
 /* social links */
 
 const Register = () => {
+  const MySwal = withReactContent(Swal);
+
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', body: '' });
   const handleClose = () => setShowModal(false);
@@ -94,60 +98,72 @@ const Register = () => {
   /*
    * handle form submission
    */
-  const onSubmit = (formData: UserData) => {
+  const onSubmit = async (formData: UserData) => {
     const nameorg = (document.getElementById('nameorg') as HTMLInputElement)?.value || '';
     const nameadmin = (document.getElementById('nameadmin') as HTMLInputElement)?.value || '';
     const emailadmin = (document.getElementById('emailadmin') as HTMLInputElement)?.value || '';
     const addressadmin = (document.getElementById('addressadmin') as HTMLInputElement)?.value || '';
     const cccdadmin = (document.getElementById('cccdadmin') as HTMLInputElement)?.value || '';
     const phoneadmin = (document.getElementById('phoneadmin') as HTMLInputElement)?.value || '';
-    const passworkadmin = (document.getElementById('passworkadmin') as HTMLInputElement)?.value || '';
+    const passwordadmin = (document.getElementById('passworkadmin') as HTMLInputElement)?.value || ''; // Đảm bảo tên đúng
     const businessBase64 = (document.getElementById('cccdImagebase64') as HTMLInputElement)?.value || '';
-    console.log("Name of Organization:", nameorg);
-console.log("Admin Name:", nameadmin);
-console.log("Admin Email:", emailadmin);
-console.log("Admin Address:", addressadmin);
-console.log("Admin CCCD:", cccdadmin);
-console.log("Admin Phone:", phoneadmin);
-console.log("Admin Password:", passworkadmin);
-console.log("CCCD Image Base64:", businessBase64);
-const data = {
-  nameorg,
-  nameadmin,
-  emailadmin,
-  addressadmin,
-  cccdadmin,
-  phoneadmin,
-  passworkadmin,
-  businessBase64,
-};
+  
+    const data = {
+      nameorg,
+      nameadmin,
+      emailadmin,
+      addressadmin,
+      cccdadmin,
+      phoneadmin,
+      passwordadmin,
+      businessBase64,
+    };
+  
+    console.log('Submitted data:', data);
+  
+    const loadingSwal: any = MySwal.fire({
+      title: 'Please wait...',
+      text: 'Registering hospital group, please wait!',
+      icon: 'info',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  
+    try {
+      const res: any = await RegisterHospital(data);
+      console.log(res);
+      console.log('giá trị res');
 
-console.log('Submitted data:', data);
-setModalContent({ title: 'Processing...', body: 'Register hospitab, please wait...' });
-
-fetch("http://42.96.2.80:3002/creater-org/", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(data),
-})
-.then(response => response.json())
-.then(result => {
-
-
- 
-  console.log('Success:'+result);
-  setModalContent({ title: 'Success...', body: 'Register hospitab,' });
-  window.location.href = "/hospital/organization-loginorg"; // Thay đổi "/new-page" thành URL bạn muốn chuyển đến
-
-})
-.catch(error => {
-  console.error('Error:', error);
-  setModalContent({ title: 'Enroll...', body: 'Register hospitab,' });
-
-});
-
+      if (res.success===true) {
+        loadingSwal.close();
+        MySwal.fire({
+          title: 'Hospital Success',
+          text: 'Register Hospital Successfully',
+          icon: 'success',
+        }).then(() => {
+          // Chuyển hướng đến trang login sau khi đăng ký thành công
+          window.location.href = '/hospital/organization-loginorg';  // hoặc sử dụng phương pháp điều hướng của framework (React Router)
+        });
+      } else {
+        loadingSwal.close();
+        MySwal.fire({
+          title: 'Hospital Error',
+          text: 'Register Hospital Failed',
+          icon: 'error',
+        });
+      }
+    } catch (error) {
+      console.error('Error registering hospital:', error);
+      loadingSwal.close();
+      MySwal.fire({
+        title: 'Hospital Error',
+        text: 'Register Hospital Failed',
+        icon: 'error',
+      });
+    }
   };
   
 

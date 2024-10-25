@@ -9,6 +9,7 @@ import classNames from "classnames";
 import jwtDecode from "jwt-decode";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { handleLoginMedical } from '../../controller/MedicalController'; // Import controller
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -137,23 +138,18 @@ const Login2 = () => {
           Swal.showLoading(); // Show the loading animation
         }
       });
-      const response = await fetch("http://42.96.2.80:3002/login-record", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await handleLoginMedical(formData);
+      console.log(response);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        const decoded = jwtDecode<DecodedToken>(data.transactionResult);
+      if (response.status===true) {
+        // const data = await response.json();
+        console.log(response.transactionResult);
+        const decoded = jwtDecode<DecodedToken>(response.transactionResult);
         console.log(decoded);
         if (decoded.tokenmedical != null) {
           try {
             // Save token in localStorage
-            localStorage.setItem("jwtToken", data.transactionResult)
+            localStorage.setItem("jwtToken", response.transactionResult)
             console.log("User info:", decoded);
             loadingSwal.close();
             Swal.fire({

@@ -1,10 +1,11 @@
 // Không cần require('dotenv') trong ReactJS frontend
 
-const URL = process.env.REACT_APP_PORT_URL; // Sử dụng biến môi trường REACT_APP
+import { thongtin } from'../db/db'; // Đường dẫn tới tệp config.ts
 
 export const CreateMedical = async (formData: any) => {
+  // console.log(config.API_URL)
   try {
-    const response = await fetch(`${URL}register-record`, {
+    const response = await fetch(`http://localhost:3002/register-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

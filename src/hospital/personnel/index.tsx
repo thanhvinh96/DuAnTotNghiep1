@@ -4,7 +4,8 @@ import PageTitle from "../../components/PageTitle";
 import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 import jwtDecode from 'jwt-decode';
-
+import {GetInfoHospital} from '../../controller/HospitalController'
+import {GetInfoFullPersonnel} from '../../controller/PersonnelController'
 export default function Index() {
 
   interface Persinnel {
@@ -92,32 +93,23 @@ export default function Index() {
           const tokeorg = decodedToken['tokeorg'];
           const dataorg = { "tokenorg": tokeorg };
 
-          const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
-            method: 'POST',
-            body: JSON.stringify(dataorg),
-            headers: { "Content-Type": "application/json" },
-          });
-
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
+          const response:any = await GetInfoHospital(dataorg);
+          console.log(response.result.tokeorg);
+          const dataorgs={
+          "tokeorg": response.result.tokeorg,
+          "value": response.result.nameorg 
           }
+          // if (!response.ok) {
+          //   throw new Error('Network response was not ok');
+          // }
 
-          const _data = await response.json();
+          // const _data = await response.json();
+          const _res:any = await GetInfoFullPersonnel(dataorgs)
+          console.log(_res);
+         
 
-          const _response = await fetch("http://42.96.2.80:3002/getfull-personnel", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              tokeorg: _data.result.tokeorg,
-              value: _data.result.nameorg,
-            }),
-          });
-
-          const responseData = await _response.json();
-          console.log(responseData);
-
-          // Kiểm tra cấu trúc của responseData
-          const filteredRecords = responseData.data.map((item: any) => ({
+          // // Kiểm tra cấu trúc của responseData
+          const filteredRecords = _res.data.map((item: any) => ({
             typeusers: item.typeusers,
             fullname: item.fullname,
             organizationalvalue: item.organizationalvalue,

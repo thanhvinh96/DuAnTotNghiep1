@@ -75,7 +75,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/examine-patient",
   },
   { key: "NURSE", label: "NURSE", isTitle: true },
-
+  {
+    key: "Request Access Medical",
+    label: "Request Access Medical",
+    isTitle: false,
+    icon: "calendar",
+    url: "/request-medical-nurse",
+  },
   {
     key: "reception nurse",
     label: "Reception Nurse",

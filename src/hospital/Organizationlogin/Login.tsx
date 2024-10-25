@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Alert,Modal } from "react-bootstrap";
-import { Link, Navigate,useNavigate } from "react-router-dom";
+import { Button, Alert, Modal } from "react-bootstrap";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { VerticalForm, FormInput, FormSelectBootstrap } from "../../components/";
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 // actions
 import { resetAuth } from "../../redux/actions";
+import { FetchHospital, LoginHospital } from "../../controller/HospitalController";
 
 // store
 import { RootState, AppDispatch } from "../../redux/store";
@@ -56,23 +57,37 @@ const Login2 = () => {
 
   const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
+  const showtokenOrg = async () => {
+    try {
+      const res: any = await FetchHospital(); // Thêm await ở đây
+      console.log("Giá trị:", res); // In giá trị thực tế
+      const optionsData = res.map((org: any) => ({
+        value: org.tokeorg,
+        label: org.nameorg,
+      }));
+      setOptions(optionsData);
+    } catch (error) {
+      console.error("Có lỗi xảy ra:", error); // Xử lý lỗi nếu có
+    }
+  };
 
   useEffect(() => {
-    fetch('http://42.96.2.80:3002/getall-org', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const optionsData = data.map((org: any) => ({
-          value: org.tokeorg,
-          label: org.nameorg,
-        }));
-        setOptions(optionsData);
-      })
-      .catch((error) => console.error('Error fetching data:', error));
+    showtokenOrg();
+    // fetch('http://42.96.2.80:3002/getall-org', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     const optionsData = data.map((org: any) => ({
+    //       value: org.tokeorg,
+    //       label: org.nameorg,
+    //     }));
+    //     setOptions(optionsData);
+    //   })
+    //   .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
   const { loading, userLoggedIn, user, error } = useSelector((state: RootState) => ({
@@ -89,61 +104,58 @@ const Login2 = () => {
 
   const onSubmit = async (formData: UserData) => {
     try {
-      const loadingSwal: any = MySwal.fire({
-        title: 'Please wait...',
-        text: 'Login Hospital, please wait!',
-        icon: 'info',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      setModalContent({ title: 'time loading...', body: 'Login hospitab,' });
-      const updatedFormData = { ...formData, tokeorg: selectedOption };
-      fetch('http://42.96.2.80:3002/login-org',{
-        method:'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedFormData), // Correct way to pass the request body
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.token);
-        localStorage.setItem('tokenadmin', data.token);
-        setModalContent({ title: 'Success...', body: 'Login hospitab,' });
-        loadingSwal.close();
-
-        window.location.href = "/hospital/home"; // Thay đổi "/new-page" thành URL bạn muốn chuyển đến
-        Swal.fire({
-          title: 'Login Hospital Success!',
-          text: 'Your Login Hospital was successful.',
-          icon: 'success',
-          confirmButtonText: 'OK',
+        const loadingSwal: any = MySwal.fire({
+            title: 'Please wait...',
+            text: 'Login Hospital, please wait!',
+            icon: 'info',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
         });
-        // alert('success')
-      })
-      .catch((error) => console.error('Error fetching data:', error));
-      console.log("Updated Form Data:", updatedFormData);
-      setModalContent({ title: 'Enroll...', body: 'Login hospitab,' });
-      Swal.fire({
-        title: 'Lpoin Error!',
-        text:  'Login Error Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
 
-      // Thực hiện xử lý với updatedFormData ở đây
+        setModalContent({ title: 'time loading...', body: 'Login hospital,' });
+        const updatedFormData = { ...formData, tokeorg: selectedOption };
+        
+        const res: any = await LoginHospital(updatedFormData); // Thêm await ở đây
+        console.log(res.token);
+
+        if (res && res.status === true) { // Đảm bảo kiểm tra đúng cách
+            console.log(res.token);
+            localStorage.setItem('tokenadmin', res.token);
+            setModalContent({ title: 'Success...', body: 'Login hospital,' });
+            loadingSwal.close();
+
+            Swal.fire({
+                title: 'Login Hospital Success!',
+                text: 'Your Login Hospital was successful.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+            });
+            window.location.href = '/hospital/home';  // hoặc sử dụng phương pháp điều hướng của framework (React Router)
+
+        } else {
+            setModalContent({ title: 'Enroll...', body: 'Login hospital,' });
+            Swal.fire({
+                title: 'Login Error!',
+                text: 'Login Error Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+        }
+
     } catch (err) {
-      console.error("Network error:", err);
-      Swal.fire({
-        title: 'Lpoin Error!',
-        text:  'Login Error Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });    }
-  };
+        console.error("Network error:", err);
+        Swal.fire({
+            title: 'Login Error!',
+            text: 'Login Error Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        });
+    }
+};
+
 
   return (
     <>
@@ -196,7 +208,7 @@ const Login2 = () => {
             </Link>
           </FormInput>
 
-        
+
 
           <div className="d-grid mb-0 text-center">
             <Button variant="primary" type="submit" disabled={loading}>
@@ -204,23 +216,23 @@ const Login2 = () => {
             </Button>
           </div>
 
-        
+
         </VerticalForm>
         <div className="text-center">
           <h5 className="mt-3 text-muted"></h5>
         </div>
       </AuthLayout>
       <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{modalContent.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{modalContent.body}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalContent.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalContent.body}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

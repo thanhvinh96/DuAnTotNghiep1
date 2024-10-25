@@ -6,11 +6,12 @@ import { Row, Col, Card, Button } from "react-bootstrap";
 // components
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
-
+import {CreateBranchs,GetFullBranch} from "../../controller/BranchController";
+import {GetInfoHospital} from "../../controller/HospitalController";
 export default function Hospitalbranch() {
   // import { records as data } from "./data";
   interface Branch {
-    tokenbrach: string;
+    tokenbranch: string;
     branchname: string;
     branchphone: String;
     timecreate: String;
@@ -21,7 +22,7 @@ export default function Hospitalbranch() {
   const columns = [
     {
       Header: "Token Branch",
-      accessor: "tokenbrach",
+      accessor: "tokenbranch",
       sort: true,
     },
     {
@@ -57,7 +58,7 @@ export default function Hospitalbranch() {
   const navigate = useNavigate(); // Di chuyển useNavigate vào trong component
 
   const data = branches.map(branch => ({
-    tokenbrach: branch.tokenbrach,
+    tokenbranch: branch.tokenbranch,
     branchname: branch.branchname,
     branchphone: branch.branchphone,
     timecreate: branch.timecreate,
@@ -94,40 +95,30 @@ export default function Hospitalbranch() {
             "tokenorg": tokeorg
           };
 
-          const response = await fetch('http://42.96.2.80:3002/getinfo-org/', {
-            method: 'POST',
-            body: JSON.stringify(dataorg),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const data = await response.json();
-          console.log('giá trị data');
-          console.log(data.result.nameorg);
+          const data:any = await GetInfoHospital(dataorg);
+          console.log(data);
+         
           const _databrach = {
 
             "value": data.result.nameorg,
             "tokeorg": data.result.tokeorg,
           }
-          const res = await fetch('http://42.96.2.80:3002/getfull-brach', {
-            method: 'POST',
-            body: JSON.stringify(_databrach),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
+          const res = await GetFullBranch(_databrach)
+          console.log(res);
+          // const res = await fetch('http://42.96.2.80:3002/getfull-brach', {
+          //   method: 'POST',
+          //   body: JSON.stringify(_databrach),
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          // });
+          // if (!res.ok) {
+          //   throw new Error('Network response was not ok');
+          // }
 
-          const databranch = await res.json();
-          console.log(databranch.data)
-          setbranches(databranch.data); // Lưu dữ liệu vào state
+          // const databranch = await res.json();
+          // console.log(databranch.data)
+          setbranches(res.data); // Lưu dữ liệu vào state
 
 
         }

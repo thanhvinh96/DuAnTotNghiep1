@@ -7,13 +7,6 @@ import Dashboard1 from "../medical/dashboard/Dashboard1";
 import Dashboard2 from "../medical/dashboard/Dashboard2";
 
 // auth
-const Login = React.lazy(() => import("../medical/auth/Login"));
-const Logout = React.lazy(() => import("../medical/auth/Logout"));
-const Confirm = React.lazy(() => import("../medical/auth/Confirm"));
-const ForgetPassword = React.lazy(() => import("../medical/auth/ForgetPassword"));
-const Register = React.lazy(() => import("../medical/auth/Register"));
-const SignInSignUp = React.lazy(() => import("../medical/auth/SignInSignUp"));
-const LockScreen = React.lazy(() => import("../medical/auth/LockScreen"));
 
 const Login2 = React.lazy(() => import("../medical/auth2/Login2"));
 const Logout2 = React.lazy(() => import("../medical/auth2/Logout2"));
@@ -30,7 +23,9 @@ const Landing = React.lazy(() => import("../medical/landing/"));
 
 // dashboard
 // const Dashboard1 = React.lazy(() => import("../medical/dashboard/Dashboard1/"));
-const Medicalexamination = React.lazy(() => import("../medical/medical/index"));
+const Medicalexamination = React.lazy(() => import("../medical/examinationhistory/index"));
+const MedicalRecordDetail = React.lazy(() => import("../medical/examinationhistory/medicalRecordDetail"));
+const Managentapprove = React.lazy(() => import("../medical/approve/Managentapprove"));
 const ProfileMedical = React.lazy(() => import("../medical/profile/profilemedical"));
 
 const Error404 = React.lazy(() => import("../medical/error/Error404"));
@@ -69,6 +64,7 @@ const GeneralNurse = React.lazy(()=>import("../hospital/Nurse/GeneralNurse/index
 const InternalmedicineNurse = React.lazy(()=>import("../hospital/Nurse/InternalmedicineNurse/index"));
 // const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
 const XrayNurse = React.lazy(()=>import("../hospital/Nurse/XrayNurse/index"));
+const ManagentRequest = React.lazy(()=>import("../hospital/Nurse/Requestmedical/ManagentRequest"));
 
 
 export interface RoutesProps {
@@ -191,13 +187,19 @@ const hospitalRouter: RoutesProps = {
       route: PrivateRoute,
     },
     {
-
+      
       path: "/Xray-nurse",
       name: "Xray-nurse",
       element: <XrayNurse />,
       route: PrivateRoute,
     },
-  
+    {
+      
+      path: "/request-medical-nurse",
+      name: "request-medical-nurse",
+      element: <ManagentRequest />,
+      route: PrivateRoute,
+    },
   ],
 };
 const dashboardRoutes: RoutesProps = {
@@ -241,6 +243,18 @@ const dashboardRoutes: RoutesProps = {
       name: "examination-history",
       element: <ProfileMedical />,
       route: PrivateRoute,
+    },
+    {
+      path: "/medical/medical-record-detail",
+      name: "examination-history",
+      element: <MedicalRecordDetail />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/medical/medical-managent-approve",
+      name: "medical-managent-approve",
+      element: <Managentapprove />,
+      route: PrivateRoute,
     }
   ],
 };
@@ -261,49 +275,7 @@ const authRoutes: RoutesProps[] = [
     element: <Loginorg />,
     route: PrivateRoute,
   },
-  {
-    path: "/medical/auth/login",
-    name: "Login",
-    element: <Login />,
-    route: Route,
-  },
   
-  {
-    path: "/medical/auth/register",
-    name: "Register",
-    element: <Register />,
-    route: Route,
-  },
-  {
-    path: "/medical/auth/confirm",
-    name: "Confirm",
-    element: <Confirm />,
-    route: Route,
-  },
-  {
-    path: "/medical/auth/forget-password",
-    name: "Forget Password",
-    element: <ForgetPassword />,
-    route: Route,
-  },
-  {
-    path: "/medical/auth/signin-signup",
-    name: "SignIn-SignUp",
-    element: <SignInSignUp />,
-    route: Route,
-  },
-  {
-    path: "/medical/auth/lock-screen",
-    name: "Lock Screen",
-    element: <LockScreen />,
-    route: Route,
-  },
-  {
-    path: "/medical/auth/logout",
-    name: "Logout",
-    element: <Logout />,
-    route: Route,
-  },
   {
     path: "/medical/auth/login2",
     name: "Login2",
