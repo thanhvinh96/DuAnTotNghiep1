@@ -1,93 +1,171 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import PageTitle from "../../../components/PageTitle";
-import {CheckInfoMedical} from "../../../controller/MedicalController";
+import { CheckInfoMedical, RequestMedical } from "../../../controller/MedicalController";
+import { ShowBranchRequestMedical } from "../../../controller/BranchController";
+import jwt_decode from 'jwt-decode';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 interface Request {
     cccd: string;
     email: string;     // Thêm email vào interface Request
     content: string;
-    timestamp: string; // Thời gian
+    timerequest: string; // Thời gian
     status: string;    // Trạng thái
 }
 
 interface CccdInfo {
     cccd: string;      // Tên người dùng
-    email: string;       // Ngày sinh
+    email: string;     // Email
 }
 
 const ManagementRequest: React.FC = () => {
-    const [formData, setFormData] = useState<{ cccd: string; requestContent: string; email: string }>({
+    const [datagetshow, setdatagetshow] = useState<{ tokeorg: string; value: string; tokenbranch: string }>({
+        tokeorg: '',
+        value: '',
+        tokenbranch: '',
+    });
+    const [datatable, setdatatanle] = useState<Request[]>([]); // Đảm bảo kiểu dữ liệu là Request[]
+    
+    const showdatarequest = async () => {
+        const res: any = await ShowBranchRequestMedical(datagetshow);
+        console.log(res);
+        if (Array.isArray(res)) {
+            setdatatanle(res);
+        } else {
+            console.error('Expected an array but got:', res);
+            setdatatanle([]); // Reset to empty array if response is not valid
+        }
+    };
+
+    const [formData, setFormData] = useState<{ cccd: string; content: string; email: string; branch: string; tokeorg: string; value: string }>({
         cccd: '',
-        requestContent: '',
-        email: ''
+        content: '',
+        email: '',
+        tokeorg: '',
+        value: '',
+        branch: ''
     });
 
+    const showdata = async () => {
+        const token = localStorage.getItem('tokenadmin');
+        if (token) {
+            const decoded: any = jwt_decode(token);
+            setFormData(prev => ({
+                ...prev,
+                branch: decoded['branch'],
+                value: decoded['nameorg'],
+                tokeorg: decoded['tokeorg'],
+            }));
+            setdatagetshow(prev => ({
+                ...prev,
+                tokeorg: decoded['tokeorg'],
+                value: decoded['nameorg'],
+                tokenbranch: decoded['branch'],
+            }));
+        }
+    }
+
+    useEffect(() => {
+        showdata(); 
+    }, []);
+    
+    useEffect(() => {
+        showdatarequest();
+    }, [datagetshow]); // Chạy lại khi datagetshow thay đổi
+    
     const [requests, setRequests] = useState<Request[]>([]);
-    const [cccdExists, setCccdExists] = useState<boolean | null>(null); // null = chưa kiểm tra, true = tồn tại, false = không tồn tại
-    const [cccdInfo, setCccdInfo] = useState<CccdInfo | null>(null); // Thông tin CCCD
-    const [filter, setFilter] = useState<string>(''); // Bộ lọc nội dung
-    const [statusFilter, setStatusFilter] = useState<string>(''); // Bộ lọc trạng thái
-    const [dateFilter, setDateFilter] = useState<string>(''); // Bộ lọc thời gian
+    const [cccdExists, setCccdExists] = useState<boolean | null>(null);
+    const [cccdInfo, setCccdInfo] = useState<CccdInfo | null>(null);
+    const [filter, setFilter] = useState<string>('');
+    const [statusFilter, setStatusFilter] = useState<string>('');
+    const [dateFilter, setDateFilter] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData(prev => ({
+            ...prev,
             [name]: value
-        });
+        }));
     };
 
     const handleCheckCccd = async () => {
         try {
-            // Ví dụ kiểm tra CCCD và lấy thông tin
-            console.log(formData);
-    
-            // Call the function to check CCCD info
             const res = await CheckInfoMedical(formData);
             console.log(res);
-            if (res.success===true) {
-                // Assuming res contains medical data with name and dob
+            if (res.success === true) {
                 setCccdInfo({
-                    cccd: res.record.cccd,  // Update with the correct response structure
-                    email: res.record.email,    // Update with the correct response structure
+                    cccd: res.record.cccd,
+                    email: res.record.email,
                 });
-                setCccdExists(true); // Set CCCD as found
+                setCccdExists(true);
             } else {
-                setCccdExists(false); // Set CCCD as not found
+                setCccdExists(false);
             }
         } catch (error) {
             console.error("Error checking CCCD:", error);
-            setCccdExists(false); // Set CCCD as not found if an error occurs
-        }
-    };
-    
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (cccdExists) {
-            const newRequest: Request = {
-                cccd: formData.cccd,
-                email: formData.email, // Lưu email vào yêu cầu
-                content: formData.requestContent,
-                timestamp: new Date().toLocaleString(), // Lưu thời gian
-                status: 'Đang xử lý' // Trạng thái ban đầu
-            };
-            setRequests([...requests, newRequest]);
-            setFormData({ cccd: '', requestContent: '', email: '' });
-            setCccdExists(null);
-            setCccdInfo(null);
+            setCccdExists(false);
         }
     };
 
-    // Bộ lọc yêu cầu dựa trên nội dung, trạng thái, thời gian, và CCCD
-    const filteredRequests = requests.filter(req => {
+    const MySwal = withReactContent(Swal);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(formData);
+
+        try {
+            const loadingSwal = MySwal.fire({
+                title: 'Please wait...',
+                text: 'Request Medical, please wait!',
+                icon: 'info',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            const res = await RequestMedical(formData);
+            console.log(res);
+
+            if (res.status === true) {
+                Swal.close();
+                Swal.fire({
+                    title: 'Request Medical Success!',
+                    text: 'Your Request Medical was successful.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
+                showdatarequest();
+
+                setFormData({
+                    cccd: '',
+                    content: '',
+                    email: '',
+                    tokeorg: '',
+                    value: '',
+                    branch: ''
+                });
+            } else {
+                Swal.close();
+                alert('Có lỗi xảy ra khi gửi yêu cầu: ' + res.message);
+            }
+        } catch (error) {
+            console.error("Error submitting request:", error);
+            Swal.close();
+            alert('Đã xảy ra lỗi: ' ); // Cung cấp thông tin lỗi chi tiết
+        }
+    };
+
+    const filteredRequests = Array.isArray(datatable) ? datatable.filter(req => {
         const matchesContent = req.content.toLowerCase().includes(filter.toLowerCase());
         const matchesCccd = req.cccd.toLowerCase().includes(filter.toLowerCase());
         const matchesStatus = req.status.toLowerCase().includes(statusFilter.toLowerCase());
-        const matchesDate = dateFilter ? req.timestamp.includes(dateFilter) : true; // Kiểm tra thời gian
-
+        const matchesDate = dateFilter ? req.timerequest.includes(dateFilter) : true;
+    
         return (matchesContent || matchesCccd) && matchesStatus && matchesDate;
-    });
-
+    }) : [];
     return (
         <>
             <PageTitle
@@ -130,12 +208,12 @@ const ManagementRequest: React.FC = () => {
                                         </Form.Group>
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Group controlId="requestContent">
+                                        <Form.Group controlId="content">
                                             <Form.Label>Nội dung yêu cầu</Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                name="requestContent"
-                                                value={formData.requestContent}
+                                                name="content"
+                                                value={formData.content}
                                                 onChange={handleChange}
                                             />
                                         </Form.Group>
@@ -159,7 +237,7 @@ const ManagementRequest: React.FC = () => {
                                 <Button
                                     variant="primary"
                                     type="submit"
-                                    disabled={!cccdExists}
+                                    // disabled={!cccdExists}
                                     style={{ width: '200px', marginTop: '20px', marginLeft: '0' }}
                                 >
                                     Gửi yêu cầu
@@ -202,12 +280,12 @@ const ManagementRequest: React.FC = () => {
                                 </Col>
                             </Row>
 
-                            <h3 className="my-4">List of requests</h3>
+                            <h3 className="my-4">Danh sách yêu cầu</h3>
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
                                         <th>CCCD</th>
-                                        <th>Email</th> {/* Hiển thị email */}
+                                        <th>Email</th>
                                         <th>Nội dung yêu cầu</th>
                                         <th>Thời gian</th>
                                         <th>Trạng thái</th>
@@ -217,9 +295,9 @@ const ManagementRequest: React.FC = () => {
                                     {filteredRequests.map((req, index) => (
                                         <tr key={index}>
                                             <td>{req.cccd}</td>
-                                            <td>{req.email}</td> {/* Hiển thị email */}
+                                            <td>{req.email}</td>
                                             <td>{req.content}</td>
-                                            <td>{req.timestamp}</td>
+                                            <td>{req.timerequest}</td>
                                             <td>{req.status}</td>
                                         </tr>
                                     ))}
@@ -234,3 +312,4 @@ const ManagementRequest: React.FC = () => {
 };
 
 export default ManagementRequest;
+

@@ -1,50 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Modal, Button } from "react-bootstrap";
-
+import jwtDecode from "jwt-decode";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 // components
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
-import '../../style.css';
+import "../../style.css";
+import { showdataprofiles, ApproveAccessRequests, ShowFunAccessRequests } from "../../controller/MedicalController"; // Import controller
 
-// Define type for row data
+interface Disease {
+  id: string;
+  name: string;
+}
+
 interface RowData {
   id: number;
   time: string;
-  hospitalName: string;
+  value: string;
   requestContent: string;
-  status: string; // Thêm trạng thái
-  personalInfo: string[]; // Danh sách thông tin cá nhân
-  diseases: string[]; // Danh sách các bệnh
+  status: string;
+  personalInfo: string[];
+  diseases: Disease[];
+  tokeorg?: string; // Add these properties as optional
+  tokenbranch?: string; // Add these properties as optional
 }
 
-// Sample data for hospital details
-const expandableRecords: RowData[] = [
-  {
-    id: 1,
-    time: '09:00 - 10:00, 2023-10-01',
-    hospitalName: 'Bệnh Viện Chợ Rẫy',
-    requestContent: 'Khám tổng quát',
-    status: 'Đang chờ', // Trạng thái
-    personalInfo: ['Họ và tên: Nguyễn Văn A', 'Tuổi: 30', 'Giới tính: Nam'],
-    diseases: ['Viêm phổi', 'Đau dạ dày', 'Viêm gan B', 'Thoát vị đĩa đệm'],
-  },
-  {
-    id: 2,
-    time: '14:00 - 15:00, 2023-09-15',
-    hospitalName: 'Bệnh Viện Đại Học Y Dược',
-    requestContent: 'Kiểm tra sức khỏe',
-    status: 'Đã xác nhận', // Trạng thái
-    personalInfo: ['Họ và tên: Trần Thị B', 'Tuổi: 25', 'Giới tính: Nữ'],
-    diseases: ['Viêm phổi', 'Viêm gan B'],
-  },
-  // Thêm các đối tượng khác nếu cần
-];
 
-function Index(): JSX.Element {
+const Index: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState<RowData | null>(null);
-  const [selectedDiseases, setSelectedDiseases] = useState<string[]>([]); // Store selected disease names
-  const [showPersonalInfo, setShowPersonalInfo] = useState(false); // New state for showing personal info
+  const [fieldsToShare, setfieldsToShare] = useState<string[]>([]);
+  const [showPersonalInfo, setShowPersonalInfo] = useState(false);
+  const [expandableRecords, setExpandableRecords] = useState<RowData[]>([]);
+  const [datacheckprofile, setDatacheckprofile] = useState({
+    tokenmedical: "",
+    cccd: "",
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      setDatacheckprofile({
+        tokenmedical: decodedToken.tokenmedical,
+        cccd: decodedToken.cccd,
+      });
+    }
+  }, []);
+
+  const showdata = async () => {
+    try {
+      const res = await ShowFunAccessRequests(datacheckprofile);
+      
+      if (res.status === true) {
+        const accessRequests = res.data.accessRequests.map((request: any, index: number) => ({
+          id: index + 1,
+          time: new Date(request.timestamp).toLocaleString(),
+          value: request.nameorganization || 'Unknown Hospital',
+          requestContent: request.content || 'No Content',
+          status: request.approved ? 'Approved' : 'Pending',
+          personalInfo: request.personalInfo || [],
+          diseases: request.diseases || [],
+          tokeorg: request.tokeorg,      // New field
+          tokenbranch: request.tokenbranch // New field
+        }));
+  
+        console.log(accessRequests);
+        setExpandableRecords(accessRequests);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const MySwal = withReactContent(Swal);
+
+
+  useEffect(() => {
+    showdata();
+  }, [datacheckprofile]);
 
   const handleShow = (row: RowData) => {
     setSelectedRow(row);
@@ -53,64 +87,108 @@ function Index(): JSX.Element {
 
   const handleClose = () => {
     setShowModal(false);
-    setSelectedDiseases([]); // Reset selected diseases
-    setShowPersonalInfo(false); // Reset personal info selection
+    setfieldsToShare([]);
+    setShowPersonalInfo(false);
   };
 
   const handleDiseaseChange = (disease: string) => {
-    setSelectedDiseases((prev) =>
-      prev.includes(disease) ? prev.filter((d) => d !== disease) : [...prev, disease]
+    setfieldsToShare((prev) =>
+      prev.includes(disease) ? prev.filter((item) => item !== disease) : [...prev, disease]
     );
   };
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedDiseases(selectedRow?.diseases || []); // Select all diseases
+  const handleSelectAll = (isChecked: boolean) => {
+    if (isChecked) {
+      const allDiseases = selectedRow?.diseases.map((disease) => disease.name) || [];
+      setfieldsToShare(allDiseases);
     } else {
-      setSelectedDiseases([]); // Deselect all
+      setfieldsToShare([]);
     }
   };
 
-  const handleConfirm = () => {
-    if (selectedRow) {
-      const infoMessage = showPersonalInfo
-        ? `Đã xác nhận yêu cầu cho Bệnh Viện: ${selectedRow.hospitalName} với thông tin cá nhân: ${selectedRow.personalInfo.join(', ')}`
-        : `Đã xác nhận yêu cầu cho Bệnh Viện: ${selectedRow.hospitalName} với các bệnh: ${selectedDiseases.join(', ')}`;
-
-      alert(infoMessage);
-      handleClose(); // Close modal after confirmation
+  const handleShowPersonalInfoChange = (checked: boolean) => {
+    setShowPersonalInfo(checked);
+    if (checked) {
+      setfieldsToShare(["privatedata"]);
     }
   };
+
+  const handleConfirm = async() => {
+    const loadingSwal: any = MySwal.fire({
+      title: 'Please wait...',
+      text: 'Approve Request medical, please wait!',
+      icon: 'info',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+   
+    const confirmedData = {
+      personalInfo: selectedRow?.personalInfo,
+      fieldsToShare: fieldsToShare,
+      value: selectedRow?.value,
+      time: selectedRow?.time,
+      status: selectedRow?.status,
+      tokeorg: selectedRow?.tokeorg,
+      tokenbranch: selectedRow?.tokenbranch,
+      requestContent: selectedRow?.requestContent,
+      cccd:decodedToken.cccd
+      
+    }; 
+  
+    console.log("Confirmed Data:", confirmedData);
+    const res = await ApproveAccessRequests(confirmedData);
+    if(res){
+      loadingSwal.close();
+      Swal.fire({
+        title: 'Update Success!',
+        text: 'Approve Request medicalsuccessful.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
+      }else{
+                Swal.fire({
+        title: 'Update Error!',
+        text: 'Approve Request medical Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+  }}
+    // Có thể thực hiện bất kỳ thao tác nào khác với confirmedData
+  };
+  
 
   const columns = [
     {
-      Header: 'Thời Gian',
-      accessor: 'time',
+      Header: "Thời Gian",
+      accessor: "time",
       sort: true,
     },
     {
-      Header: 'Tên Bệnh Viện',
-      accessor: 'hospitalName',
+      Header: "Tên Bệnh Viện",
+      accessor: "value",
       sort: true,
     },
     {
-      Header: 'Nội Dung Yêu Cầu',
-      accessor: 'requestContent',
+      Header: "Nội Dung Yêu Cầu",
+      accessor: "requestContent",
       sort: true,
     },
     {
-      Header: 'Trạng Thái', // Cột trạng thái mới
-      accessor: 'status',
+      Header: "Trạng Thái",
+      accessor: "status",
       sort: true,
     },
     {
-      Header: 'Hành Động',
-      accessor: 'action',
+      Header: "Hành Động",
+      accessor: "action",
       Cell: ({ row }: { row: { original: RowData } }) => (
-        <button
-          className="btn btn-primary"
-          onClick={() => handleShow(row.original)}
-        >
+        <button className="btn btn-primary" onClick={() => handleShow(row.original)}>
           Xem Chi Tiết
         </button>
       ),
@@ -155,9 +233,7 @@ function Index(): JSX.Element {
           <Card>
             <Card.Body>
               <h4 className="header-title">Expand Row</h4>
-              <p className="text-muted font-14 mb-4">
-                Expand row to see more additional details
-              </p>
+              <p className="text-muted font-14 mb-4">Expand row to see more additional details</p>
 
               <Table
                 columns={columns}
@@ -173,27 +249,22 @@ function Index(): JSX.Element {
         </Col>
       </Row>
 
-      {/* Modal for displaying detailed information */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Thông Tin Chi Tiết</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Hộp thông tin cá nhân */}
           <div className="mb-3">
             <h5>Thông Tin Cá Nhân:</h5>
-            {selectedRow && selectedRow.personalInfo.map((info, index) => (
-              <p key={index}>{info}</p>
-            ))}
+            {selectedRow && selectedRow.personalInfo.map((info, index) => <p key={index}>{info}</p>)}
           </div>
 
-          {/* Checkbox để chọn chỉ thông tin cá nhân */}
           <div className="form-check">
             <input
               type="checkbox"
               className="form-check-input"
               id="show-personal-info"
-              onChange={(e) => setShowPersonalInfo(e.target.checked)}
+              onChange={(e) => handleShowPersonalInfoChange(e.target.checked)}
               checked={showPersonalInfo}
             />
             <label className="form-check-label" htmlFor="show-personal-info">
@@ -201,38 +272,43 @@ function Index(): JSX.Element {
             </label>
           </div>
 
-          {/* Hộp chọn bệnh */}
-          {!showPersonalInfo && (
+          {!showPersonalInfo ? (
             <div className="mb-3">
               <h5>Chọn Bệnh:</h5>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="select-all"
-                  onChange={(e) => handleSelectAll(e.target.checked)}
-                  checked={selectedDiseases.length === selectedRow?.diseases.length}
-                />
-                <label className="form-check-label" htmlFor="select-all">
-                  Chọn tất cả
-                </label>
-              </div>
-              {selectedRow?.diseases.map((disease) => (
-                <div key={disease} className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id={`disease-${disease}`}
-                    checked={selectedDiseases.includes(disease)}
-                    onChange={() => handleDiseaseChange(disease)}
-                  />
-                  <label className="form-check-label" htmlFor={`disease-${disease}`}>
-                    {disease}
-                  </label>
-                </div>
-              ))}
+              {selectedRow?.diseases && selectedRow.diseases.length > 0 ? (
+                <>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="select-all"
+                      onChange={(e) => handleSelectAll(e.target.checked)}
+                      checked={fieldsToShare.length === selectedRow.diseases.length}
+                    />
+                    <label className="form-check-label" htmlFor="select-all">
+                      Chọn tất cả
+                    </label>
+                  </div>
+                  {selectedRow.diseases.map((disease) => (
+                    <div key={disease.id} className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`disease-${disease.id}`}
+                        checked={fieldsToShare.includes(disease.name)}
+                        onChange={() => handleDiseaseChange(disease.name)}
+                      />
+                      <label className="form-check-label" htmlFor={`disease-${disease.id}`}>
+                        {disease.name}
+                      </label>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <p>Không có loại bệnh nào để chọn.</p>
+              )}
             </div>
-          )}
+          ) : null}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -245,6 +321,6 @@ function Index(): JSX.Element {
       </Modal>
     </>
   );
-}
+};
 
 export default Index;

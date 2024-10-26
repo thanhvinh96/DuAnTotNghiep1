@@ -3,7 +3,7 @@ import { CreateMedical, LoginMedical } from '../model/MedicalModel'; // Import m
 // Controller để tạo hồ sơ y tế
 export const handleCreateMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://103.179.185.78:3002/register-record`, {
+    const response = await fetch(`http://localhost:3002/register-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const handleCreateMedical = async (formData: any) => {
 };
 export const CheckInfoMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://103.179.185.78:3002/medical/checkinfo`, {
+    const response = await fetch(`http://localhost:3002/medical/checkinfo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const CheckInfoMedical = async (formData: any) => {
 // Controller để đăng nhập vào hồ sơ y tế
 export const handleLoginMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://103.179.185.78:3002/login-record`, {
+    const response = await fetch(`http://localhost:3002/login-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,10 +68,18 @@ export const handleLoginMedical = async (formData: any) => {
     throw error;
   }
 };
+
+// const showDataTable = async ()=>{
+//   const res:any =await ShowFunAccessRequests(datagetshow)
+//   console.log(res);
+// };
+// useState(()=>{
+//   showDataTable()
+// },[])
  export const showdataprofiles = async (datacheckprofile: any) => { 
   try {
     // Gửi dữ liệu đến endpoint
-    const response = await fetch("http://103.179.185.78:3002/getinfo-record", {
+    const response = await fetch("http://localhost:3002/getinfo-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,6 +87,7 @@ export const handleLoginMedical = async (formData: any) => {
       body: JSON.stringify(datacheckprofile), // Chuyển đổi đối tượng thành chuỗi JSON
     });
     const result = await response.json();
+    // console.log("res"+result['cccd']);
     return result;
 
   } catch (error) {
@@ -88,7 +97,7 @@ export const handleLoginMedical = async (formData: any) => {
  };
  export const updataprofiles = async (data: any) => { 
   try {
-    const response = await fetch("http://103.179.185.78:3002/update-record", {
+    const response = await fetch("http://localhost:3002/update-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,4 +118,79 @@ export const handleLoginMedical = async (formData: any) => {
     console.error("Error during profile update:", error);
     throw error;
   }
-}
+};
+export const RequestMedical = async (data: any) => { 
+  try {
+    const response = await fetch("http://localhost:3002/request-record", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
+export const ShowFunAccessRequests= async (data: any) => { 
+  try {
+    const response = await fetch("http://localhost:3002/getfull-accessRequests", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
+
+
+export const ApproveAccessRequests= async (data: any) => { 
+  try {
+    const response = await fetch("http://localhost:3002/approve-access-request", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
+

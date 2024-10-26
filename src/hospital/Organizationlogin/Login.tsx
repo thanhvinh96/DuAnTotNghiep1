@@ -124,6 +124,7 @@ const Login2 = () => {
         if (res && res.status === true) { // Đảm bảo kiểm tra đúng cách
             console.log(res.token);
             localStorage.setItem('tokenadmin', res.token);
+            
             setModalContent({ title: 'Success...', body: 'Login hospital,' });
             loadingSwal.close();
 
