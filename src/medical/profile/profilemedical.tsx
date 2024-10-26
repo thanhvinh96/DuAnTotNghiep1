@@ -90,7 +90,7 @@ const showdataprofile = async () => {
   try {
     // Gửi dữ liệu đến endpoint
     const response:any = await showdataprofiles(datacheckprofile);
-    console.log("kq"+response);
+    // console.log("kq"+response);
 
     // Kiểm tra nếu phản hồi không thành công
     // if (!response.ok) {
