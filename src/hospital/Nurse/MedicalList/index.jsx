@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+// đấu API lấy danh sách bệnh nhân từ database
 export default function About() {
   // const [patients, setPatients] = useState([]);
   // useEffect(() => {

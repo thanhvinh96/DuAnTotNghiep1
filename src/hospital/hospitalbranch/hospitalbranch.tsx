@@ -156,20 +156,6 @@ export default function Hospitalbranch() {
                   >
                     <i className="fa fa-plus"></i> Create new branch
                   </Button>
-                  {/* <Button
-                    variant="info"
-                    href="https://zshopclone7.cmsnt.net/?module=admin&amp;action=category-edit&amp;id=20"
-                    className="btn-sm mx-1"
-                  >
-                    <i className="fa fa-pencil-alt"></i> Chỉnh sửa chuyên mục cha
-                  </Button>
-                  <Button
-                    variant="danger"
-                    //   onClick={() => handleRemoveRow('20')}
-                    className="btn-sm mx-1"
-                  >
-                    <i className="fas fa-trash"></i> Xóa chuyên mục cha
-                  </Button> */}
                 </div>
               </div>
               <h4 className="header-title">Search</h4>

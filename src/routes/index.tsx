@@ -45,6 +45,7 @@ const Indexhospital = React.lazy(() => import("../hospital/dashboard/Dashboard1"
 const Profilehospital = React.lazy(() => import("../hospital/profilehospital/profile"));
 const Registrationorg = React.lazy(() => import("../hospital/Organizationregistration/registrationorg"));
 const Loginorg = React.lazy(() => import("../hospital/Organizationlogin/Login"));
+const LogoutH = React.lazy(() => import("../hospital/auth2/Logout2"));
 const Hospitalbranch = React.lazy(() => import("../hospital/hospitalbranch/hospitalbranch"));
 const Createbranch = React.lazy(() => import("../hospital/hospitalbranch/createbranch"));
 const Detailbranch = React.lazy(() => import("../hospital/hospitalbranch/detailbranch"));
@@ -267,6 +268,13 @@ const authRoutes: RoutesProps[] = [
     element: <Loginorg />,
     route: PrivateRoute,
   },
+  {
+    path: "/hospital/auth/logout",
+    name: "Dashboard 1",
+    element: <LogoutH />,
+    route: PrivateRoute,
+  },
+
   
   {
     path: "/medical/auth/login2",
