@@ -4,6 +4,12 @@ import PageTitle from "../../../components/PageTitle";
 import jwt_decode from 'jwt-decode';
 
 const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] }) => {
+
+    const [tableData,setTableData]=useState([]);
+    // Hàm để thêm dòng mới vào bảng
+    const addRow = () => {
+        setTableData([...tableData, { testName: '', referenceValue: '', result: '', unit: '', machine: '' }]);
+    };
     const [conclusionData, setConclusionData] = useState({
         diagnosis: '',
         treatment: '',
@@ -318,6 +324,49 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                         value={conclusionData.additionalNotes}
                                         onChange={(e) => handleInputChange('additionalNotes', e.target.value)}
                                     />
+                                </Col>
+                            </Row>
+                            <Row className="mb-3">
+                                <Col md={12}>
+                                    <Form.Label>them don thuoc</Form.Label>
+                        <Form onSubmit={handleSubmit}>
+                            <Table className='table table-bordered text-center mt-5'>
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Ten thuoc</th>
+                                        <th scope="col">DVT</th>
+                                        <th scope="col">So Luong</th>
+                                        <th scope="col">Cach Dung</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {tableData.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>
+                                                <Form.Control type="text" />
+                                            </td>
+                                            <td>
+                                                <Form.Control type="text" />
+                                            </td>
+                                            <td>
+                                                <Form.Control type="text" />
+                                            </td>
+                                            <td>
+                                                <Form.Control type="text" />
+                                            </td>
+                                            
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                            <div className="d-flex justify-content-between mt-3">
+                                <Button onClick={addRow} style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }}>Thêm dòng</Button>
+                                <Button style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }} >Thêm kết quả</Button>
+                            </div>
+                        </Form>
+                    
                                 </Col>
                             </Row>
                             
