@@ -22,17 +22,17 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/hospital/home",
-    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
 
   },
-  { key: "HOSPITAL", label: "HOSPITAL", isTitle: true  ,   allowedRoles: ['superadmin'],},
+  { key: "HOSPITAL", label: "HOSPITAL", isTitle: true  ,   allowedRoles: ['superadmin','nurse'],},
   {
     key: "/hospital/profile-hospital",
     label: "Organizational information",
     isTitle: false,
     icon: "calendar",
     url: "/hospital/profile-hospital",
-    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
 
   },
   {
@@ -41,7 +41,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/hospital/hospital-branch",
-    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
 
   },
   {
@@ -50,7 +50,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "user",
     url: "/hospital/personnel-management",
-    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
 
   },
   {
@@ -59,7 +59,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "user",
     url: "/hospital/patient-management",
-    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
 
   },
   {
@@ -68,37 +68,67 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "book",
     url: "/request-medical-nurse",
-    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
 
   },
-  { key: "DOCTER", label: "HOME", isTitle: true  ,   allowedRoles: ['doctor'],},
+  { key: "DOCTER", label: "HOME", isTitle: true  ,   allowedRoles: ['doctors'],},
+  
   {
     key: "examine patient",
     label: "Home",
     isTitle: false,
     icon: "home",
     url: "/examine-patient",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
-  { key: "DOCTER", label: "DOCTER", isTitle: true  ,   allowedRoles: ['doctor'],},
   {
-    key: "examine patient",
-    label: "Examine Patient",
+    key: "DOCTOR",
+    label: "DOCTOR",
+    isTitle: true,
+    allowedRoles: ['doctor', 'nurse'],
+  },
+  {
+    key: "home",
+    label: "Trang chủ",
     isTitle: false,
     icon: "user",
-    url: "/examine-patient",
-    allowedRoles: [ 'doctor'], // Chỉ cho phép doctor
-
+    url: "/doctor/home",
+    allowedRoles: ['doctor', 'nurse'], // Chỉ cho phép doctors và nurses
   },
-  { key: "NURSE", label: "NURSE", isTitle: true ,   allowedRoles: ['doctor'], },
+  {
+    key: "profile",
+    label: "Thông tin cá nhân",
+    isTitle: false,
+    icon: "user",
+    url: "/doctor/profile",
+    allowedRoles: ['doctor', 'nurse'], // Chỉ cho phép doctors và nurses
+  },
+  {
+    key: "history-medical",
+    label: "Lịch sử khám",
+    isTitle: false,
+    icon: "user",
+    url: "/doctor/history-medical",
+    allowedRoles: ['doctor', 'nurse'], // Chỉ cho phép doctors và nurses
+  },
+  {
+    key: "appointment-history",
+    label: "Lịch sử hẹn bệnh nhân",
+    isTitle: false,
+    icon: "user",
+    url: "/doctor/appointments",
+    allowedRoles: ['doctor', 'nurse'], // Chỉ cho phép doctors và nurses
+  },
+  
+  { key: "NURSE", label: "NURSE", isTitle: true ,   allowedRoles: ['doctors','nurse'], },
   {
     key: "Request Access Medical",
     label: "Request Access Medical",
     isTitle: false,
     icon: "calendar",
     url: "/request-medical-nurse",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
   {
@@ -107,7 +137,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/general-nurse",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
   {
@@ -116,7 +146,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/internal-medicine-nurse",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
   {
@@ -125,7 +155,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/Blood-test-Nurse",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
   {
@@ -134,7 +164,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/Urine-test-Nurse",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
   {
@@ -143,12 +173,12 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "calendar",
     url: "/Xray-nurse",
-    allowedRoles: ['doctor'], // Chỉ cho phép doctor
+    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
 
   },
 
 
-  { key: "BRACH", label: "BRACH", isTitle: true },
+  { key: "BRACH", label: "BRACH", isTitle: true ,   allowedRoles: ['doctors','nurse'],},
 
   {
     key: "home",
@@ -157,7 +187,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "calendar",
 
     url: "/hospital/brach/index",
-    allowedRoles: ['superadmin', 'doctor'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
 
   },
   {
@@ -167,7 +197,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "calendar",
 
     url: "/hospital/brach/personnel-management",
-    allowedRoles: ['superadmin', 'doctor'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
 
   },
   {
@@ -175,7 +205,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Manage medical records",
     isTitle: false,
     icon: "calendar",
-    allowedRoles: ['superadmin', 'doctor'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
 
     url: "/hospital/brach/manage-medical-records",
   },
@@ -184,7 +214,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Right to medical ",
     isTitle: false,
     icon: "calendar",
-    allowedRoles: ['superadmin', 'doctor'], // Chỉ cho phép superadmin
+    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
 
     url: "/hospital/brach/right-to-medical ",
   },

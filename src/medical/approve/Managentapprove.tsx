@@ -125,9 +125,12 @@ const Index: React.FC = () => {
       },
     });
     const token = localStorage.getItem("jwtToken");
+    
+
     if (token) {
       const decodedToken: any = jwtDecode(token);
-   
+      const response:any = await showdataprofiles(datacheckprofile);
+
     const confirmedData = {
       personalInfo: selectedRow?.personalInfo,
       fieldsToShare: fieldsToShare,
@@ -137,12 +140,15 @@ const Index: React.FC = () => {
       tokeorg: selectedRow?.tokeorg,
       tokenbranch: selectedRow?.tokenbranch,
       requestContent: selectedRow?.requestContent,
-      cccd:decodedToken.cccd
+      cccd:decodedToken.cccd,
+      datauser:response
       
     }; 
-  
-    console.log("Confirmed Data:", confirmedData);
+
+    // console.log("data",decodedToken)
     const res = await ApproveAccessRequests(confirmedData);
+    console.log("Confirmed Data:", res);
+
     if(res){
       loadingSwal.close();
       Swal.fire({
@@ -158,7 +164,8 @@ const Index: React.FC = () => {
         icon: 'error',
         confirmButtonText: 'OK',
       });
-  }}
+  }
+}
     // Có thể thực hiện bất kỳ thao tác nào khác với confirmedData
   };
   

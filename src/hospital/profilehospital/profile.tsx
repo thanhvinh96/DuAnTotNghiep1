@@ -32,9 +32,8 @@ const Profile = () => {
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
-        // console.log("phanthuyen"+decodedToken['branch']);
-        console.log(decodedToken['tokeorg']);
-        console.log("tê tổ chức" + decodedToken['nameorg']);
+  
+        console.log("tê tổ chức" + decodedToken['branch']);
 
         const tokeorg = decodedToken['tokeorg'];
         if (tokeorg) {

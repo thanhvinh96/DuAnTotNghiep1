@@ -3,7 +3,7 @@ import { CreateMedical, LoginMedical } from '../model/MedicalModel'; // Import m
 // Controller để tạo hồ sơ y tế
 export const handleCreateMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://103.179.185.78:3002/register-record`, {
+    const response = await fetch(`http://localhost:3002/register-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const handleCreateMedical = async (formData: any) => {
 };
 export const CheckInfoMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://103.179.185.78:3002/medical/checkinfo`, {
+    const response = await fetch(`http://localhost:3002/medical/checkinfo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const CheckInfoMedical = async (formData: any) => {
 // Controller để đăng nhập vào hồ sơ y tế
 export const handleLoginMedical = async (formData: any) => {
   try {
-    const response = await fetch(`http://103.179.185.78:3002/login-record`, {
+    const response = await fetch(`http://localhost:3002/login-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export const handleLoginMedical = async (formData: any) => {
  export const showdataprofiles = async (datacheckprofile: any) => { 
   try {
     // Gửi dữ liệu đến endpoint
-    const response = await fetch("http://103.179.185.78:3002/getinfo-record", {
+    const response = await fetch("http://localhost:3002/getinfo-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export const handleLoginMedical = async (formData: any) => {
  };
  export const updataprofiles = async (data: any) => { 
   try {
-    const response = await fetch("http://103.179.185.78:3002/update-record", {
+    const response = await fetch("http://localhost:3002/update-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -121,7 +121,7 @@ export const handleLoginMedical = async (formData: any) => {
 };
 export const RequestMedical = async (data: any) => { 
   try {
-    const response = await fetch("http://103.179.185.78:3002/request-record", {
+    const response = await fetch("http://localhost:3002/request-record", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -145,7 +145,7 @@ export const RequestMedical = async (data: any) => {
 };
 export const ShowFunAccessRequests= async (data: any) => { 
   try {
-    const response = await fetch("http://103.179.185.78:3002/getfull-accessRequests", {
+    const response = await fetch("http://localhost:3002/getfull-accessRequests", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -171,7 +171,7 @@ export const ShowFunAccessRequests= async (data: any) => {
 
 export const ApproveAccessRequests= async (data: any) => { 
   try {
-    const response = await fetch("http://103.179.185.78:3002/approve-access-request", {
+    const response = await fetch("http://localhost:3002/approve-access-request", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -184,9 +184,32 @@ export const ApproveAccessRequests= async (data: any) => {
       const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
     }
-
-    const result = await response.json();
-    return result;
+    const datauser = {
+      fullname:data.datauser.record.name,
+      birthday:data.datauser.record.birthDate,
+      address: data.datauser.record.address,
+      tokenmedical: data.datauser.record.tokenmedical,
+      sobh: data.datauser.record.medicalinsurance,
+      sex: data.datauser.record.gender,
+      weight: data.datauser.record.weight,
+      height: data.datauser.record.height,
+      email: data.datauser.record.email,
+      phoneNumber:data.datauser.record.phoneNumber,
+      avatar: data.datauser.record.avatar,
+      tokenbranch: data.tokenbranch,
+      tokeorg: data.tokenbranch,
+      cccd: data.datauser.record.cccd,
+  };
+  
+    const _response:any =fetch("http://127.0.0.1:8000/api/medical-record-books", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datauser),
+    });
+    // const result = await _response.json();
+    return _response;
 
   } catch (error) {
     console.error("Error during profile update:", error);

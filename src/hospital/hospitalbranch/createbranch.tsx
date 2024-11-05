@@ -6,7 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PageTitle from "../../components/PageTitle";
 import {CreateBranchs} from "../../controller/BranchController";
 import {GetInfoHospital} from "../../controller/HospitalController";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 export default function CreateBranch() {
+    const MySwal = withReactContent(Swal);
+
     const navigate = useNavigate(); // Initialize useNavigate
 
     const [showModal, setShowModal] = useState(false);
@@ -84,6 +88,45 @@ export default function CreateBranch() {
         }
     };
 
+    const uploadToCloudinary = async () => {
+        try {
+            const fileInput = document.getElementById('productImages') as HTMLInputElement;
+            const file = fileInput?.files?.[0];
+            if (file) {
+                const data = new FormData();
+                data.append('file', file);
+                data.append('upload_preset', 'Phanthuyen');
+    
+                const response = await fetch('https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload', {
+                    method: 'POST',
+                    body: data
+                });
+    
+                const result = await response.json();
+               
+                if(result){
+                  MySwal.fire({
+                    title: 'Branch Success',
+                    text: 'Updloads Branch Successfully',
+                    icon: 'success',
+                  })
+                setDataBranch(prevState => ({
+                    ...prevState,
+                    branchbusinesslicense: result['url'],
+                }));
+                // setModalContent({ title: 'Success', body: 'Updloads successfully!' });
+
+                //   console.log('Uploaded image:', result['url']);
+                //   setRecord((prevRecord) => ({
+                //     ...prevRecord,
+                //     cccdImagebase64:  result['url'], // Set base64 string to state
+                //   }));
+                }
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
     const createBranch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Prevent form from submitting and reloading the page
         setModalContent({ title: 'Processing...', body: 'Creating branch, please wait...' });
@@ -93,7 +136,7 @@ export default function CreateBranch() {
             console.log(dataBranch);
             const response:any = await CreateBranchs(dataBranch);
             console.log(response);
-            if(response.success===true){
+            if(response){
                 setModalContent({ title: 'Success', body: 'Branch created successfully!' });
 
             }else{
@@ -184,7 +227,8 @@ export default function CreateBranch() {
                                         type="file"
                                         name="branchbusinesslicense"
                                         accept="image/*"
-                                        onChange={handleChange}
+                                        id="productImages"
+                                        onChange={uploadToCloudinary}
                                         required
                                     />
                                 </Form.Group>

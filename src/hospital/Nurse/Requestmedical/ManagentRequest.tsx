@@ -292,15 +292,21 @@ const ManagementRequest: React.FC = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredRequests.map((req, index) => (
-                                        <tr key={index}>
-                                            <td>{req.cccd}</td>
-                                            <td>{req.email}</td>
-                                            <td>{req.content}</td>
-                                            <td>{req.timerequest}</td>
-                                            <td>{req.status}</td>
-                                        </tr>
-                                    ))}
+                                {filteredRequests.map((req, index) => (
+    <tr key={index}>
+        <td>{req.cccd}</td>
+        <td>{req.email}</td>
+        <td>{req.content}</td>
+        <td>{req.timerequest}</td>
+        <td>
+            {req.status === 'true' ? (
+                <a href={`/nurse-schedule?medical=${req.cccd}`} className="btn btn-primary">Xếp Lịch Hẹn</a>            ) : (
+                req.status
+            )}
+        </td>
+    </tr>
+))}
+
                                 </tbody>
                             </Table>
                         </div>

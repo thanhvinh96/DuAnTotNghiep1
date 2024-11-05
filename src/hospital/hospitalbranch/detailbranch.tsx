@@ -43,6 +43,7 @@ const columns = [
     accessor: "id",
     sort: true,
   },
+ 
   {
     Header: "Branch Name",
     accessor: "Branch name",

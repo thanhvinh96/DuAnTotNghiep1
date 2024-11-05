@@ -165,7 +165,41 @@ const Register = () => {
       });
     }
   };
-  
+  const [images, setImages] = useState<string[]>([]);
+
+  const uploadToCloudinary = async () => {
+    try {
+        const fileInput = document.getElementById('productImages') as HTMLInputElement;
+        const file = fileInput?.files?.[0];
+        if (file) {
+            const data = new FormData();
+            data.append('file', file);
+            data.append('upload_preset', 'Phanthuyen');
+
+            const response = await fetch('https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload', {
+                method: 'POST',
+                body: data
+            });
+
+            const result = await response.json();
+           
+            if(result){
+              MySwal.fire({
+                title: 'Hospital Success',
+                text: 'Updloads Hospital Successfully',
+                icon: 'success',
+              })
+              console.log('Uploaded image:', result['url']);
+              setRecord((prevRecord) => ({
+                ...prevRecord,
+                cccdImagebase64:  result['url'], // Set base64 string to state
+              }));
+            }
+        }
+    } catch (error) {
+        console.error('Error uploading image:', error);
+    }
+};
 
   return (
     <>
@@ -268,7 +302,9 @@ const Register = () => {
                       type="file"
                       name="cccdImage"
                       className="me-2"
-                      onChange={handleFileChange}
+                      id="productImages"
+
+                    onChange={uploadToCloudinary}
                     />
                    
                   </div>

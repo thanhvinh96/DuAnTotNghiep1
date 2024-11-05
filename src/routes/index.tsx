@@ -57,6 +57,7 @@ const ExaminePatient = React.lazy(() => import("../hospital/examinePatient/index
 // const HospitalBrach = React.lazy(()=>import("../hospital/brach/index/index"));
 // const PersonnelManagent = React.lazy(()=>import("../hospital/brach/personnel/personnelmanagent"));
 const ManagentMedical = React.lazy(()=>import("../hospital/brach/medical/managemedical"));
+const CreaterSeveri = React.lazy(()=>import("../hospital/hospitalbranch/createrseveri"));
 // const Rightmedical = React.lazy(()=>import("../hospital/brach/medical/rightmedical"));
 // Nurse api
 const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
@@ -64,7 +65,11 @@ const GeneralNurse = React.lazy(()=>import("../hospital/Nurse/GeneralNurse/index
 const InternalmedicineNurse = React.lazy(()=>import("../hospital/Nurse/InternalmedicineNurse/index"));
 const UrineTestNurse = React.lazy(()=>import("../hospital/Nurse/UrineTestNurse/index"));
 const XrayNurse = React.lazy(()=>import("../hospital/Nurse/XrayNurse/index"));
+const Nurse = React.lazy(()=>import("../hospital/Nurse/diagnosis/index"));
+const Nurseschedule = React.lazy(()=>import("../hospital/Nurse/schedule/index"));
 const ManagentRequest = React.lazy(()=>import("../hospital/Nurse/Requestmedical/ManagentRequest"));
+const DoctorHome = React.lazy(()=>import("../hospital/Nurse/home/index"));
+const DoctorProfile = React.lazy(()=>import("../hospital/Nurse/profile/index"));
 
 
 export interface RoutesProps {
@@ -186,10 +191,45 @@ const hospitalRouter: RoutesProps = {
       route: PrivateRoute,
     },
     {
+
+      path: "/hospital/brach/create-service",
+      name: "personnel management",
+      element: <CreaterSeveri />,
+      route: PrivateRoute,
+    },
+    {
       
       path: "/Xray-nurse",
       name: "Xray-nurse",
       element: <XrayNurse />,
+      route: PrivateRoute,
+    },
+    {
+      
+      path: "/nurse",
+      name: "nurse",
+      element: <Nurse />,
+      route: PrivateRoute,
+    },
+    {
+      
+      path: "/nurse-schedule",
+      name: "nurse",
+      element: <Nurseschedule />,
+      route: PrivateRoute,
+    },
+    {
+      
+      path: "/doctor/home",
+      name: "doctor/home",
+      element: <DoctorHome />,
+      route: PrivateRoute,
+    },
+    {
+      
+      path: "/doctor/profile",
+      name: "doctor/profile",
+      element: <DoctorProfile />,
       route: PrivateRoute,
     },
     {

@@ -134,7 +134,7 @@ const Login2 = () => {
                 icon: 'success',
                 confirmButtonText: 'OK',
             });
-            window.location.href = '/hospital/home';  // hoặc sử dụng phương pháp điều hướng của framework (React Router)
+            // window.location.href = '/hospital/home';  // hoặc sử dụng phương pháp điều hướng của framework (React Router)
 
         } else {
             setModalContent({ title: 'Enroll...', body: 'Login hospital,' });

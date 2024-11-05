@@ -7,11 +7,13 @@ const GeneralNurse = () => {
     let id = '67115977deb595fcd5044e42';
     // Hàm để thêm dòng mới vào bảng
     const addRow = () => {
-        setTableData([...tableData, { testName: '', referenceValue: '', result: '', unit: '', machine: '' }]);
+        setTableData([...tableData, { examination: '', result: ''}]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        console.log(tableData);
         try {
             const response = await fetch('http://127.0.0.1:8000/api/medical-records/',id,'/serviceKN', {
                 method: 'POST',
@@ -73,7 +75,7 @@ const GeneralNurse = () => {
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>
-                                                <Form.Control type="text" onChange={(e) => handleInputChange(index, 'testName', e.target.value)} />
+                                                <Form.Control type="text" onChange={(e) => handleInputChange(index, 'examination', e.target.value)} />
                                             </td>
                                             <td>
                                                 <Form.Control type="text" onChange={(e) => handleInputChange(index, 'result', e.target.value)} />
