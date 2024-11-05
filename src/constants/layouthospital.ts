@@ -40,8 +40,8 @@ export enum MenuPositions {
 }
 
 export enum SideBarTheme {
-  LEFT_SIDEBAR_THEME_LIGHT = "dark",
-  LEFT_SIDEBAR_THEME_DARK = "dark",
+  LEFT_SIDEBAR_THEME_LIGHT = "brand",
+  LEFT_SIDEBAR_THEME_DARK = "brand",
   LEFT_SIDEBAR_THEME_BRAND = "brand",
   LEFT_SIDEBAR_THEME_GRADIENT = "gradient",
 }

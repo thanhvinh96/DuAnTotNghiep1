@@ -43,6 +43,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "calendar",
     url: "/medical/medical-managent-approve",
   },
+  
 ];
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [

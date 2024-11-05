@@ -39,6 +39,16 @@ File: Main scss file
     url("../../../fonts/cerebrisans-light.woff") format("woff");
   font-weight: 300;
 }
+.action-buttons .btn {
+  font-size: 0.875rem; /* Kích thước chữ nhỏ hơn */
+  padding: 0.25rem 0.75rem; /* Điều chỉnh kích thước nút */
+  margin-right: 20px; /* Khoảng cách giữa các nút */
+}
+
+/* Xóa khoảng cách cuối cùng */
+.action-buttons .btn:last-child {
+  margin-right: 0;
+}
 
 @font-face {
   font-family: "Cerebri Sans,sans-serif";

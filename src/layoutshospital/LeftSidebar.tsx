@@ -147,7 +147,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
 
   return (
     <React.Fragment>
-      <div className="app-menu" ref={menuNodeRef}>
+      <div className="app-menu" ref={menuNodeRef} style={{ backgroundColor: "#f8f9fa" }}> {/* Thay đổi màu nền */}
         {!hideLogo && (
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
@@ -184,12 +184,10 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
             </Link>
           </div>
         )}
-
+  
         {!isCondensed && (
           <SimpleBar
             className="scrollbar show h-100"
-            // style={{ maxHeight: '100%' }}
-            // timeout={500}
             scrollbarMaxSize={320}
           >
             <SideBarContent />
@@ -199,6 +197,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
       </div>
     </React.Fragment>
   );
+  
 };
 
 LeftSidebar.defaultProps = {

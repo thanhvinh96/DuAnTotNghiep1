@@ -1,182 +1,170 @@
 import React, { useEffect, useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
-import { Row, Col, Card, Button } from "react-bootstrap";
-// components
+import { Row, Col, Card, Button, InputGroup, FormControl, ButtonGroup } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
-import {CreateBranchs,GetFullBranch} from "../../controller/BranchController";
-import {GetInfoHospital} from "../../controller/HospitalController";
-export default function Hospitalbranch() {
-  // import { records as data } from "./data";
+import { CreateBranchs, GetFullBranch } from "../../controller/BranchController";
+import { GetInfoHospital } from "../../controller/HospitalController";
+
+export default function HospitalBranch() {
   interface Branch {
     tokenbranch: string;
     branchname: string;
     branchphone: String;
     timecreate: String;
   }
-  const branchdetail = async () => {
+
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const branchDetail = async () => {
     navigate('/hospital/detail-branch');
-  }
+  };
+
   const columns = [
     {
-      Header: "Token Branch",
+      Header: "Mã chi nhánh",
       accessor: "tokenbranch",
       sort: true,
     },
     {
-      Header: "Branch Name",
+      Header: "Tên chi nhánh",
       accessor: "branchname",
       sort: true,
     },
     {
-      Header: "Branch Phone",
+      Header: "Số điện thoại chi nhánh",
       accessor: "branchphone",
       sort: true,
     },
     {
-      Header: "Time Created",
+      Header: "Ngày tạo",
       accessor: "timecreate",
       sort: true,
     },
     {
-      Header: "Action",
+      Header: "Hành động",
       accessor: "action",
       sort: false,
       Cell: ({ row }: any) => (
-        <div>
-          <Button variant="info" className="btn-sm mx-1" onClick={branchdetail}>Edit</Button>
-          <Button variant="danger" className="btn-sm mx-1">Stop</Button>
-        </div>
+        <ButtonGroup className="action-buttons">
+    <Button variant="info" className="btn-sm" onClick={branchDetail}>
+        <i className="fa fa-pencil"></i> Sửa
+    </Button>
+    <Button variant="danger" className="btn-sm">
+        <i className="fa fa-stop"></i> Dừng
+    </Button>
+    <Button
+        variant="secondary"
+        className="btn-sm"
+        onClick={() => navigate(`/hospital/brach/create-service?model=${row.original.tokenbranch}`)}
+    >
+        <i className="fa fa-cog"></i> Tạo dịch vụ
+    </Button>
+    <Button
+        variant="success"
+        className="btn-sm"
+        onClick={() => navigate(`/hospital/create-personnel?model=${row.original.tokenbranch}`)}
+    >
+        <i className="fa fa-user-plus"></i> Tạo thành viên
+    </Button>
+</ButtonGroup>
+
       ),
     },
   ];
 
+  const data = branches
+    .filter(branch =>
+      branch.branchname.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .map(branch => ({
+      tokenbranch: branch.tokenbranch,
+      branchname: branch.branchname,
+      branchphone: branch.branchphone,
+      timecreate: branch.timecreate,
+    }));
 
-  const [branches, setbranches] = useState<Branch[]>([]);
-  const navigate = useNavigate(); // Di chuyển useNavigate vào trong component
-
-  const data = branches.map(branch => ({
-    tokenbranch: branch.tokenbranch,
-    branchname: branch.branchname,
-    branchphone: branch.branchphone,
-    timecreate: branch.timecreate,
-  }));
   const sizePerPageList = [
-    {
-      text: "5",
-      value: 5,
-    },
-    {
-      text: "10",
-      value: 10,
-    },
-    {
-      text: "25",
-      value: 25,
-    },
-    {
-      text: "All",
-      value: data.length,
-    },
+    { text: "5", value: 5 },
+    { text: "10", value: 10 },
+    { text: "25", value: 25 },
+    { text: "Tất cả", value: data.length },
   ];
+
   useEffect(() => {
     const getData = async () => {
       try {
-
         const token = localStorage.getItem('tokenadmin');
         if (token) {
           const decodedToken: any = jwtDecode(token);
-          console.log(decodedToken['tokeorg']);
-
           const tokeorg = decodedToken['tokeorg'];
-          const dataorg = {
-            "tokenorg": tokeorg
-          };
-
-          const data:any = await GetInfoHospital(dataorg);
-          console.log(data);
-         
+          const dataorg = { tokenorg: tokeorg };
+          const data: any = await GetInfoHospital(dataorg);
           const _databrach = {
-
-            "value": data.result.nameorg,
-            "tokeorg": data.result.tokeorg,
-          }
-          const res = await GetFullBranch(_databrach)
-          console.log(res);
-          // const res = await fetch('http://42.96.2.80:3002/getfull-brach', {
-          //   method: 'POST',
-          //   body: JSON.stringify(_databrach),
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          // });
-          // if (!res.ok) {
-          //   throw new Error('Network response was not ok');
-          // }
-
-          // const databranch = await res.json();
-          // console.log(databranch.data)
-          setbranches(res.data); // Lưu dữ liệu vào state
-
-
+            value: data.result.nameorg,
+            tokeorg: data.result.tokeorg,
+          };
+          const res = await GetFullBranch(_databrach);
+          setBranches(res.data);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
 
     getData();
-  }, []); // Mảng phụ thuộc rỗng
+  }, []);
 
   return (
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Tables", path: "/features/tables/advanced" },
-          {
-            label: "Information hospital",
-            path: "/features/tables/advanced",
-            active: true,
-          },
+          { label: "Trang chủ", path: "/" },
+          { label: "Quản lý bệnh viện", path: "/hospital" },
+          { label: "Chi nhánh bệnh viện", path: "/hospital/branch", active: true },
         ]}
-        title={"Hospital branch"}
+        title={"Quản lý chi nhánh bệnh viện"}
       />
       <Row>
         <Col>
           <Card>
             <Card.Body>
-              <div className="mb-3">
-                <div className="d-flex justify-content-end">
-                  <Button
-                    variant="primary"
-                    href="/hospital/create-branch"
-                    className="btn-sm mx-1"
-                  >
-                    <i className="fa fa-plus"></i> Create new branch
-                  </Button>
-                </div>
+              <div className="d-flex justify-content-between mb-3">
+                <h4 className="header-title">Tìm kiếm chi nhánh</h4>
+                <Button
+                  variant="primary"
+                  href="/hospital/create-branch"
+                  className="btn-sm mx-1"
+                >
+                  <i className="fa fa-plus"></i> Tạo chi nhánh mới
+                </Button>
               </div>
-              <h4 className="header-title">Search</h4>
-              <p className="text-muted font-14">A Table allowing search</p>
-              <Table
-                columns={columns}
-                data={data}
-                pageSize={5}
-                sizePerPageList={sizePerPageList}
-                isSortable={true}
-                pagination={true}
-                isSearchable={true}
-              />
+              <InputGroup className="mb-3">
+                <FormControl
+                  placeholder="Nhập tên chi nhánh để tìm kiếm..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </InputGroup>
 
-
+              <div className="table-responsive">
+                <Table
+                  columns={columns}
+                  data={data}
+                  pageSize={5}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSearchable={true}
+                />
+              </div>
             </Card.Body>
           </Card>
         </Col>
       </Row>
-
-
     </>
-  )
+  );
 }

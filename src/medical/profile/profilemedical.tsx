@@ -261,7 +261,41 @@ useEffect(() => {
       console.error('Error:', error);
     }
   };
-  
+  const uploadToCloudinaryAvatar = async () => {
+    try {
+        const fileInput = document.getElementById('uploadsavatart') as HTMLInputElement;
+        const file = fileInput?.files?.[0];
+        
+        if (file) {
+            const data = new FormData();
+            data.append('file', file);
+            data.append('upload_preset', 'Phanthuyen');
+
+            const response = await fetch('https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload', {
+                method: 'POST',
+                body: data
+            });
+
+            const result = await response.json();
+
+            if (result) {
+              setRecord((prevRecord) => ({
+                ...prevRecord,
+                avatarImagebase64: result['url'], // Set base64 string to state
+              }));
+                // setFormData((prevFormData) => ({
+                //     ...prevFormData,
+                //     avatar: result['url'], 
+                // }));
+                alert('Tải lên thành công!');
+                console.log('Uploaded Avatar URL:', result['url']);
+            }
+        }
+    } catch (error) {
+        console.error('Lỗi khi tải ảnh lên:', error);
+        alert("Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.");
+    }
+};
 
   return (
     <>
@@ -426,10 +460,11 @@ useEffect(() => {
             <Form.Label>Avatar Image</Form.Label>
             <div className="d-flex align-items-center">
               <Form.Control
+                id="uploadsavatart"
                 type="file"
                 name="avatarImage"
                 className="me-2"
-                onChange={handleFileChange}
+                onChange={uploadToCloudinaryAvatar}
               />
               <Button variant="primary" onClick={() => setShowModal(true)}>
                 Show
