@@ -14,11 +14,11 @@ import { LayoutTypes } from "../constants/layouthospital";
 // components
 import AppMenu from "./Menu";
 import profileImg from "../assets/images/users/user-1.jpg";
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
+import logoSm from "../assets/images/Logo.png";
+import logoDark from "../assets/images/Logo.png";
+import logoDark2 from "../assets/images/Logo.png";
+import logoLight from "../assets/images/Logo.png";
+import logoLight2 from "../assets/images/Logo.png";
 
 /* user box */
 const UserBox = () => {
@@ -152,7 +152,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
 
   return (
     <React.Fragment>
-      <div className="app-menu" ref={menuNodeRef}>
+      <div className="app-menu" ref={menuNodeRef} style={{backgroundColor:'#a6eaff'}}>
         {!hideLogo && (
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">

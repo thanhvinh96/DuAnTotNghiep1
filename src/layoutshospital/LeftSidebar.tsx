@@ -14,13 +14,12 @@ import { LayoutTypes } from "../constants/layouthospital";
 
 // components
 import AppMenu from "./Menu";
-
 import profileImg from "../assets/images/users/user-1.jpg";
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
+import logoSm from "../assets/images/Logo.png";
+import logoDark from "../assets/images/Logo.png";
+import logoDark2 from "../assets/images/Logo.png";
+import logoLight from "../assets/images/Logo.png";
+import logoLight2 from "../assets/images/Logo.png";
 
 /* user box */
 const UserBox = () => {
@@ -147,7 +146,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
 
   return (
     <React.Fragment>
-      <div className="app-menu" ref={menuNodeRef} style={{ backgroundColor: "#f8f9fa" }}> {/* Thay đổi màu nền */}
+      <div className="app-menu" ref={menuNodeRef} style={{ backgroundColor: "#acfcfa" }}> {/* Thay đổi màu nền */}
         {!hideLogo && (
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
@@ -168,7 +167,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
             </Link>
             <Link to="/" className="logo logo-light text-center">
               <span className="logo-sm">
-                <img src={logoSm} alt="" height="22" />
+                <img src={logoSm} alt="" height="22" /> 
               </span>
               <span className="logo-lg">
                 <img

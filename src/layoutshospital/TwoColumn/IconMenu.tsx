@@ -4,7 +4,7 @@ import SimpleBar from "simplebar-react";
 import FeatherIcon from "feather-icons-react";
 import classNames from "classnames";
 
-import logo from "../../assets/images/logo-sm.png";
+import logo from "../../assets/images/Logo.png";
 
 /**
  * Renders the application menu
