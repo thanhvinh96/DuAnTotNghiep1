@@ -1,6 +1,6 @@
 export const RegisterHospital = async (formData: any) => {
     try {
-        const response = await fetch("http://localhost:3002/creater-org", {
+        const response = await fetch("http://103.179.185.78:3002/creater-org", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export const RegisterHospital = async (formData: any) => {
 };
 export const FetchHospital = async () => {
     try {
-        const response = await fetch("http://localhost:3002/getall-org", {
+        const response = await fetch("http://103.179.185.78:3002/getall-org", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const FetchHospital = async () => {
 };
 export const LoginHospital = async (updatedFormData:any) => {
     try {
-        const response = await fetch("http://localhost:3002/login-org", {
+        const response = await fetch("http://103.179.185.78:3002/login-org", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const LoginHospital = async (updatedFormData:any) => {
 };
 export const GetInfoHospital = async (updatedFormData:any) => {
     try {
-        const response = await fetch("http://localhost:3002/getinfo-org", {
+        const response = await fetch("http://103.179.185.78:3002/getinfo-org", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

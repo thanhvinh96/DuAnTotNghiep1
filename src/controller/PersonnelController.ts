@@ -1,6 +1,6 @@
 export const GetInfoFullPersonnel = async (FormData:any) => {
     try {
-        const response = await fetch("http://localhost:3002/getfull-personnel", {
+        const response = await fetch("http://103.179.185.78:3002/getfull-personnel", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const GetInfoFullPersonnel = async (FormData:any) => {
 };
 export const CreatePersonnels = async(FormData:any)=>{
     try {
-        const response:any = await fetch("http://localhost:3002/create-user", {
+        const response:any = await fetch("http://103.179.185.78:3002/create-user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export const CreatePersonnels = async(FormData:any)=>{
 
 export const GetpersonnelByToken = async(FormData:any)=>{
     try {
-        const response = await fetch("http://localhost:3002/getpersonnel-bytoken/", {
+        const response = await fetch("http://103.179.185.78:3002/getpersonnel-bytoken/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

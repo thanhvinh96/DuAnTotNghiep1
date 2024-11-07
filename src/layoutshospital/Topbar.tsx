@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // import classNames from 'classnames';
 
@@ -12,24 +11,12 @@ import { RootState, AppDispatch } from "../redux/store";
 //constants
 import { LayoutTypes, SideBarTypes } from "../constants/layouthospital";
 
-// components
-import TopbarSearch from "../components/TopbarSearch";
-import MaximizeScreen from "../components/MaximizeScreen";
-import AppsDropdown from "../components/AppsDropdown";
 // import SearchDropdown from '../components/SearchDropdown';
 import LanguageDropdown from "../components/LanguageDropdown";
 import NotificationDropdown from "../components/NotificationDropdown";
 import ProfileDropdown from "../components/ProfileDropdown";
-import CreateNew from "../components/CreateNew";
-import MegaMenu from "../components/MegaMenu";
-
 import profilePic from "../assets/images/users/user-1.jpg";
 import avatar4 from "../assets/images/users/user-4.jpg";
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
 import { useViewport } from "../hooks/useViewPort";
 
 export interface NotificationItem {
@@ -106,99 +93,6 @@ const ProfileMenus = [
     label: "Logout",
     icon: "fe-log-out",
     redirectTo: "/hospital/auth/logout",
-  },
-];
-
-// dummy search results
-const SearchResults = [
-  {
-    id: 1,
-    title: "Analytics Report",
-    icon: "uil-notes",
-    redirectTo: "#",
-  },
-  {
-    id: 2,
-    title: "How can I help you?",
-    icon: "uil-life-ring",
-    redirectTo: "#",
-  },
-  {
-    id: 3,
-    icon: "uil-cog",
-    title: "User profile settings",
-    redirectTo: "#",
-  },
-];
-
-const otherOptions = [
-  {
-    id: 1,
-    label: "New Projects",
-    icon: "fe-briefcase",
-  },
-  {
-    id: 2,
-    label: "Create Users",
-    icon: "fe-user",
-  },
-  {
-    id: 3,
-    label: "Revenue Report",
-    icon: "fe-bar-chart-line-",
-  },
-  {
-    id: 4,
-    label: "Settings",
-    icon: "fe-settings",
-  },
-  {
-    id: 4,
-    label: "Help & Support",
-    icon: "fe-headphones",
-  },
-];
-
-// get mega-menu options
-const MegaMenuOptions = [
-  {
-    id: 1,
-    title: "UI Components",
-    menuItems: [
-      "Widgets",
-      "Nestable List",
-      "Range Sliders",
-      "Masonry Items",
-      "Sweet Alerts",
-      "Treeview Page",
-      "Tour Page",
-    ],
-  },
-  {
-    id: 2,
-    title: "Applications",
-    menuItems: [
-      "eCommerce Pages",
-      "CRM Pages",
-      "Email",
-      "Calendar",
-      "Team Contacts",
-      "Task Board",
-      "Email Templates",
-    ],
-  },
-  {
-    id: 3,
-    title: "Extra Pages",
-    menuItems: [
-      "Left Sidebar with User",
-      "Menu Collapsed",
-      "Small Left Sidebar",
-      "New Header Style",
-      "Search Result",
-      "Gallery Pages",
-      "Maintenance & Coming Soon",
-    ],
   },
 ];
 
