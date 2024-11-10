@@ -14,37 +14,37 @@ export interface MenuItemTypes {
 }
 
 const MENU_ITEMS: MenuItemTypes[] = [
-  { key: "MAIN", label: "MAIN", isTitle: true },
+  { key: "CHÍNH", label: "CHÍNH", isTitle: true },
   {
-    key: "medical",
-    label: "Medical record",
+    key: "y_te",
+    label: "Trang chủ",
     isTitle: false,
     icon: "home",
     url: "/medical",
   },
   {
-    key: "Profile medical",
-    label: "Profile medical",
+    key: "Ho_so_y_te",
+    label: "Thông Tin Cá Nhân",
     isTitle: false,
     icon: "calendar",
     url: "/medical/profile-medical",
   },
   {
-    key: "examination history",
-    label: "Examination history",
+    key: "lich_su_kham",
+    label: "Lịch sử khám bệnh",
     isTitle: false,
     icon: "calendar",
     url: "/medical/medical-history",
   },
   {
-    key: "ManagentApprove",
-    label: "ManagentApprove",
+    key: "Quan_ly_duyet",
+    label: "Quản lý phê duyệt",
     isTitle: false,
     icon: "calendar",
     url: "/medical/medical-managent-approve",
   },
-  
 ];
+
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
   {

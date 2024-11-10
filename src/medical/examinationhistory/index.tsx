@@ -1,127 +1,81 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Card } from "react-bootstrap";
-// components
+import { Link } from "react-router-dom";
+
+// Components
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
-import '../../style.css';
-import { Link } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
+
+// API
+import { GetHistoryMedical } from "../../controller/MedicalController";
 
 // Define type for row data
 interface RowData {
   id: number;
   date: string;
-  doctorName: string;
-  hospitalName: string;
-  address: string;
-  diagnosis: string;
+  recordCode: string;
   action?: React.ReactNode;
 }
 
-// Sample data
-const expandableRecords: RowData[] = [
-  {
-    id: 1,
-    date: '2023-10-01',
-    doctorName: 'Dr. Nguyễn Văn A',
-    hospitalName: 'Bệnh Viện Chợ Rẫy',
-    address: '201B Nguyễn Chí Thanh, Quận 5, TP.HCM',
-    diagnosis: 'Viêm phổi',
-    action: 'Xem Chi Tiết',
-  },
-  {
-    id: 2,
-    date: '2023-09-15',
-    doctorName: 'Dr. Trần Thị B',
-    hospitalName: 'Bệnh Viện Đại Học Y Dược',
-    address: '215 Hồng Bàng, Quận 5, TP.HCM',
-    diagnosis: 'Đau dạ dày',
-    action: 'Xem Chi Tiết',
-  },
-  {
-    id: 3,
-    date: '2023-08-20',
-    doctorName: 'Dr. Phạm Văn C',
-    hospitalName: 'Bệnh Viện Bình Dân',
-    address: '408 Điện Biên Phủ, Quận 3, TP.HCM',
-    diagnosis: 'Viêm gan B',
-    action: 'Xem Chi Tiết',
-  },
-  {
-    id: 4,
-    date: '2023-07-10',
-    doctorName: 'Dr. Lê Thị D',
-    hospitalName: 'Bệnh Viện Nhân Dân Gia Định',
-    address: '01 Nơ Trang Long, Quận Bình Thạnh, TP.HCM',
-    diagnosis: 'Thoát vị đĩa đệm',
-    action: 'Xem Chi Tiết',
-  },
-];
-
-const handleAction = (row: RowData) => {
-  alert(`Chi tiết của ID: ${row.id}`);
-};
-
 function Index(): JSX.Element {
+  const [tableData, setTableData] = useState<RowData[]>([]);
+
   const columns = [
     {
-      Header: 'Ngày Khám',
+      Header: 'Mã Hồ Sơ',
+      accessor: 'recordCode',
+      sort: true,
+    },
+    {
+      Header: 'Tên bệnh án',
       accessor: 'date',
       sort: true,
     },
     {
-      Header: 'Tên Bác Sĩ',
-      accessor: 'doctorName',
-      sort: true,
-    },
-    {
-      Header: 'Tên Bệnh Viện',
-      accessor: 'hospitalName',
-      sort: true,
-    },
-    {
-      Header: 'Địa chỉ',
-      accessor: 'address',
-      sort: true,
-    },
-    {
-      Header: 'Chẩn Đoán',
-      accessor: 'diagnosis',
-      sort: true,
-    },
-    {
-      Header: 'Action',
+      Header: 'Hành Động',
       accessor: 'action',
       Cell: ({ row }: { row: { original: RowData } }) => (
-        <Link to='/medical/medical-record-detail'>
-        <button
-          className="btn btn-primary"
-          onClick={() => handleAction(row.original)}
-        >
-          Xem Chi Tiết
-        </button>
+        <Link to={`/medical/medical-record-detail?record=${row.original.recordCode}`}>
+          <button className="btn btn-primary" onClick={() => handleAction(row.original)}>
+            Xem Chi Tiết
+          </button>
         </Link>
       ),
     },
   ];
 
-  const sizePerPageList = [
-    {
-      text: "5",
-      value: 5,
-    },
-    {
-      text: "10",
-      value: 10,
-    },
-    {
-      text: "25",
-      value: 25,
-    },
-    {
-      text: "All",
-      value: expandableRecords.length,
-    },
-  ];
+  const handleAction = (row: RowData) => {
+    // alert(`Chi tiết của Mã Hồ Sơ: ${row.recordCode}`);
+  };
+
+  const showdata = async () => {
+    try {
+      const token:any = localStorage.getItem('jwtToken');
+      console.log('du lieu token')
+      console.log(token);
+      const decodedToken: any = jwtDecode(token);
+
+      const data = {
+        tokenmedical: decodedToken.tokenmedical,
+        cccd: decodedToken.cccd
+      };
+      const res = await GetHistoryMedical(data);
+      console.log(res.data.diseaseInfo)
+      const records = res.data.diseaseInfo.map((item: any, index: number) => ({
+        id: index + 1, // tạo ID cho mỗi dòng
+        recordCode: item.diseasecode || 'N/A', // giả sử `recordCode` là mã hồ sơ
+        date: item.namedisease || 'N/A', // giả sử `date` là thời gian khám
+      }));
+      setTableData(records);
+    } catch (e) {
+      console.error("Error fetching medical history:", e);
+    }
+  };
+
+  useEffect(() => {
+    showdata();
+  }, []);
 
   return (
     <>
@@ -129,7 +83,7 @@ function Index(): JSX.Element {
         breadCrumbItems={[
           { label: "Tables", path: "/features/tables/advanced" },
         ]}
-        title={"Medical-History"}
+        title={"Lịch Sử Bệnh Án"}
       />
 
       <Row>
@@ -138,12 +92,17 @@ function Index(): JSX.Element {
             <Card.Body>
               <Table
                 columns={columns}
-                data={expandableRecords}
+                data={tableData}
                 pageSize={5}
-                sizePerPageList={sizePerPageList}
+                sizePerPageList={[
+                  { text: "5", value: 5 },
+                  { text: "10", value: 10 },
+                  { text: "25", value: 25 },
+                  { text: "All", value: tableData.length },
+                ]}
                 isSortable={true}
                 pagination={true}
-                isExpandable={true}
+                isExpandable={false}
               />
             </Card.Body>
           </Card>

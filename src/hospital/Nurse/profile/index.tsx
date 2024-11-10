@@ -1,180 +1,154 @@
-import React from "react";
-import { Row, Col, Card, Tab, Nav, Table } from "react-bootstrap";
-import classNames from "classnames";
-
-// components
+import React, { useState, useEffect } from "react";
+import { Row, Col, Card, Button, Modal, Form, Image, Container } from "react-bootstrap";
 import PageTitle from "../../../components/PageTitle";
-import Messages from "../../../components/Messages";
-
-import UserBox from "./UserBox";
-import About from "./About";
-import TimeLine from "./TimeLine";
-import Settings from "./Settings";
-
-interface ProjectDetails {
-  id: number;
-  client: string;
-  name: string;
-  startDate: string;
-  dueDate: string;
-  status: string;
-}
+import { GetpersonnelByToken } from '../../../controller/PersonnelController';
+import jwtDecode from 'jwt-decode';
 
 const Profile = () => {
-  const projectDetails: ProjectDetails[] = [
-    {
-      id: 1,
-      client: "Halette Boivin",
-      name: "App design and development",
-      startDate: "01/01/2015",
-      dueDate: "10/05/2018",
-      status: "Work in Progress",
-    },
-    {
-      id: 2,
-      client: "Durandana Jolicoeur",
-      name: "Coffee detail page - Main Page",
-      startDate: "21/07/2016",
-      dueDate: "12/05/2018",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      client: "Lucas Sabourin",
-      name: "Poster illustation design",
-      startDate: "18/03/2018",
-      dueDate: "28/09/2018",
-      status: "Done",
-    },
-    {
-      id: 4,
-      client: "Donatien Brunelle",
-      name: "Drinking bottle graphics",
-      startDate: "02/10/2017",
-      dueDate: "07/05/2018",
-      status: "Work in Progress",
-    },
-    {
-      id: 5,
-      client: "Karel Auberjo",
-      name: "Landing page design - Home",
-      startDate: "17/01/2017",
-      dueDate: "25/05/2021",
-      status: "Coming soon",
-    },
-  ];
+  const [showModal, setShowModal] = useState(false);
+  const [dataProfile, setDataProfile] = useState({
+    tokenuser: '',
+    tokeorg: '',
+    value: 'org1',
+  });
+  const [personnelData, setPersonnelData] = useState<any>(null);
 
+  const handleUpdateInfo = () => {
+    setShowModal(false); // Đóng modal sau khi cập nhật
+  };
+
+  useEffect(() => {
+    const fetchDataProfile = async () => {
+      const token = localStorage.getItem('tokenadmin');
+      if (token) {
+        const decodedToken: any = jwtDecode(token);
+        setDataProfile({
+          tokenuser: decodedToken['tokenuser'] || '',
+          tokeorg: decodedToken['tokeorg'] || '',
+          value: 'org1',
+        });
+      }
+    };
+    fetchDataProfile();
+  }, []);
+
+  useEffect(() => {
+    const fetchPersonnelData = async () => {
+      if (dataProfile.tokenuser && dataProfile.tokeorg) {
+        try {
+          const res = await GetpersonnelByToken(dataProfile);
+          setPersonnelData(res.data);
+        } catch (error) {
+          console.error("Lỗi khi lấy dữ liệu nhân viên:", error);
+        }
+      }
+    };
+    fetchPersonnelData();
+  }, [dataProfile]);
+  function formatDate(dateString:any) {
+    const date = new Date(dateString);
+  
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+  
+  // Ví dụ sử dụng:
+  const dateString = "Sat Nov 09 2024 02:23:04 GMT+0000 (Coordinated Universal Time)";
+  console.log(formatDate(dateString)); // Kết quả: "09/11/2024 02:23:04"
+  
   return (
-    <>
+    <Container fluid className="profile-container">
       <PageTitle
         breadCrumbItems={[
           { label: "Contacts", path: "/apps/contacts/profile" },
           { label: "Profile", path: "/apps/contacts/profile", active: true },
         ]}
-        title={"Profile"}
+        title={"Thông Tin Nhân Viên"}
       />
+      
       <Row>
-        <Col xl={4} lg={4}>
-          {/* User information */}
-          <UserBox />
+        <Col xl={12} lg={12}>
+          <Card className="profile-card shadow-lg p-3 mb-5 bg-white rounded">
+            <Card.Body>
+              <Row>
+                <Col md={3} className="text-center">
+                  {/* Ảnh chân dung */}
+                  <Image src={personnelData?.avatar || "https://via.placeholder.com/150"} rounded className="profile-license mb-3" />
+                  <p className="text-muted">Ảnh chân dung</p>
+                  
+                  {/* Ảnh giấy phép */}
+                  <Image src={personnelData?.License || "https://via.placeholder.com/150"} className="profile-license mb-3" rounded />
+                  <p className="text-muted">Giấy phép hành nghề</p>
+                  
+                  {/* Ảnh nhận dạng */}
+                  <Image src={personnelData?.imgidentification || "https://via.placeholder.com/150"} className="profile-id mb-3" rounded />
+                  <p className="text-muted">Ảnh nhận dạng</p>
 
-          {/* User's recent messages */}
-          {/* <Messages /> */}
+                  <Button variant="primary" onClick={() => setShowModal(true)} className="update-info-button">
+                    Cập nhật thông tin
+                  </Button>
+                </Col>
+                <Col md={9}>
+                  <h5 className="text-uppercase profile-name">{personnelData?.fullname || "Tên nhân viên"}</h5>
+                  <div className="profile-info">
+                    <p><strong>Email:</strong> {personnelData?.email || "example@example.com"}</p>
+                    <p><strong>Số điện thoại:</strong> {personnelData?.phone || "Không có số điện thoại"}</p>
+                    <p><strong>Địa chỉ:</strong> {personnelData?.address || "Không có địa chỉ"}</p>
+                    <p><strong>CCCD:</strong> {personnelData?.cccd || "Không có CCCD"}</p>
+                    <p><strong>Chuyên môn:</strong> {personnelData?.specialized || "Không có chuyên môn"}</p>
+                    <p><strong>Loại người dùng:</strong> {personnelData?.typeusers || "Không có loại người dùng"}</p>
+                    <p><strong>Chi nhánh:</strong> {personnelData?.branch || "Không có chi nhánh"}</p>
+                    <p><strong>Năm sinh:</strong> {formatDate(personnelData?.timecreats) || "Không có ngày tạo"}</p>
+                  </div>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
         </Col>
-        <Col xl={8} lg={8}>
-          <Tab.Container defaultActiveKey="timeline">
-            <Card>
-              <Card.Body>
-              
-                <>
-                      <h5 className="mb-4 text-uppercase">
-                        <i className="mdi mdi-briefcase me-1"></i> Experience
-                      </h5>
 
-                      {/* Timeline */}
-                      <ul className="list-unstyled timeline-sm">
-                        <li className="timeline-sm-item">
-                          <span className="timeline-sm-date">2015 - 18</span>
-                          <h5 className="mt-0 mb-1">Lead designer / Developer</h5>
-                          <p>websitename.com</p>
-                          <p className="text-muted mt-2">
-                            Everyone realizes why a new common language would be desirable: one
-                            could refuse to pay expensive translators. To achieve this, it would
-                            be necessary to have uniform grammar, pronunciation and more common
-                            words.
-                          </p>
-                        </li>
-                        <li className="timeline-sm-item">
-                          <span className="timeline-sm-date">2012 - 15</span>
-                          <h5 className="mt-0 mb-1">Senior Graphic Designer</h5>
-                          <p>Software Inc.</p>
-                          <p className="text-muted mt-2">
-                            If several languages coalesce, the grammar of the resulting language
-                            is more simple and regular than that of the individual languages.
-                            The new common language will be more simple and regular than the
-                            existing European languages.
-                          </p>
-                        </li>
-                        <li className="timeline-sm-item">
-                          <span className="timeline-sm-date">2010 - 12</span>
-                          <h5 className="mt-0 mb-1">Graphic Designer</h5>
-                          <p>Coderthemes LLP</p>
-                          <p className="text-muted mt-2 mb-0">
-                            The European languages are members of the same family. Their
-                            separate existence is a myth. For science music sport etc, Europe
-                            uses the same vocabulary. The languages only differ in their grammar
-                            their pronunciation.
-                          </p>
-                        </li>
-                      </ul>
-
-                      <h5 className="mb-3 mt-4 text-uppercase">
-                        <i className="mdi mdi-cards-variant me-1"></i> Projects
-                      </h5>
-                      <div className="table-responsive">
-                        <Table responsive className="table table-borderless mb-0">
-                          <thead className="table-light">
-                            <tr>
-                              <th>#</th>
-                              <th>Project Name</th>
-                              <th>Start Date</th>
-                              <th>Due Date</th>
-                              <th>Status</th>
-                              <th>Clients</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {projectDetails.map((project, index) => (
-                              <tr key={index}>
-                                <td>{project.id}</td>
-                                <td>{project.name}</td>
-                                <td>{project.startDate}</td>
-                                <td>{project.dueDate}</td>
-                                <td>
-                                  <span
-                                    className={classNames("badge", {
-                                      "bg-info": project.status === "Work in Progress",
-                                      "bg-danger": project.status === "Pending",
-                                      "bg-success": project.status === "Done",
-                                      "bg-warning": project.status === "Coming soon",
-                                    })}
-                                  >
-                                    {project.status}
-                                  </span>
-                                </td>
-                                <td>{project.client}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    </>
-              </Card.Body>
-            </Card>
-          </Tab.Container>
-        </Col>
+        {/* Modal cập nhật thông tin */}
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Cập nhật thông tin {personnelData?.fullname || "nhân viên"}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formName">
+                <Form.Label>Tên</Form.Label>
+                <Form.Control type="text" placeholder="Nhập tên" defaultValue={personnelData?.fullname || ""} />
+              </Form.Group>
+              <Form.Group controlId="formEmail" className="mt-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" placeholder="Nhập email" defaultValue={personnelData?.email || ""} />
+              </Form.Group>
+              <Form.Group controlId="formPhone" className="mt-3">
+                <Form.Label>Số điện thoại</Form.Label>
+                <Form.Control type="text" placeholder="Nhập số điện thoại" defaultValue={personnelData?.phone || ""} />
+              </Form.Group>
+              <Form.Group controlId="formPosition" className="mt-3">
+                <Form.Label>Chuyên Môn</Form.Label>
+                <Form.Control type="text" placeholder="Nhập chuyên môn" defaultValue={personnelData?.specialized || ""} />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Đóng
+            </Button>
+            <Button variant="primary" onClick={handleUpdateInfo}>
+              Cập nhật
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Row>
-    </>
+    </Container>
   );
 };
 

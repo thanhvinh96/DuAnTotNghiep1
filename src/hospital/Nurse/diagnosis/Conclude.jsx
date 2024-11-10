@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Form, Row, Col, Button, Table, Card, Alert, Image } from 'react-bootstrap';
 import PageTitle from "../../../components/PageTitle";
 import jwt_decode from 'jwt-decode';
-
+import { PushDataMedical } from "../../../controller/MedicalController"; // Import controller
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] }) => {
+    const MySwal = withReactContent(Swal);
 
-    const [tableData,setTableData]=useState([]);
+    const [tableData, setTableData] = useState([]);
     // Hàm để thêm dòng mới vào bảng
     const addRow = () => {
         setTableData([...tableData, { testName: '', referenceValue: '', result: '', unit: '', machine: '' }]);
@@ -50,7 +53,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                 },
                 body: JSON.stringify({ medicalRecordCode: patientId })
             });
-            
+
             const data = await response.json();
             if (response.ok) {
                 setPatientInfo({
@@ -64,6 +67,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                     height: data.data.height,
                     email: data.data.email,
                     phoneNumber: data.data.phoneNumber,
+                    cccd: data.data.cccd,
                     avatar: data.data.avatar || "https://via.placeholder.com/100"
                 });
                 setError(null);
@@ -99,15 +103,12 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
         setConclusionData({ ...conclusionData, images: files });
         setPreviewImages(files.map(file => URL.createObjectURL(file))); // Hiển thị ảnh xem trước
     };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Lấy token từ localStorage
+
         const token = localStorage.getItem('tokenadmin');
         let decoded = null;
-        
-        // Giải mã token nếu có
+
         if (token) {
             try {
                 decoded = jwt_decode(token);
@@ -116,39 +117,77 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                 console.error("Token không hợp lệ hoặc lỗi khi giải mã:", error);
             }
         }
-    
-        // Kiểm tra xem decoded có dữ liệu không
+
         if (!decoded) {
             console.error("Không thể lấy dữ liệu từ token.");
-            return; // Dừng lại nếu không có dữ liệu từ token
+            return;
         }
-    
-        // Giả sử tên bệnh viện là một giá trị cố định hoặc được lấy từ một nguồn khác
-        const hospitalName = "Bệnh viện Đa khoa Tỉnh"; // Bạn có thể thay bằng tên bệnh viện cụ thể
-    
-        // Gom tất cả dữ liệu thành một đối tượng duy nhất trong key "reportData"
+
+        const hospitalName = "Bệnh viện Đa khoa Tỉnh";
+        const patientId = getQueryParam('patient');
+
+        // Kiểm tra các giá trị trước khi tạo resultData
         const resultData = {
-            reportData: {
-                tokeorg: decoded['tokeorg'] || "", // Kiểm tra tồn tại của trường
-                branch: decoded['branch'] || "",   // Kiểm tra tồn tại của trường
-                doctor: decoded['tokenuser'] || "",// Kiểm tra tồn tại của trường
-                examinationHistory: medicalData,   // Lịch sử khám bệnh
-                hospitalName: decoded['nameorg']||"",        // Tên bệnh viện khám
-                patientInfo: patientData,          // Thông tin bệnh nhân
-                conclusion: {                      // Dữ liệu kết luận
+            tokeorg: decoded['tokeorg'] || "",
+            tokenbranch: decoded['branch'] || "",
+            doctor: decoded['tokenuser'] || "",
+            diseasecodes: patientId || "",
+            namedisease: conclusionData.diagnosis || "",
+            cccd: patientData.cccd || "",
+            newData: {
+                Prescription: tableData || [], // Chuyển tableData thành chuỗi JSON
+                examinationHistory: medicalData || [],
+                hospitalName: decoded['nameorg'] || hospitalName,
+                patientInfo: patientData || {},
+                conclusion: {
                     ...conclusionData,
-                    images: conclusionData.images.map((file) => file.name), // Chỉ lấy tên tệp cho dễ hiển thị
+                    images: conclusionData.images ? conclusionData.images.map((file) => file.name) : []
                 }
             }
         };
-    
-        console.log("Dữ liệu kết luận và bệnh nhân:", resultData);
-        
-        // Thực hiện gửi dữ liệu nếu cần
-        onSubmit(resultData); // Gọi hàm onSubmit với đối tượng gom toàn bộ dữ liệu
+
+        try {
+            const _res = await PushDataMedical(resultData);
+            console.log("Dữ liệu kết luận và bệnh nhân:", _res);
+            Swal.fire({
+                title: 'Thêm Dữ liệu thành công!',
+                text: 'Bạn muốn ở lại trang này hay chuyển đến trang chủ?',
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Chuyển đến trang chủ',
+                cancelButtonText: 'Ở lại trang',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Chuyển đến trang chủ
+                    window.location.href = '/doctor/home';
+                } else {
+                    Swal.fire({
+                        title: 'Thất Bại!',
+                        text: 'Thêm Dữ Thất Bại.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    });
+                }
+            });
+            onSubmit(resultData);
+        } catch (error) {
+            Swal.fire({
+                title: 'Thất Bại!',
+                text: 'Thêm Dữ Thất Bại.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            console.error("Error in PushDataInHospital handler:", error);
+        }
     };
-    
-    
+
+
+    const handlePrescriptionChange = (index, field, value) => {
+        const newTableData = [...tableData];
+        newTableData[index][field] = value;
+        setTableData(newTableData);
+    };
+
     return (
         <>
             <PageTitle
@@ -179,8 +218,8 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                 />
                             </Col>
                             <Col md={6} className="d-flex align-items-end">
-                                <Button 
-                                    variant="primary" 
+                                <Button
+                                    variant="primary"
                                     onClick={() => handleAccessPatientInfo(cccd)}
                                     style={{ fontSize: '12px', padding: '6px 12px' }}
                                 >
@@ -200,6 +239,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                     <p><strong>Ngày sinh:</strong> {patientData.birthday}</p>
                                     <p><strong>Địa chỉ:</strong> {patientData.address}</p>
                                     <p><strong>Số BH:</strong> {patientData.sobh}</p>
+                                    <p><strong>Số cccd:</strong> {patientData.sobh}</p>
                                     <p><strong>Token Medical:</strong> {patientData.tokenmedical}</p>
                                 </Col>
                                 <Col md={6}>
@@ -212,9 +252,9 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                             </Row>
                             <Row className="mt-3">
                                 <Col className="d-flex justify-content-center">
-                                    <img 
-                                        src={patientData.avatar} 
-                                        alt="Avatar của bệnh nhân" 
+                                    <img
+                                        src={patientData.avatar}
+                                        alt="Avatar của bệnh nhân"
                                         style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                                     />
                                 </Col>
@@ -237,6 +277,8 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                     <th>STT</th>
                                     <th>Chuyên Mục Khám</th>
                                     <th>Kết Quả</th>
+                                    <th>Hình Ảnh</th>
+
                                     <th>Triệu Chứng</th>
                                     <th>Kết Luận</th>
                                 </tr>
@@ -252,6 +294,16 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                                     <td>{exam.result}</td>
                                                     {examIndex === 0 && (
                                                         <>
+                                                            <td rowSpan={record.exam_records.length}>
+                                                                {record.patient_image && (
+                                                                    <img
+                                                                        src={record.patient_image}
+                                                                        alt="Patient"
+                                                                        className="small-image"
+                                                                        style={{ cursor: 'pointer', width: '100px', height: '100px' }}
+                                                                    />
+                                                                )}
+                                                            </td>
                                                             <td rowSpan={record.exam_records.length}>
                                                                 {record.diagnosis_info.symptom}
                                                             </td>
@@ -275,7 +327,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
 
                     {/* Kết luận cuối cùng */}
                     <h5>Kết Luận Cuối Cùng của Bác Sĩ</h5>
-                    
+
                     <Row className="mb-3">
                         <Col md={12}>
                             <Form.Label>Chẩn đoán cuối cùng</Form.Label>
@@ -298,111 +350,103 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                 placeholder="Nhập phương pháp điều trị hoặc đơn thuốc"
                                 value={conclusionData.treatment}
                                 onChange={(e) => handleInputChange('treatment', e.target.value)}
-                                />
-                                </Col>
-                            </Row>
-        
-                            <Row className="mb-3">
-                                <Col md={12}>
-                                    <Form.Label>Hẹn tái khám</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Nhập lịch hẹn tái khám nếu cần"
-                                        value={conclusionData.followUp}
-                                        onChange={(e) => handleInputChange('followUp', e.target.value)}
-                                    />
-                                </Col>
-                            </Row>
-        
-                            <Row className="mb-3">
-                                <Col md={12}>
-                                    <Form.Label>Ghi chú thêm</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        placeholder="Nhập ghi chú bổ sung nếu có"
-                                        value={conclusionData.additionalNotes}
-                                        onChange={(e) => handleInputChange('additionalNotes', e.target.value)}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="mb-3">
-                                <Col md={12}>
-                                    <Form.Label>them don thuoc</Form.Label>
-                        <Form onSubmit={handleSubmit}>
-                            <Table className='table table-bordered text-center mt-5'>
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th scope="col">STT</th>
-                                        <th scope="col">Ten thuoc</th>
-                                        <th scope="col">DVT</th>
-                                        <th scope="col">So Luong</th>
-                                        <th scope="col">Cach Dung</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tableData.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>
-                                                <Form.Control type="text" />
-                                            </td>
-                                            <td>
-                                                <Form.Control type="text" />
-                                            </td>
-                                            <td>
-                                                <Form.Control type="text" />
-                                            </td>
-                                            <td>
-                                                <Form.Control type="text" />
-                                            </td>
-                                            
+                            />
+                        </Col>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Col md={12}>
+                            <Form.Label>Hẹn tái khám</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Nhập lịch hẹn tái khám nếu cần"
+                                value={conclusionData.followUp}
+                                onChange={(e) => handleInputChange('followUp', e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Col md={12}>
+                            <Form.Label>Ghi chú thêm</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                placeholder="Nhập ghi chú bổ sung nếu có"
+                                value={conclusionData.additionalNotes}
+                                onChange={(e) => handleInputChange('additionalNotes', e.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col md={12}>
+                            <Form.Label>them don thuoc</Form.Label>
+                            <Form onSubmit={handleSubmit}>
+                                <Table className='table table-bordered text-center mt-5'>
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Tên thuốc</th>
+                                            <th scope="col">ĐVT</th>
+                                            <th scope="col">Số Lượng</th>
+                                            <th scope="col">Cách Dùng</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                            <div className="d-flex justify-content-between mt-3">
-                                <Button onClick={addRow} style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }}>Thêm dòng</Button>
-                                <Button style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }} >Thêm kết quả</Button>
-                            </div>
-                        </Form>
-                    
-                                </Col>
-                            </Row>
-                            
-                            {/* Trường tải lên hình ảnh */}
-                            {/* <Row className="mb-3">
-                                <Col md={12}>
-                                    <Form.Label>Hình ảnh kết quả khám (nếu có)</Form.Label>
-                                    <Form.Control
-                                        type="file"
-                                        multiple
-                                        onChange={handleFileChange}
-                                    />
-                                    <div className="mt-3 d-flex flex-wrap">
-                                        {previewImages.map((image, index) => (
-                                            <Image 
-                                                key={index} 
-                                                src={image} 
-                                                alt={`Hình ảnh kết quả ${index + 1}`} 
-                                                rounded 
-                                                style={{ width: '100px', height: '100px', marginRight: '10px', marginBottom: '10px' }}
-                                            />
+                                    </thead>
+                                    <tbody>
+                                        {tableData.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>
+                                                    <Form.Control
+                                                        type="text"
+                                                        value={item.testName}
+                                                        onChange={(e) => handlePrescriptionChange(index, 'testName', e.target.value)}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <Form.Control
+                                                        type="text"
+                                                        value={item.referenceValue}
+                                                        onChange={(e) => handlePrescriptionChange(index, 'referenceValue', e.target.value)}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <Form.Control
+                                                        type="text"
+                                                        value={item.result}
+                                                        onChange={(e) => handlePrescriptionChange(index, 'result', e.target.value)}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <Form.Control
+                                                        type="text"
+                                                        value={item.unit}
+                                                        onChange={(e) => handlePrescriptionChange(index, 'unit', e.target.value)}
+                                                    />
+                                                </td>
+                                                =
+                                            </tr>
                                         ))}
-                                    </div>
-                                </Col>
-                            </Row> */}
-                            
-                            <div className="d-flex justify-content-end mt-3">
-                                <Button type="submit" variant="primary" style={{ fontSize: '14px', padding: '6px 12px' }}>
-                                    Lưu Kết Luận
-                                </Button>
-                            </div>
-                        </Form>
-                    </Card>
-                </>
-            );
-        };
-        
-        export default ConclusionForm;
-        
+                                    </tbody>
+                                </Table>
+                                <div className="d-flex justify-content-between mt-3">
+                                    <Button onClick={addRow} style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }}>Thêm dòng</Button>
+                                    <Button type="submit" style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }}>Lưu kết quả</Button>
+                                </div>
+                            </Form>
+
+                        </Col>
+                    </Row>
+
+                    <div className="d-flex justify-content-end mt-3">
+                        <Button type="submit" variant="primary" style={{ fontSize: '14px', padding: '6px 12px' }}>
+                            Lưu Kết Luận
+                        </Button>
+                    </div>
+                </Form>
+            </Card>
+        </>
+    );
+};
+
+export default ConclusionForm;

@@ -4,11 +4,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import jwtDecode from 'jwt-decode';
 import { useLocation } from 'react-router-dom';
+
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 interface Department {
   serviceCode: string;
   serviceName: string;
 }
-
+const MySwal = withReactContent(Swal);
 interface Doctor {
   _id: string;
   tokenuser:string;
@@ -54,71 +58,81 @@ const AddEditEvent = ({
   const medical = queryParams.get('medical');
 
   const getDataMedical = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ cccd: medical }) // Gửi cccd trong body
-      });
-      
-      const data:any = await response.json();
-      // Xử lý dữ liệu nhận được, ví dụ: setdatadepartments(data.data || []);
-      setFormData({ ...formData, 
-     
-        patient: data.data.medicalRecordCode || "",         
-      });
-      console.log(data); // Kiểm tra dữ liệu nhận được
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    if (medical) {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ cccd: medical })
+        });
+
+        const data: any = await response.json();
+        console.log("Dữ liệu bệnh nhân:", data);
+
+        setFormData(prevData => ({
+          ...prevData,
+          patient: data.data?.medicalRecordCode || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching medical data:", error);
+      }
     }
   };
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/services");
-        const data = await response.json();
-        setdatadepartments(data.data || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    getDataMedical();
-    fetchData();
-  }, []);
+
+  // Hàm lấy dữ liệu dịch vụ dựa trên mã chi nhánh
+  const fetchDataServices = async (branch: string) => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/services", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ branchId: branch })
+      });
+
+      const data = await response.json();
+      console.log("Dữ liệu dịch vụ:", data);
+      setdatadepartments(data.data || []);
+    } catch (error) {
+      console.error("Error fetching services data:", error);
+    }
+  };
+
+  // Lấy thông tin `branch` và `tokenorg` từ token và cập nhật `formData`
   const getData = async () => {
     const token = localStorage.getItem('tokenadmin');
-    // console.log(token)
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
-  
-        console.log("chi nhanh" + decodedToken['branch']);
-        console.log("to chuc " + decodedToken['tokeorg']);
-        setFormData({ ...formData, 
-          branch:decodedToken['branch'],
-          tokenorg:decodedToken['tokeorg'],
-        });
+        const branch = decodedToken['branch'];
+        const tokenorg = decodedToken['tokeorg'];
 
-        const tokeorg = decodedToken['tokeorg'];
-        if (tokeorg) {
-          const dataorg = {
-            "tokenorg": tokeorg
-          };
-         
+        console.log("Chi nhánh:", branch);
+        console.log("Tổ chức:", tokenorg);
+
+        setFormData(prevData => ({
+          ...prevData,
+          branch: branch || "",
+          tokenorg: tokenorg || "",
+        }));
+
+        // Gọi API lấy dữ liệu dịch vụ nếu có branch
+        if (branch) {
+          await fetchDataServices(branch);
         }
-
-
       } catch (error) {
-        console.error('Có lỗi xảy ra:', error);
+        console.error('Có lỗi xảy ra khi giải mã token:', error);
       }
     }
   };
-  useEffect(()=>{
-    getData()
-  },[])
+
+  useEffect(() => {
+    // Gọi các hàm lấy dữ liệu khi component mount
+    getData();
+    getDataMedical();
+  }, []); 
   const handleDepartmentChange = async (department: string) => {
     setSelectedDepartment(department);
     setFormData({ ...formData, department });
@@ -138,7 +152,12 @@ const AddEditEvent = ({
   const handleInputChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const handleChange = (e: any) => {
+    console.log(e.target.value)
+    setSelectedDate(e.target.value);
+    setFormData({ ...formData, timeschedule: e.target.value  });
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     setFormData({ ...formData, timeschedule: date ? date.toISOString() : "" });
@@ -157,8 +176,22 @@ const AddEditEvent = ({
       if (response.ok) {
         isEditable ? onUpdateEvent(formData) : onAddEvent(formData);
         onClose?.();
+        MySwal.fire({
+          icon: 'success',
+          title: 'Tạo lịch hẹn thành công',
+          text: 'Lịch hẹn của bạn đã được tạo thành công!',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          window.location.reload(); // Tải lại trang sau khi người dùng nhấn OK
+        });
       } else {
         console.error("Error:", result);
+        MySwal.fire({
+          icon: 'error',
+          title: 'Tạo lịch hẹn thất bại',
+          text: 'Có lỗi xảy ra trong quá trình tạo lịch hẹn. Vui lòng thử lại!',
+          confirmButtonText: 'OK',
+        });
       }
     } catch (error) {
       console.error("Request error:", error);
@@ -238,7 +271,16 @@ const AddEditEvent = ({
               </Form.Group>
             </Col>
             <Col xs={12}>
-              <Form.Label className="fw-bold text-primary">Thời Gian Lịch Hẹn</Form.Label>
+            <Form.Group controlId="formDate" className="mt-3">
+              <Form.Label>Thời Gian Lịch Hẹn</Form.Label>
+              <Form.Control 
+                                onChange={handleChange}
+                                // selected={selectedDate}
+
+              type="datetime-local" />
+            </Form.Group>
+              {/* <Form.Label className="fw-bold text-primary">Thời Gian Lịch Hẹn</Form.Label>
+              
               <DatePicker
                 selected={selectedDate}
                 onChange={handleDateChange}
@@ -246,7 +288,7 @@ const AddEditEvent = ({
                 dateFormat="Pp"
                 className="form-control"
                 placeholderText="Chọn Ngày và Giờ"
-              />
+              /> */}
             </Col>
           </Row>
           <Row className="mt-2 d-flex justify-content-end">

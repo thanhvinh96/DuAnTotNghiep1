@@ -70,7 +70,10 @@ const Nurseschedule = React.lazy(()=>import("../hospital/Nurse/schedule/index"))
 const ManagentRequest = React.lazy(()=>import("../hospital/Nurse/Requestmedical/ManagentRequest"));
 const DoctorHome = React.lazy(()=>import("../hospital/Nurse/home/index"));
 const DoctorProfile = React.lazy(()=>import("../hospital/Nurse/profile/index"));
-
+const BranchHome = React.lazy(()=>import("../hospital/hospitalbranch/home/homebranch"));
+const DoctorMedicalHistory = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/index"));
+const DoctorMedicalHistoryDetail = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/Medicalhistorydetail"));
+const Appointments = React.lazy(()=>import("../hospital/Nurse/appointments/index"));
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -227,9 +230,30 @@ const hospitalRouter: RoutesProps = {
     },
     {
       
+      path: "/doctor/history",
+      name: "doctor/history",
+      element: <DoctorMedicalHistory />,
+      route: PrivateRoute,
+    },
+    {
+      
+      path: "/doctor/history-detail",
+      name: "doctor/history",
+      element: <DoctorMedicalHistoryDetail />,
+      route: PrivateRoute,
+    },
+    {
+      
       path: "/doctor/profile",
       name: "doctor/profile",
       element: <DoctorProfile />,
+      route: PrivateRoute,
+    },
+    {
+      
+      path: "/doctor/appointments",
+      name: "doctor/appointments",
+      element: <Appointments />,
       route: PrivateRoute,
     },
     {
@@ -239,6 +263,12 @@ const hospitalRouter: RoutesProps = {
       element: <ManagentRequest />,
       route: PrivateRoute,
     },
+    {
+      path: "/hospital/branch/home",
+      name: "branch-home",
+      element: <BranchHome />,
+      route: PrivateRoute,
+    }
   ],
 };
 const dashboardRoutes: RoutesProps = {

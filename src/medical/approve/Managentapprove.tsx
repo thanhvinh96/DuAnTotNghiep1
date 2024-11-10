@@ -7,13 +7,12 @@ import withReactContent from 'sweetalert2-react-content';
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
 import "../../style.css";
-import { showdataprofiles, ApproveAccessRequests, ShowFunAccessRequests } from "../../controller/MedicalController"; // Import controller
+import { showdataprofiles, ApproveAccessRequests, ShowFunAccessRequests ,ShowFunDiseasecode} from "../../controller/MedicalController"; // Import controller
 
 interface Disease {
-  id: string;
-  name: string;
+  diseasecode: string; // sử dụng id thay vì diseasecode
+  namedisease: string; // sử dụng name thay vì namedisease
 }
-
 interface RowData {
   id: number;
   time: string;
@@ -74,17 +73,36 @@ const Index: React.FC = () => {
     }
   };
   const MySwal = withReactContent(Swal);
-
+  const [diseaseInfo, setDiseaseInfo] = useState<Disease[]>([]);
+  const ShowFunDiseasecodes = async()=>{
+    try{
+      const res = await ShowFunDiseasecode(datacheckprofile);
+      console.log(res.data.diseaseInfo);
+      setDiseaseInfo(res.data.diseaseInfo);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+  }
 
   useEffect(() => {
     showdata();
+    // ShowFunDiseasecodes();
+    
   }, [datacheckprofile]);
 
-  const handleShow = (row: RowData) => {
+  // useEffect(() => {
+  //   ShowFunDiseasecodes();
+    
+  // }, [datacheckprofile]);
+  const handleShow = async (row: RowData) => {
     setSelectedRow(row);
-    setShowModal(true);
-  };
+    
+    // Chờ hàm ShowFunDiseasecodes hoàn thành trước khi mở modal
+    await ShowFunDiseasecodes();
+    setShowModal(true); 
 
+  };
+  
   const handleClose = () => {
     setShowModal(false);
     setfieldsToShare([]);
@@ -99,12 +117,15 @@ const Index: React.FC = () => {
 
   const handleSelectAll = (isChecked: boolean) => {
     if (isChecked) {
-      const allDiseases = selectedRow?.diseases.map((disease) => disease.name) || [];
-      setfieldsToShare(allDiseases);
+      // Khi chọn tất cả, thêm tất cả namedisease từ diseaseInfo vào fieldsToShare
+      const allDiseaseNames = diseaseInfo.map((disease) => disease.diseasecode);
+      setfieldsToShare(allDiseaseNames);
     } else {
+      // Khi bỏ chọn tất cả, xóa toàn bộ fieldsToShare
       setfieldsToShare([]);
     }
   };
+  
 
   const handleShowPersonalInfoChange = (checked: boolean) => {
     setShowPersonalInfo(checked);
@@ -130,10 +151,16 @@ const Index: React.FC = () => {
     if (token) {
       const decodedToken: any = jwtDecode(token);
       const response:any = await showdataprofiles(datacheckprofile);
-
+      const fieldsToShareObject = fieldsToShare.reduce((obj: { [key: string]: string }, field: string) => {
+        const disease = diseaseInfo.find((d: Disease) => d.diseasecode === field);
+        if (disease) {
+          obj[field] = disease.namedisease;
+        }
+        return obj;
+      }, {} as { [key: string]: string });
     const confirmedData = {
       personalInfo: selectedRow?.personalInfo,
-      fieldsToShare: fieldsToShare,
+      fieldsToShare: fieldsToShareObject,
       value: selectedRow?.value,
       time: selectedRow?.time,
       status: selectedRow?.status,
@@ -144,6 +171,7 @@ const Index: React.FC = () => {
       datauser:response
       
     }; 
+    console.log(confirmedData)
 
     // console.log("data",decodedToken)
     const res = await ApproveAccessRequests(confirmedData);
@@ -278,44 +306,44 @@ const Index: React.FC = () => {
               Chỉ hiển thị thông tin cá nhân
             </label>
           </div>
-
           {!showPersonalInfo ? (
-            <div className="mb-3">
-              <h5>Chọn Bệnh:</h5>
-              {selectedRow?.diseases && selectedRow.diseases.length > 0 ? (
-                <>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="select-all"
-                      onChange={(e) => handleSelectAll(e.target.checked)}
-                      checked={fieldsToShare.length === selectedRow.diseases.length}
-                    />
-                    <label className="form-check-label" htmlFor="select-all">
-                      Chọn tất cả
-                    </label>
-                  </div>
-                  {selectedRow.diseases.map((disease) => (
-                    <div key={disease.id} className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id={`disease-${disease.id}`}
-                        checked={fieldsToShare.includes(disease.name)}
-                        onChange={() => handleDiseaseChange(disease.name)}
-                      />
-                      <label className="form-check-label" htmlFor={`disease-${disease.id}`}>
-                        {disease.name}
-                      </label>
-                    </div>
-                  ))}
-                </>
-              ) : (
-                <p>Không có loại bệnh nào để chọn.</p>
-              )}
-            </div>
-          ) : null}
+  <div className="mb-3">
+    <h5>Chọn Bệnh:</h5>
+    {diseaseInfo && diseaseInfo.length > 0 ? ( // Sử dụng diseaseInfo để kiểm tra
+      <>
+        <div className="form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="select-all"
+            onChange={(e) => handleSelectAll(e.target.checked)}
+            checked={fieldsToShare.length === diseaseInfo.length} // Kiểm tra độ dài của diseaseInfo
+          />
+          <label className="form-check-label" htmlFor="select-all">
+            Chọn tất cả
+          </label>
+        </div>
+        {diseaseInfo.map((item) => (
+          <div key={item.diseasecode} className="form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id={`disease-${item.diseasecode}`}
+              checked={fieldsToShare.includes(item.diseasecode)}
+              onChange={() => handleDiseaseChange(item.diseasecode)}
+            />
+            <label className="form-check-label" htmlFor={`disease-${item.diseasecode}`}>
+              {item.namedisease}
+            </label>
+          </div>
+        ))}
+      </>
+    ) : (
+      <p>Không có loại bệnh nào để chọn.</p>
+    )}
+  </div>
+) : null}
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

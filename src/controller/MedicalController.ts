@@ -168,7 +168,30 @@ export const ShowFunAccessRequests= async (data: any) => {
   }
 };
 
+export const ShowFunDiseasecode= async (data: any) => { 
+  try {
+    const response = await fetch("http://103.179.185.78:3002/medical/diseasecode", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
 export const ApproveAccessRequests= async (data: any) => { 
   try {
     const response = await fetch("http://103.179.185.78:3002/approve-access-request", {
@@ -201,7 +224,7 @@ export const ApproveAccessRequests= async (data: any) => {
       cccd: data.datauser.record.cccd,
   };
   
-    const _response:any =fetch("http://127.0.0.1:8000/api/medical-record-books", {
+    const _response:any = await fetch("http://127.0.0.1:8000/api/medical-record-books", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -216,4 +239,97 @@ export const ApproveAccessRequests= async (data: any) => {
     throw error;
   }
 };
+export const GetHistoryMedical = async (data:any)=>{
+  try{
+    const response1 = await fetch("http://103.179.185.78:3002/medical/diseasecode", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response1.ok) {
+      const errorMessage = await response1.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error on first API! status: ${response1.status}, message: ${errorMessage}`);
+    }
 
+    const result = await response1.json();
+    console.log("First API call successful:", result);
+    return result;
+  } catch (error) {
+    console.error("Error during API calls:", error);
+    throw error;
+  }
+}
+export const GetHistoryMedicalDetail = async (data:any)=>{
+  try {
+
+    const response1 = await fetch("http://103.179.185.78:3002/medical/diseasecodedetail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response1.ok) {
+      const errorMessage = await response1.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error on first API! status: ${response1.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response1.json();
+    console.log("First API call successful:", result);
+    return result;
+  } catch (error) {
+    console.error("Error during API calls:", error);
+    throw error;
+  }
+}
+export const PushDataMedical = async (data: any) => { 
+  try {
+    // Gửi dữ liệu đến API đầu tiên
+    const response1 = await fetch("http://103.179.185.78:3002/medical/pushdata", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái của API đầu tiên
+    if (!response1.ok) {
+      const errorMessage = await response1.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error on first API! status: ${response1.status}, message: ${errorMessage}`);
+    }
+
+    const result1 = await response1.json();
+    console.log("First API call successful:", result1);
+
+    // Nếu API đầu tiên thành công, tiếp tục gửi đến API thứ hai
+    const response2 = await fetch("http://127.0.0.1:8000/api/medicalconclusion/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái của API thứ hai
+    if (!response2.ok) {
+      const errorMessage = await response2.text();
+      throw new Error(`HTTP error on second API! status: ${response2.status}, message: ${errorMessage}`);
+    }
+
+    const result2 = await response2.json();
+    console.log("Second API call successful:", result2);
+
+    // Trả về kết quả từ cả hai API
+    return {
+      firstApiResult: result1,
+      secondApiResult: result2,
+    };
+
+  } catch (error) {
+    console.error("Error during API calls:", error);
+    throw error;
+  }
+};
