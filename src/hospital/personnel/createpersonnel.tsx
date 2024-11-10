@@ -52,7 +52,7 @@ export default function CreatePersonnel() {
         fullname: "",
         address: "",
         phone: "",
-        typeusers: "Doctor",
+        typeusers: "admin",
         branch: "",
         password: "",
         tokeorg: "",

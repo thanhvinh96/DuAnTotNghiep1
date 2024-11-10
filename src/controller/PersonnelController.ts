@@ -1,6 +1,6 @@
 export const GetInfoFullPersonnel = async (FormData:any) => {
     try {
-        const response = await fetch("http://localhost:3002/getfull-personnel", {
+        const response = await fetch("http://103.179.185.78:3002/getfull-personnel", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const GetInfoFullPersonnel = async (FormData:any) => {
 };
 export const CreatePersonnels = async(FormData:any)=>{
     try {
-        const response:any = await fetch("http://localhost:3002/create-user", {
+        const response:any = await fetch("http://103.179.185.78:3002/create-user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -94,9 +94,38 @@ export const CreatePersonnels = async(FormData:any)=>{
       }
 }
 
+export const GetScheduleByDoctor = async (data:any)=>{
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/schedule/bydoctor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+    //   console.log("Success:", data);
+      return data;
+    //   alert('Success')
+      // You can add navigation or success handling here
+    } else {
+      const error = await response.json();
+      console.error("Error:", error);
+      return error
+      // Handle error response from server
+    }
+
+    } catch (err) {
+    console.error("Network error:", err);
+    // Handle network errors here
+  }
+}
 export const GetpersonnelByToken = async(FormData:any)=>{
     try {
-        const response = await fetch("http://localhost:3002/getpersonnel-bytoken/", {
+        const response = await fetch("http://103.179.185.78:3002/getpersonnel-bytoken/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

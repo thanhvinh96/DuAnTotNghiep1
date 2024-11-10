@@ -1,6 +1,6 @@
 export const CreateBranchs = async (formData: any) => {
     try {
-        const response = await fetch("http://localhost:3002/create-brach", {
+        const response = await fetch("http://103.179.185.78:3002/create-brach", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const CreateBranchs = async (formData: any) => {
 };
 export const GetFullBranch = async (formData: any) => {
     try {
-        const response = await fetch("http://localhost:3002/getfull-brach", {
+        const response = await fetch("http://103.179.185.78:3002/getfull-brach", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export const GetFullBranch = async (formData: any) => {
 
 export const BranchRequestMedical = async (formData: any) => {
   try {
-      const response = await fetch("http://localhost:3002/request-record", {
+      const response = await fetch("http://103.179.185.78:3002/request-record", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export const BranchRequestMedical = async (formData: any) => {
 };
 export const ShowBranchRequestMedical = async (formData: any) => {
   try {
-      const response = await fetch("http://localhost:3002/get-request-branch", {
+      const response = await fetch("http://103.179.185.78:3002/get-request-branch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

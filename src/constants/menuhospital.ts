@@ -15,76 +15,68 @@ export interface MenuItemTypes {
 }
 
 const MENU_ITEMS: MenuItemTypes[] = [
-  { key: "MAIN", label: "MAIN", isTitle: true  ,   allowedRoles: ['superadmin'],},
+  { key: "MAIN", label: "CHÍNH", isTitle: true, allowedRoles: ['superadmin'], },
   {
     key: "/hospital/home",
-    label: "Home",
+    label: "Trang chủ",
     isTitle: false,
     icon: "calendar",
     url: "/hospital/home",
-    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
   },
-  { key: "HOSPITAL", label: "HOSPITAL", isTitle: true  ,   allowedRoles: ['superadmin','nurse'],},
+  { key: "HOSPITAL", label: "BỆNH VIỆN", isTitle: true, allowedRoles: ['superadmin'], },
   {
     key: "/hospital/profile-hospital",
-    label: "Organizational information",
+    label: "Thông tin tổ chức",
     isTitle: false,
     icon: "calendar",
     url: "/hospital/profile-hospital",
-    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
   },
   {
     key: "Hospital branch",
-    label: "Hospital branch",
+    label: "Chi nhánh bệnh viện",
     isTitle: false,
     icon: "calendar",
     url: "/hospital/hospital-branch",
-    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
   },
   {
     key: "personnel management",
-    label: "Personnel management",
+    label: "Quản lý nhân sự",
     isTitle: false,
     icon: "user",
     url: "/hospital/personnel-management",
-    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
   },
   {
     key: "patient management",
-    label: "patient management",
+    label: "Quản lý bệnh nhân",
     isTitle: false,
     icon: "user",
     url: "/hospital/patient-management",
-    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
   },
   {
     key: "dashboard-1",
-    label: "Manage book access rights",
+    label: "Quản lý quyền truy cập hồ sơ",
     isTitle: false,
     icon: "book",
     url: "/request-medical-nurse",
-    allowedRoles: ['superadmin','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
   },
-  { key: "DOCTER", label: "HOME", isTitle: true  ,   allowedRoles: ['doctors'],},
-  
-  {
-    key: "examine patient",
-    label: "Home",
-    isTitle: false,
-    icon: "home",
-    url: "/examine-patient",
-    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
-  },
+  { key: "DOCTER", label: "TRANG CHỦ", isTitle: true, allowedRoles: ['doctors'], },
+  // {
+  //   key: "examine patient",
+  //   label: "Trang chủ",
+  //   isTitle: false,
+  //   icon: "home",
+  //   url: "/examine-patient",
+  //   allowedRoles: ['superadmin'], // Chỉ cho phép superadmin
+  // },
   {
     key: "DOCTOR",
-    label: "DOCTOR",
+    label: "BÁC SĨ",
     isTitle: true,
     allowedRoles: ['doctor', 'nurse'],
   },
@@ -109,7 +101,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Lịch sử khám",
     isTitle: false,
     icon: "user",
-    url: "/doctor/history-medical",
+    url: "/doctor/history",
     allowedRoles: ['doctor', 'nurse'], // Chỉ cho phép doctors và nurses
   },
   {
@@ -118,105 +110,57 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "user",
     url: "/doctor/appointments",
-    allowedRoles: ['doctor', 'nurse'], // Chỉ cho phép doctors và nurses
+    allowedRoles: ['doctor'], // Chỉ cho phép doctors và nurses
   },
-  
-  { key: "NURSE", label: "NURSE", isTitle: true ,   allowedRoles: ['doctors','nurse'], },
   {
     key: "Request Access Medical",
-    label: "Request Access Medical",
+    label: "Yêu cầu truy cập hồ sơ",
     isTitle: false,
     icon: "calendar",
     url: "/request-medical-nurse",
     allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
-  },
-  {
-    key: "General nurse",
-    label: "General Nurse",
-    isTitle: false,
-    icon: "calendar",
-    url: "/general-nurse",
-    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
-  },
-  {
-    key: "internal medicine nurse",
-    label: "Internal medicine Nurse",
-    isTitle: false,
-    icon: "calendar",
-    url: "/internal-medicine-nurse",
-    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
-  },
-  {
-    key: "Blood test Nurse",
-    label: "Blood test Nurse",
-    isTitle: false,
-    icon: "calendar",
-    url: "/Blood-test-Nurse",
-    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
-  },
-  {
-    key: "Urine test Nurse",
-    label: "Urine test Nurse",
-    isTitle: false,
-    icon: "calendar",
-    url: "/Urine-test-Nurse",
-    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
-  },
-  {
-    key: "Xray Nurse",
-    label: "X-ray Nurse",
-    isTitle: false,
-    icon: "calendar",
-    url: "/Xray-nurse",
-    allowedRoles: ['doctors','nurse'], // Chỉ cho phép doctors
-
   },
 
-
-  { key: "BRACH", label: "BRACH", isTitle: true ,   allowedRoles: ['doctors','nurse'],},
-
+  { key: "BRACH", label: "CHI NHÁNH", isTitle: true, allowedRoles: ['admin'], },
   {
     key: "home",
-    label: "Home",
+    label: "Trang chủ",
     isTitle: false,
     icon: "calendar",
-
-    url: "/hospital/brach/index",
-    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
-
+    url: "/hospital/branch/home",
+    allowedRoles: ['admin'], // Chỉ cho phép superadmin
+  },
+  {
+    key: "Thông tin tài khoản",
+    label: "Thông tin tài khoản",
+    isTitle: false,
+    icon: "calendar",
+    url: "/hospital/branch/profile",
+    allowedRoles: ['admin'], // Chỉ cho phép superadmin
   },
   {
     key: "personnel-management",
-    label: "Personnel management",
+    label: "Quản lý nhân sự",
     isTitle: false,
     icon: "calendar",
-
     url: "/hospital/brach/personnel-management",
-    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
-
+    allowedRoles: ['admin'], // Chỉ cho phép superadmin
   },
   {
     key: "Manage medical records",
-    label: "Manage medical records",
+    label: "Quản lý hồ sơ y tế",
     isTitle: false,
     icon: "calendar",
-    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
-
     url: "/hospital/brach/manage-medical-records",
+    allowedRoles: ['admin'], // Chỉ cho phép superadmin
   },
   {
-    key: "Right to medical ",
-    label: "Right to medical ",
+    key: "Right to medical",
+    label: "Quyền truy cập y tế",
     isTitle: false,
     icon: "calendar",
-    allowedRoles: ['superadmin', 'doctors','nurse'], // Chỉ cho phép superadmin
-
-    url: "/hospital/brach/right-to-medical ",
+    url: "/hospital/brach/right-to-medical",
+    allowedRoles: ['admin'], // Chỉ cho phép superadmin
   },
 ];
 

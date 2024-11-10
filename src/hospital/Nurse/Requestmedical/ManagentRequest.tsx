@@ -6,6 +6,7 @@ import { ShowBranchRequestMedical } from "../../../controller/BranchController";
 import jwt_decode from 'jwt-decode';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import Statistics from "./Statistics";
 
 interface Request {
     cccd: string;
@@ -27,12 +28,17 @@ const ManagementRequest: React.FC = () => {
         tokenbranch: '',
     });
     const [datatable, setdatatanle] = useState<Request[]>([]); // Đảm bảo kiểu dữ liệu là Request[]
-    
+    const [totalRequests, setTotalRequests] = useState(0); // Tổng số yêu cầu
+    const [totalSuccess, setTotalSuccess] = useState(0);   // Tổng số yêu cầu thành công
+    const [totalRejected, setTotalRejected] = useState(0); // Tổng số yêu cầu bị từ chối
     const showdatarequest = async () => {
         const res: any = await ShowBranchRequestMedical(datagetshow);
         console.log(res);
-        if (Array.isArray(res)) {
-            setdatatanle(res);
+        if (Array.isArray(res.records)) {
+            setdatatanle(res.records);
+            setTotalRequests(res.total);
+            setTotalSuccess(res.statusCount.true);
+            setTotalRejected(res.statusCount.false);
         } else {
             console.error('Expected an array but got:', res);
             setdatatanle([]); // Reset to empty array if response is not valid
@@ -177,8 +183,37 @@ const ManagementRequest: React.FC = () => {
                         active: true,
                     },
                 ]}
-                title={"Information Hospital"}
+                title={"Yêu cầu truy cập sổ khám bệnh"}
             />
+     <Row>
+  <Col lg={6} xl={4}>
+    <Statistics
+      icon="fe-book"
+      variant="primary"
+      stats={totalRequests.toString()} // Chuyển đổi thành chuỗi
+      description="Tổng số yêu cầu sổ khám bệnh"
+    />
+  </Col>
+  <Col lg={6} xl={4}>
+    <Statistics
+      icon="fe-clock"
+      variant="warning"
+      stats={totalRejected.toString()} // Chuyển đổi thành chuỗi
+      description="Yêu cầu chưa được phê duyệt"
+    />
+  </Col>
+  <Col lg={6} xl={4}>
+    <Statistics
+      icon="fe-check-circle"
+      variant="success"
+      stats={totalSuccess.toString()} // Chuyển đổi thành chuỗi
+      description="Yêu cầu đã được phê duyệt"
+    />
+  </Col>
+</Row>
+
+
+
             <div className="col-12">
                 <div className="card custom-card shadow-none mb-4">
                     <div className="card-body">

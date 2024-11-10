@@ -1,179 +1,219 @@
-import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Card, Table } from "react-bootstrap";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import Table from "../../components/Table";
-import '../../style.css';
+import { GetHistoryMedicalDetail } from "../../controller/MedicalController";
 
-// Define types for all sections of the medical record
-interface ExaminationData {
-  key: string;
-  value: string;
-}
+type RecordType = {
+  exam_records: ExamType[];
+  patient_image?: string;
+  diagnosis_info: {
+    symptom: string;
+    conclusion: string;
+  };
+};
 
-interface PrescriptionData {
-  medicine: string;
-  dosage: string;
-  usage: string;
-}
-
-interface VitalsData {
-  vital: string;
-  value: string;
-}
-
-interface FollowUpData {
-  date: string;
-  instructions: string;
-}
-
-// Example data
-const patientDetails: ExaminationData[] = [
-  { key: 'Họ tên bệnh nhân', value: 'Nguyễn Văn A' },
-  { key: 'Ngày sinh', value: '01/01/1990' },
-  { key: 'Giới tính', value: 'Nam' },
-  { key: 'Mã bệnh nhân', value: 'BN001' },
-  { key: 'Ngày khám', value: '10/10/2024' },
-  { key: 'Bác sĩ', value: 'Trần Văn B' },
-];
-
-const vitals: VitalsData[] = [
-  { vital: 'Huyết áp', value: '120/80 mmHg' },
-  { vital: 'Nhiệt độ', value: '37.5°C' },
-  { vital: 'Nhịp tim', value: '72 BPM' },
-  { vital: 'Nhịp thở', value: '18 nhịp/phút' },
-];
-
-const medicalHistory: ExaminationData[] = [
-  { key: 'Tiền sử bệnh', value: 'Tiểu đường type 2' },
-  { key: 'Dị ứng thuốc', value: 'Không có' },
-];
-
-const bloodTestResults: ExaminationData[] = [
-  { key: 'Bạch cầu', value: '10,000/mm³' },
-  { key: 'Hemoglobin', value: '13.5 g/dL' },
-  { key: 'Tiểu cầu', value: '150,000/mm³' },
-];
-
-const xrayResults: ExaminationData[] = [
-  { key: 'Mô tả hình ảnh', value: 'Mờ phổi, tràn dịch màng phổi' },
-  { key: 'Kết luận X-quang', value: 'Viêm phổi' },
-];
-
-const diagnosisDetails: ExaminationData[] = [
-  { key: 'Chẩn đoán', value: 'Viêm phổi cấp' },
-  { key: 'Phương án điều trị', value: 'Nghỉ ngơi tại nhà, dùng kháng sinh' },
-];
-
-const prescriptionDetails: PrescriptionData[] = [
-  { medicine: 'Amoxicillin', dosage: '500mg', usage: 'Uống 2 viên/ngày' },
-  { medicine: 'Paracetamol', dosage: '500mg', usage: 'Uống 1 viên khi sốt' },
-  { medicine: 'Vitamin C', dosage: '500mg', usage: 'Uống 1 viên sau ăn' },
-];
-
-const followUpInstructions: FollowUpData[] = [
-  { date: '20/10/2024', instructions: 'Tái khám để kiểm tra tiến triển.' },
-  { date: '30/10/2024', instructions: 'Xét nghiệm máu và chụp X-quang lại.' },
-];
-
-// Custom table components for displaying different sections
-const DataTable: React.FC<{ title: string, data: ExaminationData[] }> = ({ title, data }) => (
-  <Card className="mb-3">
-    <Card.Body>
-      <h4 className="header-title">{title}</h4>
-      <Table columns={[{ Header: 'Thông tin', accessor: 'key' }, { Header: 'Chi tiết', accessor: 'value' }]} data={data} />
-    </Card.Body>
-  </Card>
-);
-
-const PrescriptionTable: React.FC<{ data: PrescriptionData[] }> = ({ data }) => (
-  <Card className="mb-3">
-    <Card.Body>
-      <h4 className="header-title">Đơn Thuốc</h4>
-      <Table
-        columns={[
-          { Header: 'Tên thuốc', accessor: 'medicine' },
-          { Header: 'Liều lượng', accessor: 'dosage' },
-          { Header: 'Cách dùng', accessor: 'usage' },
-        ]}
-        data={data}
-      />
-    </Card.Body>
-  </Card>
-);
-
-const VitalsTable: React.FC<{ data: VitalsData[] }> = ({ data }) => (
-  <Card className="mb-3">
-    <Card.Body>
-      <h4 className="header-title">Chỉ số sinh tồn</h4>
-      <Table columns={[{ Header: 'Chỉ số', accessor: 'vital' }, { Header: 'Giá trị', accessor: 'value' }]} data={data} />
-    </Card.Body>
-  </Card>
-);
-
-const FollowUpTable: React.FC<{ data: FollowUpData[] }> = ({ data }) => (
-  <Card className="mb-3">
-    <Card.Body>
-      <h4 className="header-title">Hướng dẫn tái khám</h4>
-      <Table columns={[{ Header: 'Ngày hẹn', accessor: 'date' }, { Header: 'Hướng dẫn', accessor: 'instructions' }]} data={data} />
-    </Card.Body>
-  </Card>
-);
+type ExamType = {
+  examination: string;
+  result: string;
+};
 
 const MedicalRecordDetail: React.FC = (): JSX.Element => {
+  const [medicalData, setMedicalData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = {
+          cccd: "0869895748",
+          tokenmedical: "b1f5c5a9d6c40afdc5e428c4051cf033c748fd491d13fcbdeb76f0bc257fc2b2",
+          diseasecode: "3ca539b5a10bd53c8ba6"
+        };
+        const res = await GetHistoryMedicalDetail(data);
+        const parsedData = JSON.parse(res.data.diseaseDetail.data);
+        console.log(parsedData.examinationHistory);
+        setMedicalData(parsedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <PageTitle
-        breadCrumbItems={[
-          { label: "Phiếu Khám Bệnh", path: "/medical/record/detail" },
-        ]}
-        title={"Phiếu Khám Bệnh Chi Tiết"}
+        breadCrumbItems={[{ label: "Phiếu Khám Bệnh", path: "/medical/record/detail" }]}
+        title="Phiếu Khám Bệnh Chi Tiết"
       />
 
       <Row>
-        {/* Patient Information */}
-        <Col lg={6}>
-          <DataTable title="Thông tin bệnh nhân" data={patientDetails} />
-        </Col>
-
-        {/* Vitals */}
-        <Col lg={6}>
-          <VitalsTable data={vitals} />
-        </Col>
-
-        {/* Medical History */}
-        <Col lg={6}>
-          <DataTable title="Tiền sử bệnh" data={medicalHistory} />
-        </Col>
-
-        {/* Blood Test Results */}
-        <Col lg={6}>
-          <DataTable title="Kết quả xét nghiệm máu" data={bloodTestResults} />
-        </Col>
-
-        {/* X-ray Results */}
-        <Col lg={6}>
-          <DataTable title="Kết quả X-quang" data={xrayResults} />
-        </Col>
-
-        {/* Diagnosis */}
-        <Col lg={6}>
-          <DataTable title="Chẩn đoán & Điều trị" data={diagnosisDetails} />
-        </Col>
-
-        {/* Prescription */}
         <Col lg={12}>
-          <PrescriptionTable data={prescriptionDetails} />
-        </Col>
+          {medicalData ? (
+            <>
+              <Card>
+                <Card.Body>
+                  <h5>Thông tin bệnh nhân tại bệnh viện {medicalData.hospitalName}</h5>
+                  <p><strong>Họ tên:</strong> {medicalData.patientInfo.fullname}</p>
+                  <p><strong>Ngày sinh:</strong> {medicalData.patientInfo.birthday}</p>
+                  <p><strong>Địa chỉ:</strong> {medicalData.patientInfo.address}</p>
+                  <p><strong>Số bảo hiểm:</strong> {medicalData.patientInfo.sobh}</p>
+                </Card.Body>
+              </Card>
 
-        {/* Follow-up Instructions */}
-        <Col lg={12}>
-          <FollowUpTable data={followUpInstructions} />
+              <Card>
+                <Card.Body>
+                  <h5>Chi tiết khám bệnh</h5>
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Chuyên Mục</th>
+                        <th>Kết Mục</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(medicalData.examinationHistory) && medicalData.examinationHistory.length > 0 ? (
+                        medicalData.examinationHistory.map((historyItem: any, index: number) => (
+                          <React.Fragment key={index}>
+                            {Array.isArray(historyItem.exam_records) && historyItem.exam_records.length > 0 ? (
+                              historyItem.exam_records.map((item: any, idx: number) => (
+                                <tr key={idx}>
+                                  <td>{item.examination}</td>
+                                  <td>{item.result}</td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan={2}>Không có kết quả xét nghiệm</td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={2}>Không có lịch sử khám bệnh</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+
+                  {Array.isArray(medicalData.examinationHistory) &&
+                    medicalData.examinationHistory.map((historyItem: any, index: number) => (
+                      <div key={index}>
+                        <p><strong>Triệu chứng:</strong> {historyItem.diagnosis_info.symptom}</p>
+                        <p><strong>Kết quả:</strong> {historyItem.diagnosis_info.conclusion}</p>
+                      </div>
+                    ))}
+                </Card.Body>
+              </Card>
+
+              <div className="mb-4 mt-3">
+                <h5>Quá Trình Khám Bệnh</h5>
+                <Table bordered responsive className="text-center">
+                  <thead className="thead-light">
+                    <tr>
+                      <th>STT</th>
+                      <th>Chuyên Mục Khám</th>
+                      <th>Kết Quả</th>
+                      <th>Hình Ảnh</th>
+                      <th>Triệu Chứng</th>
+                      <th>Kết Luận</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.isArray(medicalData.examinationHistory) && medicalData.examinationHistory.length > 0 ? (
+                      medicalData.examinationHistory.map((record: RecordType, index: number) => (
+                        <React.Fragment key={index}>
+                          {record.exam_records.map((exam: ExamType, examIndex: number) => (
+                            <tr key={examIndex}>
+                              <td>{index + 1}</td>
+                              <td>{exam.examination}</td>
+                              <td>{exam.result}</td>
+                              {examIndex === 0 && (
+                                <>
+                                  <td rowSpan={record.exam_records.length}>
+                                    {record.patient_image && (
+                                      <img
+                                        src={record.patient_image}
+                                        alt="Patient"
+                                        className="small-image"
+                                        style={{ cursor: "pointer", width: "100px", height: "100px" }}
+                                      />
+                                    )}
+                                  </td>
+                                  <td rowSpan={record.exam_records.length}>
+                                    {record.diagnosis_info.symptom}
+                                  </td>
+                                  <td rowSpan={record.exam_records.length}>
+                                    {record.diagnosis_info.conclusion}
+                                  </td>
+                                </>
+                              )}
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6}>Không có dữ liệu</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
+              </div>
+
+              <Card>
+                <Card.Body>
+                  <h5>Đơn Thuốc</h5>
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Tên Thuốc</th>
+                        <th>Giá trị tham chiếu</th>
+                        <th>Kết quả</th>
+                        <th>Đơn vị</th>
+                        <th>Máy xét nghiệm</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(medicalData.Prescription) && medicalData.Prescription.length > 0 ? (
+                        medicalData.Prescription.map((item: any, index: number) => (
+                          <tr key={index}>
+                            <td>{item.testName}</td>
+                            <td>{item.referenceValue}</td>
+                            <td>{item.result}</td>
+                            <td>{item.unit}</td>
+                            <td>{item.machine}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={5}>Không có kết quả xét nghiệm</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+                </Card.Body>
+              </Card>
+
+              <Card>
+                <Card.Body>
+                  <h5>Kết luận:</h5>
+                  <p><strong>Chẩn đoán:</strong> {medicalData.conclusion?.diagnosis}</p>
+                  <p><strong>Phương án điều trị:</strong> {medicalData.conclusion?.treatment}</p>
+                  <p><strong>Ghi chú thêm:</strong> {medicalData.conclusion?.additionalNotes}</p>
+                </Card.Body>
+              </Card>
+            </>
+          ) : (
+            <p>Đang tải dữ liệu...</p>
+          )}
         </Col>
       </Row>
     </>
   );
-}
+};
 
 export default MedicalRecordDetail;

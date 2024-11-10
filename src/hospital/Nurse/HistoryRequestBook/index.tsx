@@ -130,13 +130,14 @@ const Dashboard3 = () => {
               size="sm"
               onClick={() => handleEdit(row.original.patientName)}
             >
-Tiếp Nhận            </Button>
-            {/* <a
+              Chỉnh sửa
+            </Button>
+            <a
               href={`/delete?model=${row.original.patientName}`}
               className="btn btn-outline-danger btn-sm"
             >
               Xóa
-            </a> */}
+            </a>
           </div>
         ),
       },

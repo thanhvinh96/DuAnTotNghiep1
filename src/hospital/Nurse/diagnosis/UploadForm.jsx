@@ -132,51 +132,52 @@ const MedicalForm = ({ onSubmit }) => {
             tokeorg,
             tokenbranch,
             tokenuser,
+            patientImage,
         };
         console.log(requestData);
     
-        // try {
-        //     const response = await fetch("http://127.0.0.1:8000/api/medicaldata/add", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify(requestData)
-        //     });
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/medicaldata/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            });
     
-        //     const result = await response.json();
+            const result = await response.json();
     
-        //     if (response.ok) {
-        //         console.log("Dữ liệu đã được gửi thành công:", result.data); // Kiểm tra dữ liệu
-        //         Swal.fire({
-        //             title: 'Thêm Dữ liệu thành công!',
-        //             text: 'Bạn muốn ở lại trang này hay chuyển đến trang chủ?',
-        //             icon: 'success',
-        //             showCancelButton: true,
-        //             confirmButtonText: 'Chuyển đến trang chủ',
-        //             cancelButtonText: 'Ở lại trang',
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 // Chuyển đến trang chủ
-        //                 window.location.href = '/home';
-        //             } else {
-        //                 // Người dùng chọn ở lại trang, không làm gì
-        //             }
-        //         });
-        //         setAddedData(result.data); // Lưu dữ liệu đã thêm vào state
-        //         onSubmit(requestData); 
-        //     } else {
-        //         Swal.fire({
-        //             title: 'Thất Bại!',
-        //             text: 'Thêm Dữ Thất Bại.',
-        //             icon: 'error',
-        //             confirmButtonText: 'OK',
-        //         });
-        //         console.error("Lỗi khi gửi dữ liệu:", result);
-        //     }
-        // } catch (error) {
-        //     console.error("Lỗi kết nối đến API:", error);
-        // }
+            if (response.ok) {
+                console.log("Dữ liệu đã được gửi thành công:", result.data); // Kiểm tra dữ liệu
+                Swal.fire({
+                    title: 'Thêm Dữ liệu thành công!',
+                    text: 'Bạn muốn ở lại trang này hay chuyển đến trang chủ?',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Chuyển đến trang chủ',
+                    cancelButtonText: 'Ở lại trang',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Chuyển đến trang chủ
+                        window.location.href = '/home';
+                    } else {
+                        // Người dùng chọn ở lại trang, không làm gì
+                    }
+                });
+                setAddedData(result.data); // Lưu dữ liệu đã thêm vào state
+                onSubmit(requestData); 
+            } else {
+                Swal.fire({
+                    title: 'Thất Bại!',
+                    text: 'Thêm Dữ Thất Bại.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
+                console.error("Lỗi khi gửi dữ liệu:", result);
+            }
+        } catch (error) {
+            console.error("Lỗi kết nối đến API:", error);
+        }
     };
     
 

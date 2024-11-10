@@ -13,7 +13,7 @@ export default function UserForm() {
     fullname: '',
     imgidentification: '',
     password: '',
-    phone: '',
+    phone: '', 
     tokenuser: '',
     timecreats: '',
     typeusers: '',
