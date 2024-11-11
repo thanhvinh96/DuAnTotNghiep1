@@ -96,10 +96,9 @@ const UserBox = () => {
 
 /* sidebar content */
 const SideBarContent = () => {
-  
-  useEffect(()=>{
-    console.log(getMenuItems())
-  },[])
+  useEffect(() => {
+    console.log(getMenuItems());
+  }, []);
   return (
     <>
       <UserBox />
@@ -152,12 +151,20 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
 
   return (
     <React.Fragment>
-      <div className="app-menu" ref={menuNodeRef} style={{backgroundColor:'#a6eaff'}}>
+      <div
+        className="app-menu"
+        ref={menuNodeRef}
+        style={{
+          background: "linear-gradient(to top, #35a2c6, #ccf2d8)",
+          width: "350px",
+          fontSize: "90px",
+        }}
+      >
         {!hideLogo && (
-          <div className="logo-box">
+          <div className="logo-box" style={{ margin: " 30px 0 20px 0" }}>
             <Link to="/" className="logo logo-dark text-center">
               <span className="logo-sm">
-                <img src={logoSm} alt="" height="22" />
+                <img src={logoSm} alt="" height="10px" />
               </span>
               <span className="logo-lg">
                 <img

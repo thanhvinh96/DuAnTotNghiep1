@@ -215,24 +215,24 @@ const Topbar = ({
   }));
   const handleLeftMenuCallBack = () => {
     if (width < 1140) {
-      if (leftSideBarType === 'full') {
+      if (leftSideBarType === "full") {
         showLeftSideBarBackdrop();
-        document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-      }
-      else {
+        document
+          .getElementsByTagName("html")[0]
+          .classList.add("sidebar-enable");
+      } else {
         dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       }
     } else if (leftSideBarType === "condensed") {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
-    } else if (leftSideBarType === 'full') {
+    } else if (leftSideBarType === "full") {
       showLeftSideBarBackdrop();
       document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    } else if (leftSideBarType === 'fullscreen') {
+    } else if (leftSideBarType === "fullscreen") {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
       // showLeftSideBarBackdrop();
       document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    }
-    else {
+    } else {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED));
     }
   };
@@ -255,7 +255,9 @@ const Topbar = ({
     }
 
     backdrop.addEventListener("click", function (e) {
-      document.getElementsByTagName("html")[0].classList.remove("sidebar-enable");
+      document
+        .getElementsByTagName("html")[0]
+        .classList.remove("sidebar-enable");
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       hideLeftSideBarBackdrop();
     });
@@ -274,7 +276,10 @@ const Topbar = ({
 
   return (
     <React.Fragment>
-      <div className={`navbar-custom ${navbarCssClasses}`}>
+      <div
+        className={`navbar-custom ${navbarCssClasses}`}
+        style={{ background: "#77c5ce" }}
+      >
         <div className={`topbar ${containerCssClasses}`}>
           <div className="topbar-menu d-flex align-items-center gap-1">
             <button
