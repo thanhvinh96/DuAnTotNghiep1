@@ -60,7 +60,10 @@ const MenuItemWithChildren = ({
             <FeatherIcon icon={item.icon} />{" "}
           </span>
         )}
-        <span className="menu-text"> {item.label} </span>
+        <span className="menu-text" >
+          {" "}
+          {item.label}{" "}
+        </span>
         {!item.badge ? (
           <span className="menu-arrow"></span>
         ) : (
@@ -182,10 +185,16 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
     if (div) {
       let items: any = div.getElementsByClassName("side-nav-link-ref");
       for (let i = 0; i < items.length; ++i) {
-        let trimmedURL = location?.pathname?.replaceAll(process.env.PUBLIC_URL, "");
+        let trimmedURL = location?.pathname?.replaceAll(
+          process.env.PUBLIC_URL,
+          ""
+        );
         // console.log(trimmedURL);
         // console.log("pathname",items[i].pathname.replaceAll(process.env.PUBLIC_URL, ""));
-        if (trimmedURL === items[i]?.pathname?.replaceAll(process.env.PUBLIC_URL, "")) {
+        if (
+          trimmedURL ===
+          items[i]?.pathname?.replaceAll(process.env.PUBLIC_URL, "")
+        ) {
           matchingMenuItem = items[i];
           break;
         }

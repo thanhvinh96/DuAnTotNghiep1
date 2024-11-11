@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <>
       <Hero
-        title="Your Partner in Health And Live"
+        title="Electronic Health Record"
         subTitle="We are committed to providing you with the best medical and healthcare services to help you live healthier and happier."
         bgUrl="/images/home_1/hero_bg.jpeg"
         imgUrl="/images/img/banner.png"
