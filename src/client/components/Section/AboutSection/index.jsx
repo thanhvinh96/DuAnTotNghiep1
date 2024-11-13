@@ -1,5 +1,5 @@
-import React from 'react';
-import Spacing from '../../Spacing';
+import React from "react";
+import Spacing from "../../Spacing";
 
 export default function AboutSection({
   imgUrl,
@@ -39,7 +39,7 @@ export default function AboutSection({
                   {subTitle}
                 </h3>
               </div>
-              <Spacing md="72" lg="72" />
+              <Spacing md="42" lg="72" />
               <ul className="cs_about_text_list">
                 {featureList.map((item, index) => (
                   <li key={index}>
