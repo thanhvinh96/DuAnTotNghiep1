@@ -156,7 +156,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         ref={menuNodeRef}
         style={{
           background: "#D7E6EF",
-          width: "350px",
+          width: "300px",
           fontSize: "90px",
         }}
       >
