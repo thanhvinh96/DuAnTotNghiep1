@@ -14,11 +14,11 @@ import { LayoutTypes } from "../constants/layouthospital";
 // components
 import AppMenu from "./Menu";
 import profileImg from "../assets/images/users/user-1.jpg";
-import logoSm from "../assets/images/LogoWhite.png";
-import logoDark from "../assets/images/LogoWhite.png";
-import logoDark2 from "../assets/images/LogoWhite.png";
-import logoLight from "../assets/images/LogoWhite.png";
-import logoLight2 from "../assets/images/LogoWhite.png";
+import logoSm from "../assets/images/Logo.png";
+import logoDark from "../assets/images/Logo.png";
+import logoDark2 from "../assets/images/Logo.png";
+import logoLight from "../assets/images/Logo.png";
+import logoLight2 from "../assets/images/Logo.png";
 
 /* user box */
 const UserBox = () => {
@@ -155,14 +155,9 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         className="app-menu"
         ref={menuNodeRef}
         style={{
-<<<<<<< HEAD
           // background: "linear-gradient(to top, #35a2c6, #ccf2d8)",
-          backgroundColor:'#2628a6',
           width: "350px",
-=======
           background: "#D7E6EF",
-          width: "300px",
->>>>>>> bd61d15fca5423316bf129c502ac8934de7d7ed4
           fontSize: "90px",
         }}
       >
