@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 // Define an interface for the record object
-import { showdataprofiles ,updataprofiles} from '../../controller/MedicalController'; // Import controller
+import { showdataprofiles, updataprofiles } from '../../controller/MedicalController'; // Import controller
 
 interface Record {
   tokenmedical: string;
@@ -83,56 +83,56 @@ const ProfileMedical: React.FC = () => {
     tokenmedical: '',
     cccd: ''
   });
-  
 
-  
-const showdataprofile = async () => {
-  try {
-    // Gửi dữ liệu đến endpoint
-    const response:any = await showdataprofiles(datacheckprofile);
-    // console.log("kq"+response);
 
-    // Kiểm tra nếu phản hồi không thành công
-    // if (!response.ok) {
-    //   throw new Error('Network response was not ok');
-    // }
 
-    // // Chuyển đổi phản hồi thành JSON
-    // const result = await response.json();
-    // // const data:any = JSON.stringify(result)
-    // // Xử lý kết quả nhận được
-    if(response.success===true){
-      console.log('thành công');
-      console.log('Data received:', response.record);
-      setRecord({
-        tokenmedical: response.record.tokenmedical || '',
-        name: response.record.name || '',
-        email: response.record.email || '',
-        birthDate: response.record.birthDate || '',
-        gender: response.record.gender || '',
-        address: response.record.address || '',
-        phoneNumber: response.record.phoneNumber || '',
-        cccd: response.record.cccd || '',
-        avatarImagebase64: response.record.avatarImagebase64 || '', // Ensure this is included
-        height: response.record.height || '', // New field
-        weight: response.record.weight || '', // New field
-        medicalinsurance: response.record.medicalinsurance || '', // New field
-        avatar: response.record.avatar || '', // New field
-      });
+  const showdataprofile = async () => {
+    try {
+      // Gửi dữ liệu đến endpoint
+      const response: any = await showdataprofiles(datacheckprofile);
+      // console.log("kq"+response);
+
+      // Kiểm tra nếu phản hồi không thành công
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+
+      // // Chuyển đổi phản hồi thành JSON
+      // const result = await response.json();
+      // // const data:any = JSON.stringify(result)
+      // // Xử lý kết quả nhận được
+      if (response.success === true) {
+        console.log('thành công');
+        console.log('Data received:', response.record);
+        setRecord({
+          tokenmedical: response.record.tokenmedical || '',
+          name: response.record.name || '',
+          email: response.record.email || '',
+          birthDate: response.record.birthDate || '',
+          gender: response.record.gender || '',
+          address: response.record.address || '',
+          phoneNumber: response.record.phoneNumber || '',
+          cccd: response.record.cccd || '',
+          avatarImagebase64: response.record.avatarImagebase64 || '', // Ensure this is included
+          height: response.record.height || '', // New field
+          weight: response.record.weight || '', // New field
+          medicalinsurance: response.record.medicalinsurance || '', // New field
+          avatar: response.record.avatar || '', // New field
+        });
+      }
+
+      // // Bạn có thể cập nhật state hoặc làm gì đó với dữ liệu nhận được ở đây
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
     }
-    
-    // // Bạn có thể cập nhật state hoặc làm gì đó với dữ liệu nhận được ở đây
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
-  }
-};
-useEffect(() => {
-  if (datacheckprofile.tokenmedical && datacheckprofile.cccd) {
-    showdataprofile();
-  }
-}, [datacheckprofile]);
+  };
+  useEffect(() => {
+    if (datacheckprofile.tokenmedical && datacheckprofile.cccd) {
+      showdataprofile();
+    }
+  }, [datacheckprofile]);
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -140,11 +140,11 @@ useEffect(() => {
       const decodedToken: any = jwtDecode(token);
       setdatacheckprofile(prevState => ({
         ...prevState, // Giữ lại các thuộc tính cũ
-        tokenmedical: decodedToken.tokenmedical , // Cập nhật giá trị mới
-        cccd: decodedToken.cccd , // Cập nhật giá trị mới
+        tokenmedical: decodedToken.tokenmedical, // Cập nhật giá trị mới
+        cccd: decodedToken.cccd, // Cập nhật giá trị mới
         // Nếu cần cập nhật cccd cũng có thể làm tương tự
       }));
-    
+
     }
   }, []);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -171,7 +171,7 @@ useEffect(() => {
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-  
+
     const loadingSwal: any = MySwal.fire({
       title: 'Please wait...',
       text: 'Update Profile medical, please wait!',
@@ -182,7 +182,7 @@ useEffect(() => {
         Swal.showLoading();
       },
     });
-  
+
     // Creating data object with required fields
     const data = {
       tokenmedical: record.tokenmedical,
@@ -196,60 +196,34 @@ useEffect(() => {
       medicalinsurance: record.medicalinsurance,
       avatar: record.avatarImagebase64,
     };
-  
+
     console.log('Submitted data:', data);
-  
+
     try {
       updataprofiles(data)
-      .then((response) => {
-        loadingSwal.close();
+        .then((response) => {
+          loadingSwal.close();
 
-        console.log(response.transactionResult.success); // Bây giờ response sẽ là kết quả thực tế
-        if(response.transactionResult.success===true){
-        Swal.fire({
-          title: 'Update Success!',
-          text: 'Your Update Profile was successful.',
-          icon: 'success',
-          confirmButtonText: 'OK',
+          console.log(response.transactionResult.success); // Bây giờ response sẽ là kết quả thực tế
+          if (response.transactionResult.success === true) {
+            Swal.fire({
+              title: 'Update Success!',
+              text: 'Your Update Profile was successful.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            });
+          } else {
+            Swal.fire({
+              title: 'Update Error!',
+              text: 'There was an error during registration. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating profile:", error);
         });
-        }else{
-                  Swal.fire({
-          title: 'Update Error!',
-          text: 'There was an error during registration. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating profile:", error);
-      });
-    
-      // const result = await response;
-  
-      // if (response.ok) {
-      //   Swal.fire({
-      //     title: 'Update Success!',
-      //     text: 'Your Update Profile was successful.',
-      //     icon: 'success',
-      //     confirmButtonText: 'OK',
-      //   });
-  
-      //   // localStorage.removeItem("jwtToken");
-  
-      //   // const decoded = jwtDecode<DecodedToken>(result.transactionResult.token);
-      //   // console.log(result.transactionResult.token);
-      //   // localStorage.setItem("jwtToken", result.transactionResult.token);
-      //   // console.log("User info:", decoded);
-      //   console.log('Success:', result);
-      // } else {
-      //   Swal.fire({
-      //     title: 'Update Error!',
-      //     text: result.message || 'There was an error during registration. Please try again.',
-      //     icon: 'error',
-      //     confirmButtonText: 'OK',
-      //   });
-      // }
     } catch (error) {
       loadingSwal.close();
       Swal.fire({
@@ -263,251 +237,252 @@ useEffect(() => {
   };
   const uploadToCloudinaryAvatar = async () => {
     try {
-        const fileInput = document.getElementById('uploadsavatart') as HTMLInputElement;
-        const file = fileInput?.files?.[0];
-        
-        if (file) {
-            const data = new FormData();
-            data.append('file', file);
-            data.append('upload_preset', 'Phanthuyen');
+      const fileInput = document.getElementById('uploadsavatart') as HTMLInputElement;
+      const file = fileInput?.files?.[0];
 
-            const response = await fetch('https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload', {
-                method: 'POST',
-                body: data
-            });
+      if (file) {
+        const data = new FormData();
+        data.append('file', file);
+        data.append('upload_preset', 'Phanthuyen');
 
-            const result = await response.json();
+        const response = await fetch('https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload', {
+          method: 'POST',
+          body: data
+        });
 
-            if (result) {
-              setRecord((prevRecord) => ({
-                ...prevRecord,
-                avatarImagebase64: result['url'], // Set base64 string to state
-              }));
-                // setFormData((prevFormData) => ({
-                //     ...prevFormData,
-                //     avatar: result['url'], 
-                // }));
-                alert('Tải lên thành công!');
-                console.log('Uploaded Avatar URL:', result['url']);
-            }
+        const result = await response.json();
+
+        if (result) {
+          setRecord((prevRecord) => ({
+            ...prevRecord,
+            avatarImagebase64: result['url'], // Set base64 string to state
+          }));
+          // setFormData((prevFormData) => ({
+          //     ...prevFormData,
+          //     avatar: result['url'], 
+          // }));
+          alert('Tải lên thành công!');
+          console.log('Uploaded Avatar URL:', result['url']);
         }
+      }
     } catch (error) {
-        console.error('Lỗi khi tải ảnh lên:', error);
-        alert("Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.");
+      console.error('Lỗi khi tải ảnh lên:', error);
+      alert("Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.");
     }
-};
+  };
 
   return (
     <>
-<PageTitle
-  breadCrumbItems={[
-    { label: "Profile Medical", path: "/profile/medical" },
-    { label: "Profile Medical", path: "/profile/medical", active: true },
-  ]}
-  title={"Profile Medical"}
-/>
-<Card>
-  <Card.Body>
-    <Form onSubmit={onSubmit}>
-      {/* Token Medical and Name */}
-      <Row>
-        <Col md={6}>
-          <Form.Group controlId="formTokenMedical">
-            <Form.Label>Token Medical</Form.Label>
-            <Form.Control
-              type="text"
-              id="formTokenMedical"
-              value={record.tokenmedical}
-              readOnly
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              id="formName"
-              value={record.name}
-              onChange={(e) => setRecord({ ...record, name: e.target.value })}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+      <div style={{marginTop:"-50px"}}>
+        <PageTitle
+          breadCrumbItems={[
+            { label: "Profile Medical", path: "/profile/medical" },
+            { label: "Profile Medical", path: "/profile/medical", active: true },
+          ]}
+          title={"Thông Tin Cá Nhân"}
+        />
+        <Card>
+          <Card.Body>
+            <Form onSubmit={onSubmit}>
+              {/* Token Medical and Name */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formTokenMedical">
+                    <Form.Label>Mã Số Token</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formTokenMedical"
+                      value={record.tokenmedical}
+                      readOnly
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formName">
+                    <Form.Label>Họ Và Tên</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formName"
+                      value={record.name}
+                      onChange={(e) => setRecord({ ...record, name: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-      {/* Email and Birth Date */}
-      <Row>
-        <Col md={6}>
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              id="formEmail"
-              value={record.email}
-              onChange={(e) => setRecord({ ...record, email: e.target.value })}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-  <Form.Group controlId="formBirthDate">
-    <Form.Label>Birth Date</Form.Label>
-    <Form.Control
-      type="date"
-      id="formBirthDate"
-      value={record.birthDate || ""}
-      onChange={(e) => setRecord({ ...record, birthDate: e.target.value })}
-    />
-  </Form.Group>
-</Col>
+              {/* Email and Birth Date */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      id="formEmail"
+                      value={record.email}
+                      onChange={(e) => setRecord({ ...record, email: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formBirthDate">
+                    <Form.Label>Ngày Sinh</Form.Label>
+                    <Form.Control
+                      type="date"
+                      id="formBirthDate"
+                      value={record.birthDate || ""}
+                      onChange={(e) => setRecord({ ...record, birthDate: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
 
-      </Row>
+              </Row>
 
-      {/* Gender and Address */}
-      <Row>
-        <Col md={6}>
-          <Form.Group controlId="formGender">
-            <Form.Label>Gender</Form.Label>
-            <Form.Control
-              as="select"
-              id="formGender"
-              value={record.gender}
-              onChange={(e) => setRecord({ ...record, gender: e.target.value })}
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </Form.Control>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="formAddress">
-            <Form.Label>Address</Form.Label>
-            <Form.Control
-              type="text"
-              id="formAddress"
-              value={record.address}
-              onChange={(e) => setRecord({ ...record, address: e.target.value })}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+              {/* Gender and Address */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formGender">
+                    <Form.Label>Giới Tính</Form.Label>
+                    <Form.Control
+                      as="select"
+                      id="formGender"
+                      value={record.gender}
+                      onChange={(e) => setRecord({ ...record, gender: e.target.value })}
+                    >
+                      <option value="">Chọn Giới Tính</option>
+                      <option value="male">Nam</option>
+                      <option value="female">Nữ</option>
+                      <option value="other">Khác</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formAddress">
+                    <Form.Label>Địa Chỉ</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formAddress"
+                      value={record.address}
+                      onChange={(e) => setRecord({ ...record, address: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-      {/* Phone Number and CCCD */}
-      <Row>
-        <Col md={6}>
-          <Form.Group controlId="formPhoneNumber">
-            <Form.Label>Phone Number</Form.Label>
-            <Form.Control
-              type="text"
-              id="formPhoneNumber"
-              value={record.phoneNumber}
-              onChange={(e) => setRecord({ ...record, phoneNumber: e.target.value })}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="formCCCD">
-            <Form.Label>CCCD</Form.Label>
-            <Form.Control
-              type="text"
-              id="numbercccd"
-              value={record.cccd}
-              onChange={(e) => setRecord({ ...record, cccd: e.target.value })}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row>
-      <Col md={6}>
-    <Form.Group controlId="formHeight">
-      <Form.Label>Height</Form.Label>
-      <Form.Control
-        type="text"
-        id="formHeight"
-        value={record.height}
-        onChange={(e) => setRecord({ ...record, height: e.target.value })}
-      />
-    </Form.Group>
-  </Col>
-  <Col md={6}>
-    <Form.Group controlId="formWeight">
-      <Form.Label>Weight</Form.Label>
-      <Form.Control
-        type="text"
-        id="formWeight"
-        value={record.weight}
-        onChange={(e) => setRecord({ ...record, weight: e.target.value })}
-      />
-    </Form.Group>
-  </Col>
-      </Row>
+              {/* Phone Number and CCCD */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formPhoneNumber">
+                    <Form.Label>Số Điện Thoại</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formPhoneNumber"
+                      value={record.phoneNumber}
+                      onChange={(e) => setRecord({ ...record, phoneNumber: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formCCCD">
+                    <Form.Label>CCCD</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="numbercccd"
+                      value={record.cccd}
+                      onChange={(e) => setRecord({ ...record, cccd: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="formHeight">
+                    <Form.Label>Chiều Cao</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formHeight"
+                      value={record.height}
+                      onChange={(e) => setRecord({ ...record, height: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="formWeight">
+                    <Form.Label>Cân Nặng</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formWeight"
+                      value={record.weight}
+                      onChange={(e) => setRecord({ ...record, weight: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-      <Row>
-      <Col md={12}>
-    <Form.Group controlId="formmedicalinsurance">
-      <Form.Label>Medical Insurance</Form.Label>
-      <Form.Control
-        type="text"
-        id="formmedicalinsurance"
-        value={record.medicalinsurance}
-        onChange={(e) => setRecord({ ...record, medicalinsurance: e.target.value })}
-      />
-    </Form.Group>
-  </Col>
-        <Col md={6}>
-          <Form.Group controlId="avatarImagebase64">
-            <Form.Label>Avatar Image</Form.Label>
-            <div className="d-flex align-items-center">
-              <Form.Control
-                id="uploadsavatart"
-                type="file"
-                name="avatarImage"
-                className="me-2"
-                onChange={uploadToCloudinaryAvatar}
-              />
-              <Button variant="primary" onClick={() => setShowModal(true)}>
-                Show
+              <Row>
+                <Col md={12}>
+                  <Form.Group controlId="formmedicalinsurance">
+                    <Form.Label>Số Bảo Hiểm Y Tế</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="formmedicalinsurance"
+                      value={record.medicalinsurance}
+                      onChange={(e) => setRecord({ ...record, medicalinsurance: e.target.value })}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="avatarImagebase64">
+                    <Form.Label>Ảnh Đại Diện</Form.Label>
+                    <div className="d-flex align-items-center">
+                      <Form.Control
+                        id="uploadsavatart"
+                        type="file"
+                        name="avatarImage"
+                        className="me-2"
+                        onChange={uploadToCloudinaryAvatar}
+                      />
+                      <Button variant="primary" onClick={() => setShowModal(true)}>
+                        Hiện
+                      </Button>
+                    </div>
+                  </Form.Group>
+                  <Form.Group controlId="avatarImagebase64">
+                    <Form.Control
+                      type="hidden"
+                      id="avatarImagebase64"
+                      defaultValue={record.avatarImagebase64}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              {/* CCCD Image */}
+
+
+              {/* Save Button */}
+              <Button variant="primary" type="submit" className="mt-3">
+                Lưu
               </Button>
-            </div>
-          </Form.Group>
-          <Form.Group controlId="avatarImagebase64">
-            <Form.Control
-              type="hidden"
-              id="avatarImagebase64"
-              defaultValue={record.avatarImagebase64}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-      {/* CCCD Image */}
-   
+            </Form>
+          </Card.Body>
+        </Card>
 
-      {/* Save Button */}
-      <Button variant="primary" type="submit" className="mt-3">
-        Save
-      </Button>
-    </Form>
-  </Card.Body>
-</Card>
-
-{/* CCCD Image Modal */}
-<Modal show={showModal} onHide={() => setShowModal(false)}>
-  <Modal.Header closeButton>
-    <Modal.Title>CCCD Image</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {record.avatarImagebase64 && (
-      <img src={record.avatarImagebase64} alt="CCCD" style={{ width: '100%' }} />
-    )}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={() => setShowModal(false)}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
-
+        {/* CCCD Image Modal */}
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Hình Ảnh CCCD</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {record.avatarImagebase64 && (
+              <img src={record.avatarImagebase64} alt="CCCD" style={{ width: '100%' }} />
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </>
   );
 };

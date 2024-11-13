@@ -4,10 +4,10 @@ import classNames from "classnames";
 import CountUp from "react-countup";
 
 interface StatisticsWidgetProps {
-  variant: string;
-  description: string;
-  stats: string;
-  icon: string;
+  variant: any;
+  description: any;
+  stats: any;
+  icon: any;
   counterOptions?: any;
   values:string;
 }

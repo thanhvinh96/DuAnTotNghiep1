@@ -54,8 +54,10 @@ const Dashboard1 = () => {
 
   return (
     <>
-      <Statistics />
-      <Row>
+      <Row style={{marginTop:"-35px"}}>
+        <Statistics />
+      </Row>
+      <Row style={{marginTop:"-10px"}}>
         <Col xl={12}>
           <UsersBalances balances={balances} />
         </Col>

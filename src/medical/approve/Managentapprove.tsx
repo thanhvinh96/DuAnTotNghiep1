@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
 import "../../style.css";
-import { showdataprofiles, ApproveAccessRequests, ShowFunAccessRequests ,ShowFunDiseasecode} from "../../controller/MedicalController"; // Import controller
+import { showdataprofiles, ApproveAccessRequests, ShowFunAccessRequests, ShowFunDiseasecode } from "../../controller/MedicalController"; // Import controller
 
 interface Disease {
   diseasecode: string; // sử dụng id thay vì diseasecode
@@ -51,7 +51,7 @@ const Index: React.FC = () => {
   const showdata = async () => {
     try {
       const res = await ShowFunAccessRequests(datacheckprofile);
-      
+
       if (res.status === true) {
         const accessRequests = res.data.accessRequests.map((request: any, index: number) => ({
           id: index + 1,
@@ -64,7 +64,7 @@ const Index: React.FC = () => {
           tokeorg: request.tokeorg,      // New field
           tokenbranch: request.tokenbranch // New field
         }));
-  
+
         console.log(accessRequests);
         setExpandableRecords(accessRequests);
       }
@@ -74,35 +74,35 @@ const Index: React.FC = () => {
   };
   const MySwal = withReactContent(Swal);
   const [diseaseInfo, setDiseaseInfo] = useState<Disease[]>([]);
-  const ShowFunDiseasecodes = async()=>{
-    try{
+  const ShowFunDiseasecodes = async () => {
+    try {
       const res = await ShowFunDiseasecode(datacheckprofile);
       console.log(res.data.diseaseInfo);
       setDiseaseInfo(res.data.diseaseInfo);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }
 
   useEffect(() => {
     showdata();
     // ShowFunDiseasecodes();
-    
+
   }, [datacheckprofile]);
 
   // useEffect(() => {
   //   ShowFunDiseasecodes();
-    
+
   // }, [datacheckprofile]);
   const handleShow = async (row: RowData) => {
     setSelectedRow(row);
-    
+
     // Chờ hàm ShowFunDiseasecodes hoàn thành trước khi mở modal
     await ShowFunDiseasecodes();
-    setShowModal(true); 
+    setShowModal(true);
 
   };
-  
+
   const handleClose = () => {
     setShowModal(false);
     setfieldsToShare([]);
@@ -125,7 +125,7 @@ const Index: React.FC = () => {
       setfieldsToShare([]);
     }
   };
-  
+
 
   const handleShowPersonalInfoChange = (checked: boolean) => {
     setShowPersonalInfo(checked);
@@ -134,7 +134,7 @@ const Index: React.FC = () => {
     }
   };
 
-  const handleConfirm = async() => {
+  const handleConfirm = async () => {
     const loadingSwal: any = MySwal.fire({
       title: 'Please wait...',
       text: 'Approve Request medical, please wait!',
@@ -146,11 +146,11 @@ const Index: React.FC = () => {
       },
     });
     const token = localStorage.getItem("jwtToken");
-    
+
 
     if (token) {
       const decodedToken: any = jwtDecode(token);
-      const response:any = await showdataprofiles(datacheckprofile);
+      const response: any = await showdataprofiles(datacheckprofile);
       const fieldsToShareObject = fieldsToShare.reduce((obj: { [key: string]: string }, field: string) => {
         const disease = diseaseInfo.find((d: Disease) => d.diseasecode === field);
         if (disease) {
@@ -158,45 +158,45 @@ const Index: React.FC = () => {
         }
         return obj;
       }, {} as { [key: string]: string });
-    const confirmedData = {
-      personalInfo: selectedRow?.personalInfo,
-      fieldsToShare: fieldsToShareObject,
-      value: selectedRow?.value,
-      time: selectedRow?.time,
-      status: selectedRow?.status,
-      tokeorg: selectedRow?.tokeorg,
-      tokenbranch: selectedRow?.tokenbranch,
-      requestContent: selectedRow?.requestContent,
-      cccd:decodedToken.cccd,
-      datauser:response
-      
-    }; 
-    console.log(confirmedData)
+      const confirmedData = {
+        personalInfo: selectedRow?.personalInfo,
+        fieldsToShare: fieldsToShareObject,
+        value: selectedRow?.value,
+        time: selectedRow?.time,
+        status: selectedRow?.status,
+        tokeorg: selectedRow?.tokeorg,
+        tokenbranch: selectedRow?.tokenbranch,
+        requestContent: selectedRow?.requestContent,
+        cccd: decodedToken.cccd,
+        datauser: response
 
-    // console.log("data",decodedToken)
-    const res = await ApproveAccessRequests(confirmedData);
-    console.log("Confirmed Data:", res);
+      };
+      console.log(confirmedData)
 
-    if(res){
-      loadingSwal.close();
-      Swal.fire({
-        title: 'Update Success!',
-        text: 'Approve Request medicalsuccessful.',
-        icon: 'success',
-        confirmButtonText: 'OK',
-      });
-      }else{
-                Swal.fire({
-        title: 'Update Error!',
-        text: 'Approve Request medical Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
-  }
-}
+      // console.log("data",decodedToken)
+      const res = await ApproveAccessRequests(confirmedData);
+      console.log("Confirmed Data:", res);
+
+      if (res) {
+        loadingSwal.close();
+        Swal.fire({
+          title: 'Update Success!',
+          text: 'Approve Request medicalsuccessful.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+      } else {
+        Swal.fire({
+          title: 'Update Error!',
+          text: 'Approve Request medical Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    }
     // Có thể thực hiện bất kỳ thao tác nào khác với confirmedData
   };
-  
+
 
   const columns = [
     {
@@ -251,25 +251,23 @@ const Index: React.FC = () => {
 
   return (
     <>
-      <PageTitle
-        breadCrumbItems={[
-          { label: "Tables", path: "/features/tables/advanced" },
-          {
-            label: "Advanced Tables",
-            path: "/features/tables/advanced",
-            active: true,
-          },
-        ]}
-        title={"Advanced Tables"}
-      />
-
+      <Row style={{marginTop:"-45px"}}>
+        <PageTitle
+          breadCrumbItems={[
+            { label: "Tables", path: "/features/tables/advanced" },
+            {
+              label: "Advanced Tables",
+              path: "/features/tables/advanced",
+              active: true,
+            },
+          ]}
+          title={"Bảng Quản Lý Phê Duyệt"}
+        />
+      </Row>
       <Row>
         <Col>
           <Card>
             <Card.Body>
-              <h4 className="header-title">Expand Row</h4>
-              <p className="text-muted font-14 mb-4">Expand row to see more additional details</p>
-
               <Table
                 columns={columns}
                 data={expandableRecords}
@@ -307,42 +305,42 @@ const Index: React.FC = () => {
             </label>
           </div>
           {!showPersonalInfo ? (
-  <div className="mb-3">
-    <h5>Chọn Bệnh:</h5>
-    {diseaseInfo && diseaseInfo.length > 0 ? ( // Sử dụng diseaseInfo để kiểm tra
-      <>
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="select-all"
-            onChange={(e) => handleSelectAll(e.target.checked)}
-            checked={fieldsToShare.length === diseaseInfo.length} // Kiểm tra độ dài của diseaseInfo
-          />
-          <label className="form-check-label" htmlFor="select-all">
-            Chọn tất cả
-          </label>
-        </div>
-        {diseaseInfo.map((item) => (
-          <div key={item.diseasecode} className="form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id={`disease-${item.diseasecode}`}
-              checked={fieldsToShare.includes(item.diseasecode)}
-              onChange={() => handleDiseaseChange(item.diseasecode)}
-            />
-            <label className="form-check-label" htmlFor={`disease-${item.diseasecode}`}>
-              {item.namedisease}
-            </label>
-          </div>
-        ))}
-      </>
-    ) : (
-      <p>Không có loại bệnh nào để chọn.</p>
-    )}
-  </div>
-) : null}
+            <div className="mb-3">
+              <h5>Chọn Bệnh:</h5>
+              {diseaseInfo && diseaseInfo.length > 0 ? ( // Sử dụng diseaseInfo để kiểm tra
+                <>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="select-all"
+                      onChange={(e) => handleSelectAll(e.target.checked)}
+                      checked={fieldsToShare.length === diseaseInfo.length} // Kiểm tra độ dài của diseaseInfo
+                    />
+                    <label className="form-check-label" htmlFor="select-all">
+                      Chọn tất cả
+                    </label>
+                  </div>
+                  {diseaseInfo.map((item) => (
+                    <div key={item.diseasecode} className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`disease-${item.diseasecode}`}
+                        checked={fieldsToShare.includes(item.diseasecode)}
+                        onChange={() => handleDiseaseChange(item.diseasecode)}
+                      />
+                      <label className="form-check-label" htmlFor={`disease-${item.diseasecode}`}>
+                        {item.namedisease}
+                      </label>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <p>Không có loại bệnh nào để chọn.</p>
+              )}
+            </div>
+          ) : null}
 
         </Modal.Body>
         <Modal.Footer>
