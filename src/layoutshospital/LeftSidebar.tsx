@@ -48,7 +48,7 @@ const UserBox = () => {
   ];
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -146,7 +146,17 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
 
   return (
     <React.Fragment>
-      <div className="app-menu" ref={menuNodeRef} style={{ backgroundColor: "#acfcfa" }}> {/* Thay đổi màu nền */}
+      <div
+        className="app-menu"
+        ref={menuNodeRef}
+        style={{
+          background: "#D7E6EF",
+          width: "350px",
+          fontSize: "90px",
+        }}
+      >
+        {" "}
+        {/* Thay đổi màu nền */}
         {!hideLogo && (
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
@@ -167,7 +177,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
             </Link>
             <Link to="/" className="logo logo-light text-center">
               <span className="logo-sm">
-                <img src={logoSm} alt="" height="22" /> 
+                <img src={logoSm} alt="" height="22" />
               </span>
               <span className="logo-lg">
                 <img
@@ -183,12 +193,8 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
             </Link>
           </div>
         )}
-  
         {!isCondensed && (
-          <SimpleBar
-            className="scrollbar show h-100"
-            scrollbarMaxSize={320}
-          >
+          <SimpleBar className="scrollbar show h-100" scrollbarMaxSize={320}>
             <SideBarContent />
           </SimpleBar>
         )}
@@ -196,7 +202,6 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
       </div>
     </React.Fragment>
   );
-  
 };
 
 LeftSidebar.defaultProps = {
