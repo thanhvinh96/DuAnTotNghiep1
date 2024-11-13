@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 
 function AccordionItem({ title, content, isOpen, onClick }) {
   const accordionContentRef = useRef(null);
@@ -11,13 +11,13 @@ function AccordionItem({ title, content, isOpen, onClick }) {
     }
   }, [isOpen]);
 
-  const accordionClass = isOpen ? 'cs_accordian active' : 'cs_accordian';
+  const accordionClass = isOpen ? "cs_accordian active" : "cs_accordian";
 
   return (
     <>
       <div className={accordionClass}>
         <h2 className="cs_accordian_head cs_heading_color" onClick={onClick}>
-          {title}{' '}
+          {title}{" "}
           <span className="cs_accordian_arrow">
             <svg
               width={28}
@@ -35,7 +35,7 @@ function AccordionItem({ title, content, isOpen, onClick }) {
         </h2>
         <div
           className="cs_accordian_body_wrap"
-          style={{ height: isOpen ? `${contentHeight}px` : '0' }}
+          style={{ height: isOpen ? `${contentHeight}px` : "0" }}
         >
           <div className="cs_accordian_body" ref={accordionContentRef}>
             <p>{content}</p>
@@ -50,9 +50,9 @@ export default function Accordion({ data, variant }) {
   const [openItemIndex, setOpenItemIndex] = useState(-1); // Initialize with -1 for no item open initially
   const [firstItemOpen, setFirstItemOpen] = useState(true); // Set the first item to open initially
 
-  const handleItemClick = index => {
+  const handleItemClick = (index) => {
     if (index === openItemIndex) {
-      setOpenItemIndex(-1);
+      setOpenItemIndex(-3);
     } else {
       setOpenItemIndex(index);
     }
@@ -68,7 +68,7 @@ export default function Accordion({ data, variant }) {
   return (
     <>
       <div
-        className={`cs_accordians cs_heading_color ${variant ? variant : ''}`}
+        className={`cs_accordians cs_heading_color ${variant ? variant : ""}`}
       >
         {data?.map((item, index) => (
           <AccordionItem

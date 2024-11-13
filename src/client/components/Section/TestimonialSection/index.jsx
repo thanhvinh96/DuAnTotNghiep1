@@ -1,7 +1,7 @@
-import React from 'react';
-import SectionHeading from '../../SectionHeading';
-import Spacing from '../../Spacing';
-import Testimonial from '../../Testimonial';
+import React from "react";
+import SectionHeading from "../../SectionHeading";
+import Spacing from "../../Spacing";
+import Testimonial from "../../Testimonial";
 
 export default function TestimonialSection({ sectionTitle, sectionTitleDown }) {
   return (
@@ -11,7 +11,7 @@ export default function TestimonialSection({ sectionTitle, sectionTitleDown }) {
         titleDown={sectionTitleDown}
         center
       />
-      <Spacing md="72" lg="50" />
+      <Spacing md="30" lg="50" />
       <Testimonial />
     </div>
   );

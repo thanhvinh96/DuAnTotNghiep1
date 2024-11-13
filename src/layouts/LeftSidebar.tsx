@@ -155,16 +155,17 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         className="app-menu"
         ref={menuNodeRef}
         style={{
-          background: "linear-gradient(to top, #35a2c6, #ccf2d8)",
-          width: "350px",
-          fontSize: "90px",
+          background: "#D7E6EF",
+          // width: "350px",
+          // fontSize: "90px",
+          // style={{ margin: " 30px 0 20px 0" }}
         }}
       >
         {!hideLogo && (
-          <div className="logo-box" style={{ margin: " 30px 0 20px 0" }}>
+          <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
               <span className="logo-sm">
-                <img src={logoSm} alt="" height="10px" />
+                <img src={logoSm} alt="" height="22" />
               </span>
               <span className="logo-lg">
                 <img
@@ -174,7 +175,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                       : logoDark
                   }
                   alt=""
-                  height="20"
+                  height="30"
                 />
               </span>
             </Link>
@@ -190,7 +191,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                       : logoLight
                   }
                   alt=""
-                  height="20"
+                  height="30"
                 />
               </span>
             </Link>

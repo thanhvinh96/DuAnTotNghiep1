@@ -1,7 +1,7 @@
-import React from 'react';
-import SectionHeading from '../../SectionHeading';
-import Spacing from '../../Spacing';
-import Post from '../../Post';
+import React from "react";
+import SectionHeading from "../../SectionHeading";
+import Spacing from "../../Spacing";
+import Post from "../../Post";
 
 export default function BlogSection({
   data,
@@ -19,7 +19,7 @@ export default function BlogSection({
         subTitle={sectionSubTitle}
         center
       />
-      <Spacing md="72" lg="50" />
+      <Spacing md="35" lg="50" />
       <div className="row gy-4">
         {data?.map((item, index) => (
           <div className="col-lg-4" key={index}>
