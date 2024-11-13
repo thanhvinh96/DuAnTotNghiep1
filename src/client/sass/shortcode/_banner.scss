@@ -7,7 +7,7 @@
   border-radius: 25px;
   margin-top: 165px;
   @media (max-width: 1700px) {
-    margin-top: 85px;
+    margin-top: 30px;
   }
   @media (max-width: 1199px) {
     margin-top: 0px;
@@ -316,7 +316,7 @@
 .cs_banner_8_wrap {
   position: relative;
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 0;

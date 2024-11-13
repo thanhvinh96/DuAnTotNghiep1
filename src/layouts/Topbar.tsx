@@ -278,7 +278,10 @@ const Topbar = ({
     <React.Fragment>
       <div
         className={`navbar-custom ${navbarCssClasses}`}
-        style={{ background: "#77c5ce" }}
+        style={{
+          background: "#1A3A6D",
+          // background: "linear-gradient(to right, #49d7dc, #3d27f8, #773bec)",
+        }}
       >
         <div className={`topbar ${containerCssClasses}`}>
           <div className="topbar-menu d-flex align-items-center gap-1">

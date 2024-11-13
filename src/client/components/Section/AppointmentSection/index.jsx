@@ -1,7 +1,7 @@
-import React from 'react';
-import SectionHeading from '../../SectionHeading';
-import AppointmentForm from '../../AppointmentForm';
-import Spacing from '../../Spacing';
+import React from "react";
+import SectionHeading from "../../SectionHeading";
+import AppointmentForm from "../../AppointmentForm";
+import Spacing from "../../Spacing";
 
 export default function AppointmentSection({
   sectionTitle,
@@ -41,8 +41,12 @@ export default function AppointmentSection({
       <div className="container">
         <div className="row align-items-center cs_gap_y_40">
           <div className="col-lg-6">
-            <SectionHeading title={sectionTitle} titleUp={sectionTitleUp} />
-            <Spacing md="72" lg="50" />
+            <SectionHeading
+              title={sectionTitle}
+              titleUp={sectionTitleUp}
+              center
+            />
+            <Spacing md="30" lg="50" />
             <AppointmentForm />
           </div>
           <div className="col-lg-5 offset-lg-1 text-center">

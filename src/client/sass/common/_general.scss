@@ -277,7 +277,7 @@ hr {
 .cs_half_bg_2 {
   position: relative;
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     height: 60%;
     width: 100%;
@@ -356,7 +356,7 @@ hr {
   }
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     height: 100%;
     width: 100%;
@@ -394,7 +394,7 @@ hr {
   position: relative;
   padding-bottom: 5px;
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     height: 1px;
     width: 100%;
@@ -418,7 +418,7 @@ hr {
     display: inline-block;
     position: relative;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       height: 2px;
       width: 100%;
@@ -532,7 +532,7 @@ input::-ms-input-placeholder,
   gap: 15px 110px;
   justify-content: center;
   @media (max-width: 1700px) {
-    gap: 15px 60px;
+    gap: 0px 60px;
   }
   @media (max-width: 1380px) {
     gap: 15px 24px;
@@ -542,9 +542,9 @@ input::-ms-input-placeholder,
     align-items: initial;
   }
   .cs_random_features_col {
-    padding-top: 55px;
+    padding-top: 40px;
     @media (max-width: 1700px) {
-      padding-top: 45px;
+      padding-top: 35px;
     }
     @media (max-width: 1380px) {
       padding-top: 25px;
@@ -561,7 +561,7 @@ input::-ms-input-placeholder,
   }
   @media (min-width: 992px) {
     .cs_iconbox.cs_style_13 {
-      max-width: 390px;
+      max-width: 290px;
     }
   }
 }
@@ -605,7 +605,7 @@ input::-ms-input-placeholder,
       z-index: 2;
     }
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       height: calc(100% + 42px);
       width: calc(100% + 160px);
@@ -683,7 +683,7 @@ input::-ms-input-placeholder,
         padding-top: 30px;
       }
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         height: 10px;
         width: 10px;
@@ -815,7 +815,7 @@ input::-ms-input-placeholder,
     display: block;
     padding-left: 32px;
     &::before {
-      content: '';
+      content: "";
       height: 20px;
       width: 20px;
       border: 1px solid $accent;
@@ -825,7 +825,7 @@ input::-ms-input-placeholder,
       left: 0;
     }
     &::after {
-      content: '';
+      content: "";
       height: 14px;
       width: 14px;
       background-color: $accent;
@@ -943,7 +943,7 @@ input::-ms-input-placeholder,
       width: 100%;
     }
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       height: 60%;
       top: 0;
@@ -1129,7 +1129,7 @@ input::-ms-input-placeholder,
       position: relative;
       transition: all 0.3s ease;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         height: 1px;
         width: 0%;
@@ -1399,7 +1399,7 @@ input::-ms-input-placeholder,
       span {
         position: relative;
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           height: 1px;
           width: 100%;
@@ -1465,7 +1465,7 @@ input::-ms-input-placeholder,
       position: relative;
       padding-left: 28px;
       &::before {
-        content: '';
+        content: "";
         height: 10px;
         width: 10px;
         border-radius: 50%;
@@ -1590,7 +1590,7 @@ input::-ms-input-placeholder,
   margin-top: 15px;
   &::before,
   &::after {
-    content: '';
+    content: "";
     height: calc(100% - 40px);
     width: 10px;
     background-color: #fff;
@@ -1622,7 +1622,7 @@ input::-ms-input-placeholder,
   > div {
     position: relative;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       height: 1px;
       width: 100vw;
@@ -1648,7 +1648,7 @@ input::-ms-input-placeholder,
   border-bottom: none;
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     height: 12px;
     width: calc(100% - 130px);
@@ -1857,7 +1857,7 @@ input::-ms-input-placeholder,
         padding: 40px 30px 40px 80px;
       }
       &::before {
-        content: '“';
+        content: "“";
         position: absolute;
         left: 48px;
         top: 55px;
@@ -2146,7 +2146,7 @@ input::-ms-input-placeholder,
       display: inline-block;
       position: relative;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         height: 1px;
         width: 100%;
@@ -2162,7 +2162,7 @@ input::-ms-input-placeholder,
       }
     }
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       width: 27px;
       height: 22px;
@@ -2395,7 +2395,7 @@ a.ui-button:active,
   background-color: rgba($accent, 0.15);
   color: $accent;
 }
-.select2-container--default .select2-results__option[aria-selected='true'] {
+.select2-container--default .select2-results__option[aria-selected="true"] {
   background-color: $accent;
   color: white;
 }
