@@ -156,13 +156,12 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         ref={menuNodeRef}
         style={{
           background: "#D7E6EF",
-          // width: "350px",
-          // fontSize: "90px",
-          // style={{ margin: " 30px 0 20px 0" }}
+          width: "350px",
+          fontSize: "90px",
         }}
       >
         {!hideLogo && (
-          <div className="logo-box">
+          <div className="logo-box" style={{ margin: " 30px 0 20px 0" }}>
             <Link to="/" className="logo logo-dark text-center">
               <span className="logo-sm">
                 <img src={logoSm} alt="" height="22" />
