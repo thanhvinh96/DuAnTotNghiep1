@@ -143,10 +143,10 @@ const SignInSignUp = () => {
 
           <Col lg={6}>
             <div className="p-sm-3">
-              <h4 className="mt-0">{t("Free Sign Up")}</h4>
+              <h4 className="mt-0">{t("Free Đăng Kí")}</h4>
               <p className="text-muted mb-4">
                 {t(
-                  "Don't have an account? Create your account, it takes less than a minute"
+                  "Chưa có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút."
                 )}
               </p>
 
@@ -184,7 +184,7 @@ const SignInSignUp = () => {
                     className="btn btn-success btn-sm float-sm-end"
                     disabled={loading}
                   >
-                    {t("Sign Up")}
+                    {t("Đăng Kí")}
                   </Button>
                   <FormInput
                     label={t("I accept Terms and Conditions")}

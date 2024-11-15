@@ -17,7 +17,7 @@ import { RootState, AppDispatch } from "../../redux/store";
 import { VerticalForm, FormInput } from "../../components/";
 
 import AuthLayout from "./AuthLayout";
-// trong ts interface dùng để kiểm tra các đối tưởng có tuân theo kiểu đối tượng không 
+// trong ts interface dùng để kiểm tra các đối tưởng có tuân theo kiểu đối tượng không
 interface UserData {
   name: string;
   email: string;
@@ -124,7 +124,7 @@ const Register2 = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log("Success:", data);
@@ -140,17 +140,16 @@ const Register2 = () => {
       // Handle network errors here
     }
   };
-  
 
   return (
     <>
       {userSignUp ? <Navigate to={"/auth/confirm2"}></Navigate> : null}
 
       <AuthLayout bottomLinks={<BottomLink />}>
-        <h4 className="mt-0">{t("Sign Up")}</h4>
+        <h4 className="mt-0">{t("Đăng Kí")}</h4>
         <p className="text-muted mb-4">
           {t(
-            "Don't have an account? Create your account, it takes less than a minute."
+            "Chưa có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút."
           )}
         </p>
 
@@ -173,7 +172,7 @@ const Register2 = () => {
             containerClass={"mb-3"}
           />
 
-<FormInput
+          <FormInput
             label={t("Cccd number")}
             type="text"
             name="cccd"
@@ -203,13 +202,13 @@ const Register2 = () => {
 
           <div className="mb-0 d-grid text-center">
             <Button variant="primary" type="submit" disabled={loading}>
-              {t("Sign Up")}
+              {t("Đăng Kí")}
             </Button>
           </div>
 
           {/* social links */}
           <div className="text-center mt-4">
-            <p className="text-muted font-16">{t("Sign up using")}</p>
+            <p className="text-muted font-16">{t("Đăng Kí using")}</p>
             <SocialLinks />
           </div>
         </VerticalForm>

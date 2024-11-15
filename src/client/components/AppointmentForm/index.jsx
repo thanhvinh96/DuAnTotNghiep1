@@ -8,26 +8,24 @@ export default function AppointmentForm() {
   return (
     <form action="#" className="row">
       <div className="col-lg-6">
-        <label className="cs_input_label cs_heading_color">Full Name</label>
+        <label className="cs_input_label cs_heading_color">Họ và Tên</label>
         <input type="text" className="cs_form_field" placeholder="David John" />
         <div className="cs_height_42 cs_height_xl_15" />
       </div>
       <div className="col-lg-6">
-        <label className="cs_input_label cs_heading_color">Phone Number</label>
+        <label className="cs_input_label cs_heading_color">Số điện thoại</label>
         <input type="text" className="cs_form_field" placeholder="(+84)" />
         <div className="cs_height_42 cs_height_xl_15" />
       </div>
       <div className="col-lg-12">
         <label className="cs_input_label cs_heading_color">
-          Medical Record Number
+          Số bảo hiểm y tế
         </label>
         <input type="text" className="cs_form_field" placeholder="" />
         <div className="cs_height_42 cs_height_xl_15" />
       </div>
       <div className="col-lg-6">
-        <label className="cs_input_label cs_heading_color">
-          Preferred Date
-        </label>
+        <label className="cs_input_label cs_heading_color">Đặt ngày</label>
 
         <div className="cs_with_icon_input">
           <DatePicker
@@ -45,9 +43,7 @@ export default function AppointmentForm() {
         <div className="cs_height_42 cs_height_xl_15" />
       </div>
       <div className="col-lg-6">
-        <label className="cs_input_label cs_heading_color">
-          Preferred Time
-        </label>
+        <label className="cs_input_label cs_heading_color">Đặt giờ</label>
         <div className="cs_with_icon_input ">
           <input
             type="time"
@@ -62,7 +58,7 @@ export default function AppointmentForm() {
       </div>
       <div className="col-lg-12">
         <label className="cs_input_label cs_heading_color">
-          Reason for Visit
+          Lý do thăm khám
         </label>
         <div className="cs_radio_group">
           <div className="cs_radio_wrap">
@@ -74,7 +70,7 @@ export default function AppointmentForm() {
               defaultValue="routineCheckup"
             />
             <label className="cs_radio_label" htmlFor="routineCheckup">
-              Routine Checkup
+              Khám Sức Khỏe Định Kỳ
             </label>
           </div>
           <div className="cs_radio_wrap">
@@ -87,7 +83,7 @@ export default function AppointmentForm() {
               defaultChecked=""
             />
             <label className="cs_radio_label" htmlFor="newPatientVisit">
-              New Patient Visit
+              Khám Bệnh Nhân Mới
             </label>
           </div>
           <div className="cs_radio_wrap">
@@ -99,14 +95,14 @@ export default function AppointmentForm() {
               defaultValue="specificConcern"
             />
             <label className="cs_radio_label" htmlFor="specificConcern">
-              Specific Concern
+              Vấn Đề Cụ Thể
             </label>
           </div>
         </div>
         <div className="cs_height_42 cs_height_xl_15" />
       </div>
       <div className="col-lg-12">
-        <label className="cs_input_label cs_heading_color">Department</label>
+        <label className="cs_input_label cs_heading_color">Khoa khám</label>
         <div className="cs_radio_group">
           <div className="cs_radio_wrap">
             <input
@@ -117,7 +113,7 @@ export default function AppointmentForm() {
               defaultValue="pediatric"
             />
             <label className="cs_radio_label" htmlFor="pediatric">
-              Pediatric
+              Nhi Khoa
             </label>
           </div>
           <div className="cs_radio_wrap">
@@ -130,7 +126,7 @@ export default function AppointmentForm() {
               defaultChecked=""
             />
             <label className="cs_radio_label" htmlFor="obstetricsGynecology">
-              Obstetrics and Gynecology
+              Sản Phụ Khoa
             </label>
           </div>
           <div className="cs_radio_wrap">
@@ -142,7 +138,7 @@ export default function AppointmentForm() {
               defaultValue="cardiology"
             />
             <label className="cs_radio_label" htmlFor="cardiology">
-              Cardiology
+              Tim Mạch
             </label>
           </div>
           <div className="cs_radio_wrap">
@@ -154,7 +150,7 @@ export default function AppointmentForm() {
               defaultValue="neurology"
             />
             <label className="cs_radio_label" htmlFor="neurology">
-              Neurology
+              Thần Kinh
             </label>
           </div>
         </div>
@@ -162,7 +158,7 @@ export default function AppointmentForm() {
       </div>
       <div className="col-lg-12">
         <button className="cs_btn cs_style_1">
-          <span>Submit</span>
+          <span>Đặt</span>
           <i>
             <img src="/images/icons/arrow_white.svg" alt="Icon" />
             <img src="/images/icons/arrow_white.svg" alt="Icon" />

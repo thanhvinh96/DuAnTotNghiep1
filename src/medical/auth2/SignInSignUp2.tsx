@@ -145,7 +145,7 @@ const SignInSignUp2 = () => {
             </Nav.Item>
             <Nav.Item as="li">
               <Nav.Link className="cursor-pointer" eventKey="signup">
-                {t("Sign Up")}
+                {t("Đăng Kí")}
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -207,11 +207,11 @@ const SignInSignUp2 = () => {
               </VerticalForm>
             </Tab.Pane>
 
-            {/* sign up form */}
+            {/* Đăng Kí form */}
             <Tab.Pane eventKey="signup">
               <p className="text-muted mb-3">
                 {t(
-                  "Don't have an account? Create your account, it takes less than a minute"
+                  "Chưa có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút."
                 )}
               </p>
               <VerticalForm
@@ -249,13 +249,13 @@ const SignInSignUp2 = () => {
 
                 <div className="mb-0 d-grid text-center">
                   <Button variant="primary" type="submit" disabled={loading}>
-                    {t("Sign Up")}
+                    {t("Đăng Kí")}
                   </Button>
                 </div>
 
                 {/* social links */}
                 <div className="text-center mt-4">
-                  <p className="text-muted font-16">{t("Sign up with")}</p>
+                  <p className="text-muted font-16">{t("Đăng Kí with")}</p>
                   <SocialLinks />
                 </div>
               </VerticalForm>
