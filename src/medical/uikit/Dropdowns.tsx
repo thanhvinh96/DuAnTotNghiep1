@@ -278,7 +278,7 @@ const CustomDropdown = () => {
             </button>
           </form>
           <Dropdown.Divider />
-          <Dropdown.Item eventKey="4">New around here? Sign up</Dropdown.Item>
+          <Dropdown.Item eventKey="4">New around here? Đăng Kí</Dropdown.Item>
           <Dropdown.Item eventKey="4">Forgot password?</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

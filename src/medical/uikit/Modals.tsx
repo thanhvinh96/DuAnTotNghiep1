@@ -222,14 +222,14 @@ const ModalsWithPages = () => {
         <p className="sub-header">Examples of custom modals.</p>
 
         <Button variant="primary" className="me-1" onClick={toggleSignUp}>
-          Sign Up Modal
+          Đăng Kí Modal
         </Button>
 
         <Button variant="info" onClick={toggleSignIn}>
           Log In Modal
         </Button>
 
-        {/* Sign up Modal */}
+        {/* Đăng Kí Modal */}
         <Modal show={signUpModal} onHide={toggleSignUp}>
           <Modal.Body>
             <div className="text-center mt-2 mb-4">
@@ -302,7 +302,7 @@ const ModalsWithPages = () => {
 
               <div className="mb-3 text-center">
                 <button className="btn btn-primary" type="submit">
-                  Sign Up Free
+                  Đăng Kí Free
                 </button>
               </div>
             </form>

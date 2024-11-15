@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
 import jwtDecode from "jwt-decode";
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
-import { handleLoginMedical } from '../../controller/MedicalController'; // Import controller
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import { handleLoginMedical } from "../../controller/MedicalController"; // Import controller
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -44,9 +44,9 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Don't have an account?")}{" "}
+        {t("Chưa có tài khoản?")}{" "}
         <Link to={"/medical/auth/register2"} className="text-muted ms-1">
-          <b>{t("Sign Up")}</b>
+          <b>{t("Đăng kí")}</b>
         </Link>
       </p>
     </footer>
@@ -128,20 +128,20 @@ const Login2 = () => {
   // OnSubmit handler
   const onSubmit = async (formData: UserData) => {
     try {
-      const loadingSwal:any = MySwal.fire({
-        title: 'Please wait...',
-        text: 'Login medical, please wait!',
-        icon: 'info',
+      const loadingSwal: any = MySwal.fire({
+        title: "Please wait...",
+        text: "Login medical, please wait!",
+        icon: "info",
         allowOutsideClick: false, // Prevent closing the modal while loading
         showConfirmButton: false, // Hide the confirmation button
         didOpen: () => {
           Swal.showLoading(); // Show the loading animation
-        }
+        },
       });
       const response = await handleLoginMedical(formData);
       console.log(response);
 
-      if (response.status===true) {
+      if (response.status === true) {
         // const data = await response.json();
         console.log(response.transactionResult);
         const decoded = jwtDecode<DecodedToken>(response.transactionResult);
@@ -149,45 +149,45 @@ const Login2 = () => {
         if (decoded.tokenmedical != null) {
           try {
             // Save token in localStorage
-            localStorage.setItem("jwtToken", response.transactionResult)
+            localStorage.setItem("jwtToken", response.transactionResult);
             console.log("User info:", decoded);
             loadingSwal.close();
             Swal.fire({
-              title: 'Login Success!',
-              text: 'Your Login  successful.',
-              icon: 'success',
-              confirmButtonText: 'OK',
+              title: "Login Success!",
+              text: "Your Login  successful.",
+              icon: "success",
+              confirmButtonText: "OK",
             }).then(() => {
-              window.location.href = '/medical';
-    
+              window.location.href = "/medical";
             });
           } catch (decodeError) {
-
-        Swal.fire({
-          title: 'Registration Error!',
-          text: 'Error'+decodeError,
-          icon: 'error',  // Fixed typo
-          confirmButtonText: 'OK',
-        });
+            Swal.fire({
+              title: "Registration Error!",
+              text: "Error" + decodeError,
+              icon: "error", // Fixed typo
+              confirmButtonText: "OK",
+            });
           }
         }
       } else {
         const error = await response.json();
         console.error("Error:", error);
         Swal.fire({
-          title: 'Registration Error!',
-          text: 'Error'+error,
-          icon: 'error',  // Fixed typo
-          confirmButtonText: 'OK',
-        });      }
+          title: "Registration Error!",
+          text: "Error" + error,
+          icon: "error", // Fixed typo
+          confirmButtonText: "OK",
+        });
+      }
     } catch (err) {
       console.error("Network error:", err);
       Swal.fire({
-        title: 'Registration Error!',
-        text: 'Error'+error,
-        icon: 'error',  // Fixed typo
-        confirmButtonText: 'OK',
-      });      }
+        title: "Registration Error!",
+        text: "Error" + error,
+        icon: "error", // Fixed typo
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (
@@ -198,9 +198,9 @@ const Login2 = () => {
       ) : null}
 
       <AuthLayout bottomLinks={<BottomLink />}>
-        <h4 className="mt-0">{t("Sign In")}</h4>
+        <h4 className="mt-0">{t("Đăng Nhập")}</h4>
         <p className="text-muted mb-4">
-          {t("Enter your CCCD and password to access your account.")}
+          {t("Nhập CCCD và mật khẩu của bạn để truy cập tài khoản.")}
         </p>
 
         {/* Error Alert */}
@@ -227,20 +227,23 @@ const Login2 = () => {
 
           {/* Password Input */}
           <FormInput
-            label={t("Password")}
+            label={t("Mật khẩu")}
             type="password"
             name="passwordmedical"
             placeholder={t("Enter your password")}
             containerClass={"mb-3"}
           >
-            <Link to="/medical/auth/forget-password2" className="text-muted float-end">
-              <small>{t("Forgot your password?")}</small>
+            <Link
+              to="/medical/auth/forget-password2"
+              className="text-muted float-end"
+            >
+              <small>{t("Quên mật khẩu")}</small>
             </Link>
           </FormInput>
 
           {/* Remember me checkbox */}
           <FormInput
-            label={t("Remember me")}
+            label={t("Nhớ mật khẩu")}
             type="checkbox"
             name="rememberMe"
             containerClass={"mb-3"}
@@ -249,13 +252,13 @@ const Login2 = () => {
           {/* Submit Button */}
           <div className="d-grid mb-0 text-center">
             <Button variant="primary" type="submit" disabled={loading}>
-              {t("Log In")}
+              {t("Đăng nhập")}
             </Button>
           </div>
 
           {/* Social login */}
           <div className="text-center mt-4">
-            <p className="text-muted font-16">{t("Sign in with")}</p>
+            <p className="text-muted font-16">{t("Đăng kí với")}</p>
             <SocialLinks />
           </div>
         </VerticalForm>

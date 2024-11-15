@@ -6,9 +6,12 @@ import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { handleCreateMedical, handleLoginMedical } from '../../controller/MedicalController'; // Import controller
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import {
+  handleCreateMedical,
+  handleLoginMedical,
+} from "../../controller/MedicalController"; // Import controller
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -20,7 +23,7 @@ import { RootState, AppDispatch } from "../../redux/store";
 import { VerticalForm, FormInput } from "../../components";
 
 import AuthLayout from "./AuthLayout";
-// trong ts interface dùng để kiểm tra các đối tưởng có tuân theo kiểu đối tượng không 
+// trong ts interface dùng để kiểm tra các đối tưởng có tuân theo kiểu đối tượng không
 interface UserData {
   name: string;
   email: string;
@@ -35,9 +38,9 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Already have account?")}{" "}
+        {t("Đã có tài khoản?")}{" "}
         <Link to={"/medical/auth/login2"} className="text-muted ms-1">
-          <b>{t("Log In")}</b>
+          <b>{t("Đăng Nhập")}</b>
         </Link>
       </p>
     </footer>
@@ -121,17 +124,17 @@ const Register2 = () => {
    */
   const onSubmit = async (formData: UserData) => {
     console.log(formData);
-  
+
     try {
-      const loadingSwal:any = MySwal.fire({
-        title: 'Please wait...',
-        text: 'Register medical, please wait!',
-        icon: 'info',
+      const loadingSwal: any = MySwal.fire({
+        title: "Please wait...",
+        text: "Register medical, please wait!",
+        icon: "info",
         allowOutsideClick: false, // Prevent closing the modal while loading
         showConfirmButton: false, // Hide the confirmation button
         didOpen: () => {
           Swal.showLoading(); // Show the loading animation
-        }
+        },
       });
       // const response = await fetch("http://42.96.2.80:3002/register-record", {
       //   method: "POST",
@@ -142,50 +145,46 @@ const Register2 = () => {
       // });
       const response = await handleCreateMedical(formData);
       console.log(response);
-      if (response.success===true) {
+      if (response.success === true) {
         // const data = await response.json();
         // console.log("Success:", data);
         loadingSwal.close();
         Swal.fire({
-          title: 'Register Success!',
-          text: 'Your registration was successful.',
-          icon: 'success',
-          confirmButtonText: 'OK',
+          title: "Register Success!",
+          text: "Your registration was successful.",
+          icon: "success",
+          confirmButtonText: "OK",
         }).then(() => {
-          window.location.href = '/LoginP';
-
+          window.location.href = "/LoginP";
         });
       } else {
-      
-  
         Swal.fire({
-          title: 'Registration Error!',
-          text: 'There was an error during registration. Please try again.',
-          icon: 'error',  // Fixed typo
-          confirmButtonText: 'OK',
+          title: "Registration Error!",
+          text: "There was an error during registration. Please try again.",
+          icon: "error", // Fixed typo
+          confirmButtonText: "OK",
         });
       }
     } catch (err) {
       console.error("Network error:", err);
       Swal.fire({
-        title: 'Registration Error!',
-        text: 'There was an error during registration. Please try again.',
-        icon: 'error',  // Fixed typo
-        confirmButtonText: 'OK',
+        title: "Registration Error!",
+        text: "There was an error during registration. Please try again.",
+        icon: "error", // Fixed typo
+        confirmButtonText: "OK",
       });
     }
   };
-  
 
   return (
     <>
       {userSignUp ? <Navigate to={"/medical/auth/confirm2"}></Navigate> : null}
 
       <AuthLayout bottomLinks={<BottomLink />}>
-        <h4 className="mt-0">{t("Sign Up")}</h4>
+        <h4 className="mt-0">{t("Đăng Kí")}</h4>
         <p className="text-muted mb-4">
           {t(
-            "Don't have an account? Create your account, it takes less than a minute."
+            "Chưa có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút."
           )}
         </p>
 
@@ -201,36 +200,36 @@ const Register2 = () => {
           defaultValues={{}}
         >
           <FormInput
-            label={t("Full Name")}
+            label={t("Họ và Tên")}
             type="text"
             name="name"
             placeholder={t("Enter your name")}
             containerClass={"mb-3"}
           />
 
-<FormInput
-            label={t("Cccd number")}
+          <FormInput
+            label={t("Cccd")}
             type="text"
             name="cccd"
             placeholder={t("Enter your cccd")}
             containerClass={"mb-3"}
           />
           <FormInput
-            label={t("Email address")}
+            label={t("Email")}
             type="email"
             name="email"
             placeholder={t("Enter your email")}
             containerClass={"mb-3"}
           />
           <FormInput
-            label={t("Password")}
+            label={t("Mật khẩu")}
             type="password"
             name="passwordmedical"
             placeholder={t("Enter your password")}
             containerClass={"mb-3"}
           />
           <FormInput
-            label={t("I accept Terms and Conditions")}
+            label={t("Tôi chấp nhận Điều khoản và Điều kiện")}
             type="checkbox"
             name="checkboxsignup"
             containerClass={"mb-3 text-muted"}
@@ -238,13 +237,13 @@ const Register2 = () => {
 
           <div className="mb-0 d-grid text-center">
             <Button variant="primary" type="submit" disabled={loading}>
-              {t("Sign Up")}
+              {t("Đăng Kí")}
             </Button>
           </div>
 
           {/* social links */}
           <div className="text-center mt-4">
-            <p className="text-muted font-16">{t("Sign up using")}</p>
+            <p className="text-muted font-16">{t("Đăng kí với")}</p>
             <SocialLinks />
           </div>
         </VerticalForm>

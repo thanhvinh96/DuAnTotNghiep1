@@ -73,17 +73,19 @@ const AuthLayout = ({
         {/* Auth fluid right content */}
         <div className="auth-fluid-right text-center">
           <div className="auth-user-testimonial">
-            <h2 className="mb-3 text-white">{t("I love the color!")}</h2>
+            <h2 className="mb-3 text-white">
+              {t("ProHealth là một nhóm các chuyên gia y tế có kinh nghiệm")}
+            </h2>
             <p className="lead">
               <i className="mdi mdi-format-quote-open"></i>{" "}
               {t(
-                "I've been using your theme from the previous developer for our web app, once I knew new version is out, I immediately bought with no hesitation. Great themes, good documentation with lots of customization available and sample app that really fit our need."
+                "Tận tâm cung cấp dịch vụ y tế chất lượng cao. chúng tôi tin vào phương pháp chăm sóc toàn diện, tập trung vào việc điều trị cả con người, không chỉ bệnh tật hay triệu chứng."
               )}{" "}
               <i className="mdi mdi-format-quote-close"></i>
             </p>
-            <h5 className="text-white">
+            {/* <h5 className="text-white">
               {t("- Fadlisaad (Ubold Admin User)")}
-            </h5>
+            </h5> */}
           </div>
         </div>
       </div>

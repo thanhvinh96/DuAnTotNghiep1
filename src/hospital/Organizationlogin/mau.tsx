@@ -4,7 +4,11 @@ import { Link, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
-import { VerticalForm, FormInput, FormSelectBootstrap } from "../../components/";
+import {
+  VerticalForm,
+  FormInput,
+  FormSelectBootstrap,
+} from "../../components/";
 
 // actions
 import { resetAuth } from "../../redux/actions";
@@ -29,9 +33,9 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Don't have an account?")}{" "}
+        {t("Chưa có tài khoản?")}{" "}
         <Link to={"/auth/register2"} className="text-muted ms-1">
-          <b>{t("Sign Up")}</b>
+          <b>{t("Đăng Kí")}</b>
         </Link>
       </p>
     </footer>
@@ -76,14 +80,16 @@ const Login2 = () => {
     dispatch(resetAuth());
   }, [dispatch]);
 
-  const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [options, setOptions] = useState<{ value: string; label: string }[]>(
+    []
+  );
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   useEffect(() => {
-    fetch('http://42.96.2.80:3002/getall-org', {
-      method: 'POST',
+    fetch("http://42.96.2.80:3002/getall-org", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
@@ -94,15 +100,17 @@ const Login2 = () => {
         }));
         setOptions(optionsData);
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const { loading, userLoggedIn, user, error } = useSelector((state: RootState) => ({
-    loading: state.Auth.loading,
-    user: state.Auth.user,
-    error: state.Auth.error,
-    userLoggedIn: state.Auth.userLoggedIn,
-  }));
+  const { loading, userLoggedIn, user, error } = useSelector(
+    (state: RootState) => ({
+      loading: state.Auth.loading,
+      user: state.Auth.user,
+      error: state.Auth.error,
+      userLoggedIn: state.Auth.userLoggedIn,
+    })
+  );
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -120,9 +128,7 @@ const Login2 = () => {
 
   return (
     <>
-      {userLoggedIn || user ? (
-        <Navigate to={next ? next : "/"} />
-      ) : null}
+      {userLoggedIn || user ? <Navigate to={next ? next : "/"} /> : null}
 
       <AuthLayout bottomLinks={<BottomLink />}>
         <h4 className="mt-0">{t("Sign In")}</h4>
@@ -138,7 +144,11 @@ const Login2 = () => {
 
         <VerticalForm
           onSubmit={onSubmit}
-          defaultValues={{ cccd: "123456789", passwordmedical: "password", tokeorg: selectedOption }} // Sử dụng selectedOption
+          defaultValues={{
+            cccd: "123456789",
+            passwordmedical: "password",
+            tokeorg: selectedOption,
+          }} // Sử dụng selectedOption
         >
           <FormSelectBootstrap
             label={t("Select an option")}

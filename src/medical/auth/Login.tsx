@@ -36,9 +36,9 @@ const BottomLink = () => {
           </Link>
         </p>
         <p className="text-white-50">
-          {t("Don't have an account?")}{" "}
+          {t("Chưa có tài khoản?")}{" "}
           <Link to={"/auth/register"} className="text-white ms-1">
-            <b>{t("Sign Up")}</b>
+            <b>{t("Đăng Kí")}</b>
           </Link>
         </p>
       </Col>

@@ -73,7 +73,7 @@ const PricingCard = ({
                       plan.isRecommended ? "btn-light" : "btn-primary"
                     )}
                   >
-                    Sign Up
+                    Đăng Kí
                   </button>
                 </Card.Body>
               </Card>

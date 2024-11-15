@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import DropDown from './DropDown';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import DropDown from "./DropDown";
 
 export default function Header1({ logoSrc, variant }) {
   const [isSticky, setIsSticky] = useState(false);
@@ -13,18 +13,18 @@ export default function Header1({ logoSrc, variant }) {
         setIsSticky(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     // Cleanup function to remove the event listener
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   return (
     <>
       <header
         className={`cs_site_header cs_style1 cs_sticky_header ${
-          mobileToggle ? 'cs_mobile_toggle_active' : ''
-        } ${variant} ${isSticky ? 'cs_active_sticky' : ''}`}
+          mobileToggle ? "cs_mobile_toggle_active" : ""
+        } ${variant} ${isSticky ? "cs_active_sticky" : ""}`}
       >
         <div className="cs_main_header">
           <div className="container">
@@ -36,30 +36,36 @@ export default function Header1({ logoSrc, variant }) {
                 <nav className="cs_nav">
                   <ul
                     className={`${
-                      mobileToggle ? 'cs_nav_list cs_active' : 'cs_nav_list'
+                      mobileToggle ? "cs_nav_list cs_active" : "cs_nav_list"
                     }`}
                   >
                     <li>
-                      <Link to="/patient">Home</Link>
+                      <Link to="/patient">Trang Chủ</Link>
                     </li>
                     <li>
-                      <Link to="/about">About</Link>
+                      <Link to="/about">Về Chúng Tôi</Link>
                     </li>
                     <li>
-                      <Link to="/doctors">Find Doctor</Link>
+                      <Link to="/doctors">Bác Sĩ</Link>
                     </li>
                     <li>
-                      <Link to="/blog">Blog</Link>
+                      <Link to="/blog">Bài Viết</Link>
                     </li>
                     <li>
-                      <Link to="/contact">Contact</Link>
+                      <Link to="/contact">Liên Hệ</Link>
                     </li>
                   </ul>
                 </nav>
               </div>
               <div className="cs_main_header_right">
                 <div className="cs_toolbox">
-                  <Link to="/medical"> <button className="btn btn-primary" type="button"> Đăng Xuất </button> </Link>
+                  <Link to="/medical">
+                    {" "}
+                    <button className="btn btn-primary" type="button">
+                      {" "}
+                      Đăng Xuất{" "}
+                    </button>{" "}
+                  </Link>
                 </div>
               </div>
             </div>

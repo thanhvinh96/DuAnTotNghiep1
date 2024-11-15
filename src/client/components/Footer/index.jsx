@@ -1,23 +1,23 @@
-import React from 'react';
-import ContactInfoWidget from '../Widget/ContactInfoWidget';
-import MenuWidget from '../Widget/MenuWidget';
-import SocialWidget from '../Widget/SocialWidget';
-import Newsletter from '../Widget/Newsletter';
-import TextWidget from '../Widget/TextWidget';
+import React from "react";
+import ContactInfoWidget from "../Widget/ContactInfoWidget";
+import MenuWidget from "../Widget/MenuWidget";
+import SocialWidget from "../Widget/SocialWidget";
+import Newsletter from "../Widget/Newsletter";
+import TextWidget from "../Widget/TextWidget";
 const menuDataOne = [
-  { title: 'About Us', href: '/about' },
-  { title: 'Departments', href: '/departments' },
-  { title: 'Doctors', href: '/doctors' },
-  { title: 'Timetable', href: '/timetable' },
-  { title: 'Appointment', href: '/appointments' },
-  { title: 'Testimonials', href: '/' },
+  { title: "About Us", href: "/about" },
+  { title: "Departments", href: "/departments" },
+  { title: "Doctors", href: "/doctors" },
+  { title: "Timetable", href: "/timetable" },
+  { title: "Appointment", href: "/appointments" },
+  { title: "Testimonials", href: "/" },
 ];
 const menuDataTwo = [
-  { title: 'Blog', href: '/blog' },
-  { title: 'Contact Us', href: '/contact' },
-  { title: 'FAQs', href: '/' },
-  { title: 'Privacy Policy', href: '/' },
-  { title: 'Terms and Conditions', href: '/' },
+  { title: "Blog", href: "/blog" },
+  { title: "Contact Us", href: "/contact" },
+  { title: "FAQs", href: "/" },
+  { title: "Privacy Policy", href: "/" },
+  { title: "Terms and Conditions", href: "/" },
 ];
 
 export default function Footer() {
@@ -25,11 +25,11 @@ export default function Footer() {
     <footer className="cs_footer cs_style_1 cs_heading_color">
       <div
         className="cs_footer_logo_wrap"
-        style={{ backgroundImage: 'url(/images/footer_bg_1.svg)' }}
+        style={{ backgroundImage: "url(/images/footer_bg_1.svg)" }}
       >
         <div
           className="cs_footer_brand"
-          style={{ backgroundImage: 'url(/images/footer_logo_bg.svg)' }}
+          style={{ backgroundImage: "url(/images/footer_logo_bg.svg)" }}
         >
           <img
             src="/images/logo_icon.svg"
@@ -44,7 +44,7 @@ export default function Footer() {
           <div className="row">
             <div className="col-lg-4">
               <div className="cs_footer_item">
-                <TextWidget text="ProHealth Medical & <br />Healthcare Center" />
+                <TextWidget text="Trung Tâm Y Tế & <br /> Chăm Sóc Sức Khỏe ProHealth" />
                 <ContactInfoWidget />
               </div>
             </div>
@@ -61,8 +61,8 @@ export default function Footer() {
             <div className="col-lg-4">
               <div className="cs_footer_item">
                 <Newsletter
-                  title="Be Our Subscribers"
-                  subTitle="To get the latest news about health from our experts"
+                  title="Hãy trở thành người đăng ký của chúng tôi"
+                  subTitle="Để Nhận Tin Tức Mới Nhất Về Sức Khỏe Từ Các Chuyên Gia Của Chúng Tôi"
                 />
               </div>
             </div>

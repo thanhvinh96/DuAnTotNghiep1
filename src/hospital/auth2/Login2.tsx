@@ -40,9 +40,9 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Don't have an account?")}{" "}
+        {t("Chưa có tài khoản?")}{" "}
         <Link to={"/auth2/register2"} className="text-muted ms-1">
-          <b>{t("Sign Up")}</b>
+          <b>{t("Đăng Kí")}</b>
         </Link>
       </p>
     </footer>
@@ -131,14 +131,14 @@ const Login2 = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('datahospital', data);
+        console.log("datahospital", data);
         const decoded = jwtDecode<DecodedToken>(data.transactionResult);
         console.log(decoded);
-        if(decoded.tokenhospital != null){
+        if (decoded.tokenhospital != null) {
           try {
-            localStorage.setItem("JwtToken",data.transactionResult);
-            console.log('doctor infor', decoded);
-            navigate('/hospital/home');
+            localStorage.setItem("JwtToken", data.transactionResult);
+            console.log("doctor infor", decoded);
+            navigate("/hospital/home");
           } catch (decodeError) {
             console.error("Token decoding error:", decodeError);
           }
@@ -162,9 +162,9 @@ const Login2 = () => {
       ) : null}
 
       <AuthLayout bottomLinks={<BottomLink />}>
-        <h4 className="mt-0">{t("Sign In")}</h4>
+        <h4 className="mt-0">{t("Đăng Nhập")}</h4>
         <p className="text-muted mb-4">
-          {t("Enter your CCCD and password to access your account.")}
+          {t("Nhập CCCD và mật khẩu của bạn để truy cập tài khoản.")}
         </p>
 
         {/* Error Alert */}

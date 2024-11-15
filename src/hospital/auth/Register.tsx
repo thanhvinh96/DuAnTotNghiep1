@@ -128,7 +128,7 @@ const Register = () => {
 
       <AuthLayout
         helpText={t(
-          "Don't have an account? Create your account, it takes less than a minute"
+          "Chưa có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút."
         )}
         bottomLinks={<BottomLink />}
       >
@@ -173,13 +173,13 @@ const Register = () => {
 
           <div className="text-center d-grid">
             <Button variant="success" type="submit" disabled={loading}>
-              {t("Sign Up")}
+              {t("Đăng Kí")}
             </Button>
           </div>
         </VerticalForm>
 
         <div className="text-center">
-          <h5 className="mt-3 text-muted">{t("Sign up using")}</h5>
+          <h5 className="mt-3 text-muted">{t("Đăng Kí using")}</h5>
           <SocialLinks />
         </div>
       </AuthLayout>

@@ -15,33 +15,33 @@ import { pageTitle } from "../../helpers/PageTitle";
 const featureListData = [
   {
     iconSrc: "/images/home_1/compassion.svg",
-    title: "Empathy",
+    title: "Đồng cảm",
     subTitle:
-      "We recognize that visiting a healthcare facility can often feel overwhelming and emotional. Our team is dedicated to fostering a warm, comforting atmosphere that reassures our patients and ensures they feel supported every step of the way.",
+      "Chúng tôi nhận thấy rằng việc đến cơ sở y tế thường có thể khiến bạn cảm thấy quá tải và xúc động. Đội ngũ của chúng tôi luôn tận tâm tạo ra một không gian ấm áp và thoải mái để trấn an và đảm bảo rằng bệnh nhân luôn cảm thấy được hỗ trợ trên từng bước đường.",
   },
   {
     iconSrc: "/images/home_1/excellence.svg",
-    title: "Dedication",
+    title: "Tận tâm",
     subTitle:
-      "We are devoted to delivering outstanding healthcare services to our patients. We continuously seek to enhance our expertise, expand our knowledge, and optimize our resources, ensuring that our patients receive the highest standard of care at all times.",
+      "Chúng tôi luôn nỗ lực cung cấp dịch vụ chăm sóc sức khỏe vượt trội cho bệnh nhân. Chúng tôi không ngừng nâng cao chuyên môn, mở rộng kiến thức và tối ưu hóa các nguồn lực, đảm bảo rằng bệnh nhân luôn nhận được sự chăm sóc đạt tiêu chuẩn cao nhất.",
   },
   {
     iconSrc: "/images/home_1/integrity.svg",
-    title: "Integrity",
+    title: "Chính trực",
     subTitle:
-      "We are committed to practicing medicine with honesty and ethical principles. Transparency is at the heart of our communication and decision-making, ensuring that our patients' well-being is always our top priority as we work to provide the best possible solutions for their needs.",
+      "Chúng tôi cam kết thực hành y tế với sự trung thực và các nguyên tắc đạo đức. Minh bạch là trọng tâm trong giao tiếp và ra quyết định của chúng tôi, đảm bảo rằng sức khỏe của bệnh nhân luôn là ưu tiên hàng đầu khi chúng tôi làm việc để mang lại những giải pháp tốt nhất cho nhu cầu của họ.",
   },
   {
     iconSrc: "/images/home_1/respect.svg",
-    title: "Respect",
+    title: "Tôn trọng",
     subTitle:
-      "We believe that every individual deserves to be treated with respect and dignity, regardless of their background, beliefs, or circumstances. Our commitment is to honor each person's uniqueness and ensure they feel valued and understood throughout their care journey with us.",
+      "Chúng tôi tin rằng mọi cá nhân đều xứng đáng được đối xử với sự tôn trọng và nhân phẩm, bất kể xuất thân, niềm tin hay hoàn cảnh. Cam kết của chúng tôi là tôn vinh sự độc đáo của mỗi người và đảm bảo họ cảm thấy được trân trọng và thấu hiểu trong suốt hành trình chăm sóc cùng chúng tôi.",
   },
   {
     iconSrc: "/images/home_1/teamwork.svg",
-    title: "Teamwork",
+    title: "Hợp tác",
     subTitle:
-      "We are dedicated to fostering a collaborative environment where our team members and other healthcare professionals work together seamlessly. By combining our strengths and expertise, we ensure that our patients receive comprehensive, coordinated, and effective care.",
+      "Chúng tôi tận tâm xây dựng một môi trường hợp tác, nơi các thành viên trong đội ngũ và các chuyên gia y tế làm việc cùng nhau một cách nhịp nhàng. Bằng cách kết hợp sức mạnh và chuyên môn, chúng tôi đảm bảo rằng bệnh nhân nhận được sự chăm sóc toàn diện, phối hợp và hiệu quả.",
   },
 ];
 const brandData = [
@@ -83,7 +83,7 @@ const faqData = [
 ];
 const blogData = [
   {
-    title: "The Benefits of Mindfulness Meditation for Stress and Anxiety",
+    title: "Lợi Ích Của Thiền Chánh Niệm Đối Với Căng Thẳng Và Lo Âu",
     thumbUrl: "images/img/benifes.png",
     date: "May 1, 2023",
     btnText: "Learn More",
@@ -91,7 +91,7 @@ const blogData = [
     socialShare: true,
   },
   {
-    title: "Healthy Eating on a Budget: Tips and Strategies",
+    title: "Ăn Uống Lành Mạnh Với Ngân Sách Hạn Chế: Mẹo Và Chiến Lược",
     thumbUrl: "images/img/eating.png",
     date: "May 4, 2023",
     btnText: "Learn More",
@@ -99,7 +99,7 @@ const blogData = [
     socialShare: true,
   },
   {
-    title: "The Importance of Regular Cancer Screenings and Early Detection",
+    title: "Tầm Quan Trọng Của Việc Sàng Lọc Ung Thư Định Kỳ Và Phát Hiện Sớm",
     thumbUrl: "images/img/impotance.png",
     date: "May 1, 2023",
     btnText: "Learn More",
@@ -111,56 +111,56 @@ const awardData = [
   {
     title: "Malcolm Baldrige National Quality Award",
     subTitle:
-      "This award recognizes healthcare organizations that have demonstrated excellence in leadership, strategic planning, customer and employee satisfaction, and operational efficiency.",
+      "Giải thưởng tôn vinh các tổ chức y tế đã thể hiện sự xuất sắc trong lãnh đạo, lập kế hoạch chiến lược, sự hài lòng của khách hàng và nhân viên, và hiệu quả vận hành.",
     iconUrl: "images/img/malcolm.png",
   },
   {
     title: "HIMSS Davies Award",
     subTitle:
-      "This award recognizes healthcare organizations that have used health information technology to improve patient outcomes and reduce costs.",
+      "Giải thưởng này tôn vinh các tổ chức y tế đã sử dụng công nghệ thông tin y tế để cải thiện kết quả điều trị cho bệnh nhân và giảm chi phí.",
     iconUrl: "images/img/himss.png",
   },
   {
     title: "Healthgrades National’s Best Hospital",
     subTitle:
-      "This recognition is given to hospitals that have achieved high ratings for clinical quality and patient safety across multiple specialties and procedures.",
+      "Sự công nhận này được trao cho các bệnh viện đạt điểm cao về chất lượng lâm sàng và an toàn bệnh nhân trong nhiều chuyên khoa và thủ thuật.",
     iconUrl: "images/img/hospitalaward.png",
   },
   {
     title: "Joint Commission Gold Seal of Approval",
     subTitle:
-      "This recognition is given to hospitals that have met rigorous standards for patient safety and quality of care.",
+      "Sự công nhận này được trao cho các bệnh viện đã đáp ứng các tiêu chuẩn nghiêm ngặt về an toàn bệnh nhân và chất lượng chăm sóc.",
     iconUrl: "images/img/jaintgold.png",
   },
 ];
 const departmentData = [
   {
-    title: "Emergency Department",
+    title: "Khoa Cấp Cứu",
     iconUrl: "images/home_1/department_icon_1.svg",
     href: "/departments/department-details",
   },
   {
-    title: "Pediatric Departement",
+    title: "Khoa Nhi",
     iconUrl: "images/home_1/department_icon_2.svg",
     href: "/departments/department-details",
   },
   {
-    title: "Gynecology Department",
+    title: "Khoa Sản",
     iconUrl: "images/home_1/department_icon_3.svg",
     href: "/departments/department-details",
   },
   {
-    title: "Cardiology Department",
+    title: "Khoa Tim Mạch",
     iconUrl: "images/home_1/department_icon_4.svg",
     href: "/departments/department-details",
   },
   {
-    title: "Neurology Department",
+    title: "Khoa Thần Kinh",
     iconUrl: "images/home_1/department_icon_5.svg",
     href: "/departments/department-details",
   },
   {
-    title: "Psychiatry Department",
+    title: "Khoa Tâm Thần",
     iconUrl: "images/home_1/department_icon_6.svg",
     href: "/departments/department-details",
   },
@@ -171,30 +171,30 @@ export default function Home() {
   return (
     <>
       <Hero
-        title="Your Partner in Health And Live"
-        subTitle="We are committed to providing you with the best medical and healthcare services to help you live healthier and happier."
+        title="Đồng Hành Vì Sức Khỏe Của Bạn"
+        subTitle="Chúng tôi cam kết mang đến dịch vụ y tế tốt nhất giúp bạn sống khỏe mạnh và hạnh phúc"
         bgUrl="/images/home_1/hero_bg.jpeg"
         imgUrl="/images/img/banner.png"
-        videoBtnText="See how we work"
+        videoBtnText="Xem cách chúng tôi làm việc"
         videoUrl="https://www.youtube.com/embed/VcaAVWtP48A"
         infoList={[
           {
-            title: "Hotline",
+            title: "Liên hệ",
             subTitle: "0898389790",
             iconUrl: "/images/contact/icon_1.svg",
           },
           {
-            title: "Ambulance",
+            title: "Khẩn cấp",
             subTitle: "0389219213",
             iconUrl: "/images/icons/ambulance.svg",
           },
           {
-            title: "Location",
+            title: "Địa chỉ",
             subTitle: "Công Viên Phần Mềm Quang Trung",
             iconUrl: "/images/icons/pin.svg",
           },
         ]}
-        btnText="Book Now"
+        btnText="Đặt lịch hẹn"
         btnUrl="/appointments"
       />
       {/* Start Feature Section */}
@@ -206,7 +206,10 @@ export default function Home() {
         bottomLg={120}
         bottomXl={60}
       >
-        <FeaturesSection sectionTitle="Our Values" data={featureListData} />
+        <FeaturesSection
+          sectionTitle="Giá Trị Cốt Lõi"
+          data={featureListData}
+        />
       </Section>
       {/* End Feature Section */}
       {/* Start About Section */}
@@ -214,27 +217,27 @@ export default function Home() {
         <AboutSection
           imgUrl="/images/img/teamdoctor.png"
           spiningImgUrl="/images/home_1/about_mini.svg"
-          title="About Us"
+          title="Về Chúng Tôi"
           subTitle="PRO HEALTH"
           featureList={[
             {
               featureListTitle:
-                "ProHealth is a team of experienced medical professionals",
+                "ProHealth là một nhóm các chuyên gia y tế có kinh nghiệm",
               featureListSubTitle:
-                "Dedicated to providing top-quality healthcare services. We believe in a holistic approach to healthcare that focuses on treating the whole person, not just the illness or symptoms.",
+                "Tận tâm cung cấp dịch vụ y tế chất lượng cao. chúng tôi tin vào phương pháp chăm sóc toàn diện, tập trung vào việc điều trị cả con người, không chỉ bệnh tật hay triệu chứng.",
             },
           ]}
         />
       </Section>
       <Section topMd={185} topLg={150} topXl={60}>
         <DepartmentSection
-          sectionTitle="Departments"
+          sectionTitle="Chuyên Khoa"
           bgUrl="images/home_1/department_bg.svg"
           data={departmentData}
         />
       </Section>
       <Section topMd={185} topLg={140} topXl={50}>
-        <AwardSection sectionTitle="Departments" data={awardData} />
+        <AwardSection sectionTitle="Danh Hiệu" data={awardData} />
       </Section>
       <Section
         topMd={185}
@@ -245,39 +248,39 @@ export default function Home() {
         bottomXl={40}
       >
         <TestimonialSection
-          sectionTitle="Some Reviews"
-          sectionTitleDown="Of our clients"
+          sectionTitle="Đánh Giá"
+          sectionTitleDown="Của Khách Hàng"
         />
       </Section>
       <Section>
         <Banner
           bgUrl="images/home_1/cta_bg.svg"
           imgUrl="images/img/healthtake.png"
-          title="Don’t Let Your Health Take a Backseat!"
-          subTitle="Schedule an appointment with one of our experienced medical professionals today!"
+          title="Đừng Để Sức Khỏe Của Bạn Bị Bỏ Quên!"
+          subTitle="Hãy Đặt Lịch Hẹn Với Một Trong Những Chuyên Gia Y Tế Kinh Nghiệm Của Chúng Tôi Ngay Hôm Nay!"
         />
       </Section>
       <Section topMd={150} topLg={105} topXl={60}>
         <BlogSection
-          sectionTitle="Latest Update"
-          sectionTitleUp="BLOG POSTS"
+          sectionTitle="Cập nhật mới nhất"
+          sectionTitleUp="Tin Tức"
           data={blogData}
         />
       </Section>
       <Section topMd={150} topLg={105} topXl={40} id="appointment">
         <AppointmentSection
-          sectionTitle="Appointment"
-          sectionTitleUp="BOOK AN"
+          sectionTitle="Lịch Hẹn"
+          sectionTitleUp="ĐẶT"
           imgUrl="/images/img/background.png"
         />
       </Section>
-      <Section topMd={150} topLg={105} topXl={40}>
+      {/* <Section topMd={150} topLg={105} topXl={40}>
         <FaqSection
           data={faqData}
           sectionTitle="Usually Asked"
           sectionTitleUp="What People"
         />
-      </Section>
+      </Section> */}
       <Section
         topMd={150}
         topLg={100}
