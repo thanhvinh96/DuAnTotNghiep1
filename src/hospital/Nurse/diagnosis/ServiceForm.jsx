@@ -64,7 +64,7 @@ const ServiceForm = ({ onSubmit }) => {
             });
     
             const data = await response.json();
-            
+            console.log(data.data.fieldsToShare)
             if (response.ok) {
                 setPatientInfo({
                     fullname: data.data.fullname,
@@ -77,6 +77,9 @@ const ServiceForm = ({ onSubmit }) => {
                     height: data.data.height,
                     email: data.data.email,
                     phoneNumber: data.data.phoneNumber,
+                    fieldsToShare: data.data.fieldsToShare,
+                    cccd: data.data.cccd,
+
                     avatar: data.data.avatar || "https://via.placeholder.com/100"
                 });
                 setError(null);
@@ -186,6 +189,7 @@ const ServiceForm = ({ onSubmit }) => {
                                 Truy cập thông tin bệnh nhân
                             </Button>
                         </Col>
+                       
                     </Row>
                 )}
 
@@ -218,6 +222,43 @@ const ServiceForm = ({ onSubmit }) => {
                                 />
                             </Col>
                         </Row>
+                        {patientInfo.fieldsToShare && (
+                        <Col md={12}>
+                            <Form.Label>Lịch sử bệnh nhân đã khám</Form.Label>
+                            <Form onSubmit={handleSubmit}>
+                                <Table className='table table-bordered text-center mt-5'>
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Mã bệnh</th>
+                                            <th scope="col">Tên Bệnh</th>
+                                            <th scope="col">Hành Động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {/* Chuyển đổi fieldsToShare thành mảng các cặp key-value */}
+                                        {Object.entries(patientInfo.fieldsToShare).map(([key, value], index) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{key}</td> {/* Hiển thị mã bệnh */}
+                                                <td>{value}</td> {/* Hiển thị tên bệnh (chuẩn đoán) */}
+                                                <td>
+                                                <a 
+    href={`./hospital/medical-share?code=${key}&cccd=${patientInfo.cccd}`} 
+    style={{ fontSize: '12px', padding: '4px 10px', width: '150px', display: 'inline-block', textAlign: 'center', textDecoration: 'none', color: '#fff', backgroundColor: '#007bff', borderRadius: '4px' }}
+>
+Xem chi tiết bệnh
+</a>
+
+                                                        </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                               
+                            </Form>
+                        </Col>
+                    )}
                     </Card>
                 )}
 

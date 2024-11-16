@@ -1,10 +1,12 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Row, Col, Card, Button, Modal } from "react-bootstrap";
-import { useTable, usePagination, useSortBy, useGlobalFilter, Column, Row as TableRow } from "react-table";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Card, Table, Badge } from "react-bootstrap";
 import StatisticsWidget3 from "../../../components/StatisticsWidget3";
-import jwtDecode from 'jwt-decode';
-
-// Định nghĩa kiểu dữ liệu cho lịch hẹn
+import jwtDecode from "jwt-decode";
+import { getClinicsByDepartmentDoctor } from "../../../controller/ClinicscController";
+import { GetScheduleByClinics, UpdateDoctorByMedical } from "../../../controller/ScheduleController";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import {GetScheduleID} from "../../../controller/ServerController"
 interface Appointment {
   id: number;
   patientName: string;
@@ -13,317 +15,310 @@ interface Appointment {
   status: string;
 }
 
-// Định nghĩa kiểu dữ liệu mà API trả về
-interface AppointmentData {
-  id: number;
-  patient: string;
-  title: string;
-  timeschedule: string;
-  status?: string;
-}
-
-// Định nghĩa kiểu dữ liệu cho dịch vụ
-interface Service {
+interface Clinic {
   _id: string;
-  serviceCode: string;
-  serviceType:string;
-  serviceName: string;
+  code: string;
+  name: string;
+  address: string;
+  roomType: string;
+  phone: string;
+  services: string[];
 }
 
-// Dashboard3 Component
 const Dashboard3 = () => {
-  const token = localStorage.getItem('tokenadmin');
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [services, setServices] = useState<Service[]>([]); // State lưu danh sách dịch vụ
-  const [showModal, setShowModal] = useState(false); // State điều khiển modal
-  const [selectedPatient, setSelectedPatient] = useState<string | null>(null); // Bệnh nhân đã chọn để chỉnh sửa
-  const decodedToken: any = token ? jwtDecode(token) : null;
+  const token = localStorage.getItem("tokenadmin");
+  const MySwal = withReactContent(Swal);
 
-  const showdata = async () => {
+  const [datatable, setDatatable] = useState<Clinic[]>([]);
+  const [dataSchedule, setDataSchedule] = useState<any[]>([]);
+  const [totalPatients, setTotalPatients] = useState(0); // Tổng số bệnh nhân
+  const [pendingPatients, setPendingPatients] = useState(0); // Số bệnh nhân đang chờ
+  const decodedToken: any = token ? jwtDecode(token) : null;
+  const [typeForm,settypeForm] = useState(null);
+  const showdataClinic = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/schedule/bydoctor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          doctor: decodedToken ? decodedToken['tokenuser'] : "",
-        }),
-      });
-  
-      // Kiểm tra phản hồi đầu tiên
-      if (!res.ok) {
-        throw new Error("Error fetching schedule by doctor");
+      const data = { doctors: decodedToken?.tokenuser };
+      const res = await getClinicsByDepartmentDoctor(data);
+      if (res && res.data && res.data.length > 0) {
+        
+        setDatatable(res.data);
+        console.log('gia tri'+res.data[0].selectedService.value)
+        const dataZ={
+          id:res.data[0].selectedService.value
+        }
+        const _resz = await GetScheduleID(dataZ);
+        console.log("gia tri type form"+_resz.data[0].serviceType)
+                settypeForm(_resz.data[0].serviceType);
+
+        const scheduleRes = await GetScheduleByClinics({ clinic: res.data[0]._id });
+
+        const schedules = scheduleRes || [];
+        setDataSchedule(schedules);
+
+        // Tính tổng số bệnh nhân và bệnh nhân đang chờ
+        const total = schedules.length;
+        const pending = schedules.filter((appt: any) => appt.className === "pending").length;
+
+        setTotalPatients(total);
+        setPendingPatients(pending);
+      } else {
+        setDatatable([]);
+        setDataSchedule([]);
+        setTotalPatients(0);
+        setPendingPatients(0);
       }
-  
-      const _res = await fetch("http://127.0.0.1:8000/api/check-services", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          serviceName: decodedToken ? decodedToken['specialized'] : "",
-        }),
-      });
-  
-      // Kiểm tra phản hồi thứ hai
-      if (!_res.ok) {
-        throw new Error("Error fetching check-services");
-      }
-  
-      // Đảm bảo rằng `decodedToken['specialized']` có giá trị
-      const serviceData: { data: Service[] } = await _res.json();
-      console.log('Loại dịch vụ: ' + JSON.stringify(serviceData));
-      setServices(serviceData.data); // Đúng vì truy cập vào mảng dịch vụ qua thuộc tính `data`
-      
-      const data: AppointmentData[] = await res.json();
-      const transformedData = data.map((item: AppointmentData) => ({
-        id: item.id,
-        patientName: item.patient,
-        examinationContent: item.title,
-        appointmentTime: new Date(item.timeschedule).toLocaleString(),
-        status: item.status || "Chờ khám",
-      }));
-  
-      setAppointments(transformedData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching clinic or schedule data:", error);
+      setDatatable([]);
+      setDataSchedule([]);
+      setTotalPatients(0);
+      setPendingPatients(0);
     }
   };
+
+  const handleAccept = async (id: string) => {
+    try {
+      // Log thông tin về lịch hẹn đang xử lý
+      console.log(`Attempting to accept appointment with ID: ${id}`);
+
+      // Kiểm tra token và id trước khi tiếp tục
+      if (!decodedToken || !decodedToken['tokenuser']) {
+        console.error("Token for doctor is missing");
+        return alert("Failed to accept: Doctor authentication token is invalid.");
+      }
+      if (!id) {
+        console.error("Patient ID is missing");
+        return alert("Failed to accept: Patient ID is missing.");
+      }
+
+      // Chuẩn bị dữ liệu cần gửi
+      const data = {
+        accepted_by_doctor: decodedToken['tokenuser'], // Lấy token của bác sĩ
+        medical: id, // ID của bệnh nhân
+      };
+
+      // Gửi yêu cầu cập nhật dữ liệu
+      const res = await UpdateDoctorByMedical(data);
+      console.log(res.status);
+      // Kiểm tra phản hồi từ API
+      if (res.status === true) {
+        console.log("Appointment accepted successfully:", res.data);
+        MySwal.fire({
+          icon: 'success',
+          title: 'Thành công',
+          text: 'Cuộc hẹn đã được tiếp nhận thành công.',
+        });
+      } else {
+        console.error("Failed to accept appointment:", res);
+        MySwal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Không thể tiếp nhận cuộc hẹn. Vui lòng thử lại.',
+        });
+      }
+
+      // Làm mới dữ liệu phòng khám sau khi cập nhật thành công
+      showdataClinic();
+    } catch (error) {
+      // Ghi log lỗi và hiển thị thông báo lỗi
+      console.error("Error occurred while accepting appointment:", error);
+      MySwal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Đã xảy ra lỗi khi xử lý cuộc hẹn. Vui lòng thử lại sau.',
+      });
+    }
+  };
+
+  const handleExamine = (id: string) => {
+    // Logic to examine the patient
+    console.log(`Examine patient with ID: ${id}`);
+    window.location.href = `/nurse?typeform=${typeForm}&patient=${id}`;
+    // Thêm logic điều hướng hoặc xử lý khác tại đây
+  };
   
-  // Gọi showdata khi component mount
+  const handleSchedule = (id: string) => {
+    // Logic to schedule the appointment
+    console.log(`Schedule for appointment with ID: ${id}`);
+    // Thêm logic điều hướng hoặc xử lý khác tại đây
+  };
+
   useEffect(() => {
-    showdata();
+    showdataClinic();
+    // Có thể thêm các phụ thuộc khác nếu cần
   }, []);
-
-  // Định nghĩa cột với kiểu Column<Appointment>
-  const columns: Column<Appointment>[] = useMemo(
-    () => [
-      {
-        Header: "Tên bệnh nhân",
-        accessor: "patientName",
-      },
-      {
-        Header: "Nội dung khám",
-        accessor: "examinationContent",
-      },
-      {
-        Header: "Thời gian",
-        accessor: "appointmentTime",
-      },
-      {
-        Header: "Trạng thái",
-        accessor: "status",
-        Cell: ({ value }) => (
-          <span className={`badge ${value === "Đã khám" ? "badge-success" : "badge-warning"}`}>
-            {value}
-          </span>
-        ),
-      },
-      {
-        Header: "Hành động",
-        Cell: ({ row }: { row: TableRow<Appointment> }) => (
-          <div className="d-flex gap-2">
-            <Button
-              variant="outline-primary"
-              size="sm"
-              onClick={() => handleEdit(row.original.patientName)}
-            >
-Tiếp Nhận            </Button>
-            {/* <a
-              href={`/delete?model=${row.original.patientName}`}
-              className="btn btn-outline-danger btn-sm"
-            >
-              Xóa
-            </a> */}
-          </div>
-        ),
-      },
-    ],
-    []
-  );
-
-  const data = useMemo(() => appointments, [appointments]);
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    state,
-    setGlobalFilter,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    gotoPage,
-    setPageSize,
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageSize: 5 },
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  );
-
-  const handleEdit = (patientName: string) => {
-    setSelectedPatient(patientName);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedPatient(null);
-  };
 
   return (
     <>
-      <Row>
+      <Row className="mb-2">
         <Col md={6}>
-          <StatisticsWidget3
-            title="Tổng số bệnh nhân đã khám"
-            stats={appointments.length.toString()}
-            trend={{
-              label: "Tổng số bệnh nhân",
-              value: appointments.length.toString(),
-              icon: "fa-users",
-              variant: "success",
-              trendStats: "100%",
-            }}
-          />
+          <Card className="shadow-sm border-0">
+            <Card.Body>
+              <StatisticsWidget3
+                title="Tổng số bệnh nhân"
+                stats={totalPatients.toString()}
+                trend={{
+                  label: "Tổng số bệnh nhân",
+                  value: totalPatients.toString(),
+                  icon: "fa-users",
+                  variant: "success",
+                  trendStats: "100%",
+                }}
+              />
+            </Card.Body>
+          </Card>
         </Col>
         <Col md={6}>
-          <StatisticsWidget3
-            title="Số bệnh nhân đang chờ"
-            stats={appointments.filter((appt) => appt.status === "Chờ khám").length.toString()}
-            trend={{
-              label: "Bệnh nhân đang chờ",
-              value: appointments.filter((appt) => appt.status === "Chờ khám").length.toString(),
-              icon: "fa-user-clock",
-              variant: "warning",
-              trendStats: "Hiện tại",
-            }}
-          />
+          <Card className="shadow-sm border-0">
+            <Card.Body>
+              <StatisticsWidget3
+                title="Số bệnh nhân đang chờ"
+                stats={pendingPatients.toString()}
+                trend={{
+                  label: "Bệnh nhân đang chờ",
+                  value: pendingPatients.toString(),
+                  icon: "fa-user-clock",
+                  variant: "warning",
+                  trendStats: "Hiện tại",
+                }}
+              />
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
 
-      <Row className="mt-4">
+      <Row className="mb-4">
         <Col>
-          <Card>
+          <Card className="shadow-sm border-0">
+            <Card.Header className="bg-primary" style={{ color: "white" }}>
+              <h4 className="mb-0">Phòng khám hiện tại bác sĩ đang làm việc</h4>
+            </Card.Header>
             <Card.Body>
-              <h4 className="header-title">Lịch hẹn bệnh nhân</h4>
-              <p className="text-muted font-14 mb-4">
-                Bảng hiển thị cho phép tìm kiếm, sắp xếp và phân trang.
-              </p>
-
-              {/* Search input */}
-              <input
-                value={state.globalFilter || ""}
-                onChange={(e) => setGlobalFilter(e.target.value)}
-                placeholder="Tìm kiếm bệnh nhân..."
-                className="form-control mb-3"
-              />
-
-              {/* Table */}
-              <table {...getTableProps()} className="table table-bordered table-hover table-striped table-responsive mb-0 text-dark">
-                <thead className="thead-dark">
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                          {column.render("Header")}
-                          {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
-                        </th>
-                      ))}
+              <div className="table-responsive">
+                <Table className="table-hover table-sm text-center">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Mã</th>
+                      <th>Tên</th>
+                      <th>Địa chỉ</th>
+                      <th>Loại phòng</th>
+                      <th>Điện thoại</th>
+                      <th>Dịch vụ</th>
                     </tr>
-                  ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                  {page.map((row) => {
-                    prepareRow(row);
-                    return (
-                      <tr {...row.getRowProps()} className="align-middle">
-                        {row.cells.map((cell) => (
-                          <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                        ))}
+                  </thead>
+                  <tbody>
+                    {datatable.length ? datatable.map(clinic => (
+                      <tr key={clinic._id}>
+                        <td>{clinic.code}</td>
+                        <td>{clinic.name}</td>
+                        <td>{clinic.address}</td>
+                        <td><Badge bg="info">{clinic.roomType}</Badge></td>
+                        <td>{clinic.phone}</td>
+                        <td>
+                          {clinic.services.map((service, idx) => (
+                            <Badge key={idx} bg="secondary" className="me-1">{service}</Badge>
+                          ))}
+                        </td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-
-              {/* Pagination */}
-              {pageOptions.length > 1 && (
-                <div className="pagination mt-3">
-                  <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {"<<"}
-                  </button>
-                  <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {"<"}
-                  </button>
-                  <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {">"}
-                  </button>
-                  <button onClick={() => gotoPage(pageOptions.length - 1)} disabled={!canNextPage}>
-                    {">>"}
-                  </button>
-                  <span className="mx-3">
-                    Page{" "}
-                    <strong>
-                      {state.pageIndex + 1} of {pageOptions.length}
-                    </strong>{" "}
-                  </span>
-                  <select
-                    value={state.pageSize}
-                    onChange={(e) => setPageSize(Number(e.target.value))}
-                  >
-                    {[5, 10, 20].map((pageSize) => (
-                      <option key={pageSize} value={pageSize}>
-                      Show {pageSize}
-                    </option>
-                  ))}
-                </select>
+                    )) : (
+                      <tr>
+                        <td colSpan={6} className="text-center">Không có dữ liệu</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
               </div>
-            )}
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-    {/* Modal hiển thị danh sách dịch vụ */}
-    <Modal show={showModal} onHide={handleCloseModal}>
-      <Modal.Header closeButton>
-        <Modal.Title>Danh sách dịch vụ cho bệnh nhân: {selectedPatient}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {services.length > 0 ? (
-          <ul>
-            {services.map((service) => (
-              <li key={service.serviceType}>
-<a href={`/nurse?typeform=${service.serviceType}&patient=${selectedPatient}`} target="_blank" rel="noopener noreferrer">
-    {service.serviceName} - {service.serviceCode}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Không có dịch vụ nào được tìm thấy.</p>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Đóng
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  </>
-);
+      <Row>
+        <Col>
+          <Card className="shadow-sm border-0">
+            <Card.Header className="bg-primary custom-header">
+              <h4 className="mb-0">Danh sách lịch hẹn</h4>
+            </Card.Header>
+            <Card.Body>
+              <div className="table-responsive">
+                <Table className="table-hover table-sm text-center">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Mã lịch hẹn</th>
+                      <th>Tên bệnh nhân</th>
+                      <th>Nội dung khám</th>
+                      <th>Thời gian</th>
+                      <th>Trạng thái</th>
+                      <th>Hành Động</th>
+                      <th>Truy cập thông tin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataSchedule.length ? (
+                      dataSchedule.map((appt: any, idx: number) => (
+                        <tr key={appt._id || idx}>
+                          <td>{appt._id}</td>
+                          <td>{appt.patient || "N/A"}</td>
+                          <td>{appt.notes || "Nội dung không có"}</td>
+                          <td>{appt.timeschedule ? new Date(appt.timeschedule).toLocaleString() : "N/A"}</td>
+                          <td>
+                            <Badge bg={
+                              appt.className === "Hoàn thành" ? "success" :
+                              appt.className === "pending" ? "warning" :
+                              "info"
+                            }>
+                              {appt.className || "chưa tiếp nhận"}
+                            </Badge>
+                          </td>
+                          <td>
+                            {appt.className === "pending" ? (
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={() => handleAccept(appt._id)}
+                              >
+                                Tiếp nhận
+                              </button>
+                            ) : (
+                              <>
+                                <button
+                                  className="btn btn-success btn-sm me-2"
+                                  onClick={() => handleExamine(appt.patient)}
+                                >
+                                  Khám bệnh
+                                </button>
+                                {/* Bạn có thể thêm các hành động khác ở đây nếu cần */}
+                              </>
+                            )}
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-info btn-sm"
+                              onClick={() => {
+                                // Thay thế bằng logic truy cập thông tin bệnh nhân
+                                console.log(`Truy cập thông tin bệnh nhân ID: ${appt.patientID}`);
+                                // Ví dụ: điều hướng đến trang chi tiết bệnh nhân
+                                // history.push(`/patient/${appt.patientID}`);
+                              }}
+                            >
+                              Truy cập
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="text-center">Không có dữ liệu</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </>
+  );
 };
 
 export default Dashboard3;

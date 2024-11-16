@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Row, Col, Card } from 'react-bootstrap';
 import PageTitle from "../../../components/PageTitle";
+import jwt_decode from 'jwt-decode';
 
 const Medicalhistorydetail: React.FC = () => {
     const [conclusionData, setConclusionData] = useState({
@@ -10,6 +11,7 @@ const Medicalhistorydetail: React.FC = () => {
         additionalNotes: '',
         images: []
     });
+    
     const [cccd, setCccd] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [patientData, setPatientInfo] = useState<any>({});
@@ -23,7 +25,11 @@ const Medicalhistorydetail: React.FC = () => {
         images: []
     });
         const [previewImages, setPreviewImages] = useState<string[]>([]);
+        const token:any = localStorage.getItem('tokenadmin');
 
+        const decoded: any = jwt_decode(token);
+        const doctor = decoded['tokenuser']
+         
     const handleAccessPatientInfo = async (patientId: any) => {
         try {
             const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
@@ -61,14 +67,18 @@ const Medicalhistorydetail: React.FC = () => {
 
     const showdata = async (patientId: any) => {
         try {
+
             const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bycode", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ medicalRecordCode: patientId })
+                body: JSON.stringify({
+                    doctor :doctor,
+                     medicalRecordCode: patientId })
             });
             const data = await response.json();
+            console.log(data);
             setMedicalData(data.data);
         } catch (error) {
             console.error("Error fetching medical data:", error);
@@ -82,9 +92,13 @@ const Medicalhistorydetail: React.FC = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ diseasecodes: patientId })
+                body: JSON.stringify({
+                    doctor :doctor,
+
+                     diseasecodes: patientId })
             });
             const data = await response.json();
+
             console.log(data.data[0].newData.Prescription)
             setprescriptionData(data.data[0].newData.Prescription)
             setConclusionDatas(data.data[0].newData.conclusion)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
-import { Row, Col, Card, Button, InputGroup, FormControl, ButtonGroup } from "react-bootstrap";
+import { Row, Col, Card, Button, InputGroup, FormControl, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
 import { CreateBranchs, GetFullBranch } from "../../controller/BranchController";
@@ -49,29 +49,48 @@ export default function HospitalBranch() {
       accessor: "action",
       sort: false,
       Cell: ({ row }: any) => (
-        <ButtonGroup className="action-buttons">
-    <Button variant="info" className="btn-sm" onClick={branchDetail}>
-        <i className="fa fa-pencil"></i> Sửa
-    </Button>
-    <Button variant="danger" className="btn-sm">
-        <i className="fa fa-stop"></i> Dừng
-    </Button>
-    <Button
-        variant="secondary"
-        className="btn-sm"
-        onClick={() => navigate(`/hospital/brach/create-service?model=${row.original.tokenbranch}`)}
-    >
-        <i className="fa fa-cog"></i> Tạo dịch vụ
-    </Button>
-    <Button
-        variant="success"
-        className="btn-sm"
-        onClick={() => navigate(`/hospital/create-personnel?model=${row.original.tokenbranch}`)}
-    >
-        <i className="fa fa-user-plus"></i> Tạo thành viên
-    </Button>
-</ButtonGroup>
-
+        <>
+          <div className="d-none d-md-inline"> {/* Hidden on small screens */}
+            <ButtonGroup className="action-buttons">
+              <Button variant="info" className="btn-sm" onClick={branchDetail}>
+                <i className="fa fa-pencil"></i> Sửa
+              </Button>
+              <Button variant="danger" className="btn-sm">
+                <i className="fa fa-stop"></i> Dừng
+              </Button>
+              <Button
+                variant="secondary"
+                className="btn-sm"
+                onClick={() => navigate(`/hospital/branch/home?model=${row.original.tokenbranch}`)}
+              >
+                <i className="fa fa-cog"></i>Truy cập quản lý
+              </Button>
+             
+            </ButtonGroup>
+          </div>
+          <div className="d-md-none"> {/* Show on small screens */}
+            <DropdownButton
+              as={ButtonGroup}
+              id="dropdown-button-drop-end"
+              drop="end"
+              title="Thao tác"
+              variant="secondary"
+              className="btn-sm"
+            >
+              <Dropdown.Item onClick={branchDetail}><i className="fa fa-pencil"></i> Sửa</Dropdown.Item>
+              <Dropdown.Item><i className="fa fa-stop"></i> Dừng</Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate(`/hospital/brach/create-service?model=${row.original.tokenbranch}`)}>
+                <i className="fa fa-cog"></i> Tạo dịch vụ
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate(`/hospital/create-personnel?model=${row.original.tokenbranch}`)}>
+                <i className="fa fa-user-plus"></i> Tạo thành viên
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate(`/hospital/create-clinic?model=${row.original.tokenbranch}`)}>
+                <i className="fa fa-hospital"></i> Tạo phòng khám
+              </Dropdown.Item>
+            </DropdownButton>
+          </div>
+        </>
       ),
     },
   ];

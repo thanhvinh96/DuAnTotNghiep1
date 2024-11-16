@@ -6,14 +6,15 @@ import PageTitle from "../../components/PageTitle";
 interface Service {
     serviceCode: string;
     serviceName: string;
+    serviceFees: string;
     serviceType: string;
     model: string | null;
 }
-
-export default function CreateService() {
+const CreateService: React.FC = () => {
     const [serviceCode, setServiceCode] = useState<string>("");
     const [serviceName, setServiceName] = useState<string>("");
     const [serviceType, setServiceType] = useState<string>("");
+    const [serviceFees, setServiceFees] = useState<string>("");
     const [services, setServices] = useState<Service[]>([]);
     const navigate = useNavigate();
     const location = useLocation();
@@ -48,7 +49,7 @@ export default function CreateService() {
             alert("Có lỗi xảy ra khi kết nối với server.");
         }
     };
-
+   
     useEffect(() => {
         showDataSeveri();
     }, []);
@@ -66,6 +67,7 @@ export default function CreateService() {
             serviceCode,
             serviceName,
             serviceType,
+            serviceFees,
             model,
         };
         console.log("Service Data:", newService);
@@ -142,6 +144,15 @@ export default function CreateService() {
                                         value={serviceName}
                                         onChange={(e) => setServiceName(e.target.value)}
                                     />
+                                </Form.Group>    
+                                 <Form.Group className="mb-3">
+                                    <Form.Label>Chi Phí Dịch Vụ</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Chi Phí Dịch Vụ"
+                                        value={serviceFees}
+                                        onChange={(e) => setServiceFees(e.target.value)}
+                                    />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3">
@@ -158,8 +169,7 @@ export default function CreateService() {
                                 </Form.Group>
 
                                 <Button variant="primary" type="submit">
-                                    Up Dịch Vụ
-                                </Button>
+                                Tạo dịch vụ                                </Button>
                             </Form>
                         </Card.Body>
                     </Card>
@@ -180,6 +190,7 @@ export default function CreateService() {
                                                     <th>Mã Dịch Vụ</th>
                                                     <th>Tên Dịch Vụ</th>
                                                     <th>Loại Dịch Vụ</th>
+                                                    <th>Chi Phí Dịch Vụ</th>
                                                     <th>Hành Động</th>
                                                 </tr>
                                             </thead>
@@ -191,6 +202,7 @@ export default function CreateService() {
                                                             <td>{service.serviceCode}</td>
                                                             <td>{service.serviceName}</td>
                                                             <td>{service.serviceType}</td>
+                                                            <td>{service.serviceFees}</td>
                                                             <td>
                                                                 <Button
                                                                     variant="danger"
@@ -221,3 +233,4 @@ export default function CreateService() {
         </>
     );
 }
+export default CreateService;
