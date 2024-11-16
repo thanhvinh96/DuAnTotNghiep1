@@ -16,6 +16,7 @@ const PatientList: React.FC = () => {
    
   ]);
 
+
   const [searchTerm, setSearchTerm] = useState('');
 
   // Hàm lấy dữ liệu từ API
@@ -44,7 +45,7 @@ const PatientList: React.FC = () => {
       if (res && Array.isArray(res.data)) {
         // Chuyển đổi danh sách các bản ghi từ API sang định dạng phù hợp với `PatientRecord`
         const transformedRecords = res.data.map((record: any) => ({
-          recordId: record._id,
+          recordId: record.patient_cccd ? record.patient_cccd : record.diseasecodes,
           creationDate: record.created_at,
         }));
         
@@ -66,11 +67,11 @@ const PatientList: React.FC = () => {
   );
 
   const handleViewDetails = (recordId: string) => {
-    navigate(`/patient/${recordId}`);
+    navigate(`/doctor/history-detail?patient=${recordId}`);
   };
 
   return (
-    <>
+    <>   
       <PageTitle
         breadCrumbItems={[
           { label: "Tables", path: "/features/tables/advanced" },

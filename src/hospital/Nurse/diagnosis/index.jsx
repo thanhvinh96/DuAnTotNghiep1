@@ -4,7 +4,7 @@ import { Container, Card, Button, Form, Row, Col, FormLabel } from 'react-bootst
 import { useLocation } from 'react-router-dom';
 import ServiceForm from './ServiceForm';
 import UploadForm from './UploadForm';
-import Conclude from './Conclude';
+import Conclude from './Conclude.tsx';
 
 const Diagnosis = () => {
     const location = useLocation();
@@ -28,7 +28,7 @@ const Diagnosis = () => {
         <Container fluid className="p-3">
 
             {/* Kiểm tra typeform để hiển thị các form khác nhau */}
-            {typeform === 'chuyen_muc' && <ServiceForm onSubmit={handleServiceSubmit} />}
+            {typeform === 'chuyen_muc' && <UploadForm onSubmit={handleServiceSubmit} />}
             {typeform === 'up_file' && <UploadForm onSubmit={handleImageSubmit} />}
             {typeform === 'up_ketluan' && <Conclude onSubmit={handleImageSubmit} />}
 

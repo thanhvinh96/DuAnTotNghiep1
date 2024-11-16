@@ -58,6 +58,7 @@ const ExaminePatient = React.lazy(() => import("../hospital/examinePatient/index
 // const PersonnelManagent = React.lazy(()=>import("../hospital/brach/personnel/personnelmanagent"));
 const ManagentMedical = React.lazy(()=>import("../hospital/brach/medical/managemedical"));
 const CreaterSeveri = React.lazy(()=>import("../hospital/hospitalbranch/createrseveri"));
+const CreaterClinic = React.lazy(()=>import("../hospital/hospitalbranch/createrclinic"));
 // const Rightmedical = React.lazy(()=>import("../hospital/brach/medical/rightmedical"));
 // Nurse api
 const BloodTestNurse = React.lazy(()=>import("../hospital/Nurse/BloodTestNurse/index"));
@@ -71,10 +72,12 @@ const ManagentRequest = React.lazy(()=>import("../hospital/Nurse/Requestmedical/
 const DoctorHome = React.lazy(()=>import("../hospital/Nurse/home/index"));
 const DoctorProfile = React.lazy(()=>import("../hospital/Nurse/profile/index"));
 const BranchHome = React.lazy(()=>import("../hospital/hospitalbranch/home/homebranch"));
+const Department = React.lazy(()=>import("../hospital/hospitalbranch/createdepartment"));
+const CreateAppointments = React.lazy(()=>import("../hospital/hospitalbranch/CreateAppointment"));
 const DoctorMedicalHistory = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/index"));
 const DoctorMedicalHistoryDetail = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/Medicalhistorydetail"));
 const Appointments = React.lazy(()=>import("../hospital/Nurse/appointments/index"));
-
+const HospitalMedicalshare =React.lazy(()=>import("../hospital/medicalShare/index"))
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -195,9 +198,31 @@ const hospitalRouter: RoutesProps = {
     },
     {
 
+      path: "/hospital/brach/create-apppoinment",
+      name: "personnel management",
+      element: <CreateAppointments />,
+      route: PrivateRoute,
+    },
+    {
+
       path: "/hospital/brach/create-service",
       name: "personnel management",
       element: <CreaterSeveri />,
+      route: PrivateRoute,
+    },
+    {
+
+      path: "/hospital/brach/create-clinic",
+      name: "create-clinic",
+      element: <CreaterClinic />,
+      route: PrivateRoute,
+    },
+
+    {
+
+      path: "/hospital/brach/create-department",
+      name: "create-clinic",
+      element: <Department />,
       route: PrivateRoute,
     },
     {
@@ -218,7 +243,7 @@ const hospitalRouter: RoutesProps = {
       
       path: "/nurse-schedule",
       name: "nurse",
-      element: <Nurseschedule />,
+      element: <CreateAppointments />,
       route: PrivateRoute,
     },
     {
@@ -267,6 +292,12 @@ const hospitalRouter: RoutesProps = {
       path: "/hospital/branch/home",
       name: "branch-home",
       element: <BranchHome />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/hospital/medical-share",
+      name: "hospital/medical-share",
+      element: <HospitalMedicalshare />,
       route: PrivateRoute,
     }
   ],

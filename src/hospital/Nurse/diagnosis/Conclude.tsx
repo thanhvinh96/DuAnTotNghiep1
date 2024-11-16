@@ -3,30 +3,68 @@ import { Form, Row, Col, Button, Table, Card, Alert, Image } from 'react-bootstr
 import PageTitle from "../../../components/PageTitle";
 import jwt_decode from 'jwt-decode';
 import { PushDataMedical } from "../../../controller/MedicalController"; // Import controller
+import CreateAppointment from "../../hospitalbranch/CreateAppointment"; // Import controller
+
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] }) => {
-    const MySwal = withReactContent(Swal);
+// Define types for props and state
+interface PatientInfo {
+    fullname: string;
+    birthday: string;
+    address: string;
+    sobh: string;
+    tokenmedical: string;
+    sex: string;
+    weight: string;
+    height: string;
+    email: string;
+    phoneNumber: string;
+    cccd: string;
+    fieldsToShare: string[];
+    avatar: string;
+}
 
-    const [tableData, setTableData] = useState([]);
+interface MedicalData {
+    // Define structure based on the API response you expect
+    [key: string]: any; // Placeholder for actual data fields
+}
+
+interface ConclusionFormProps {
+    onSubmit: (resultData: any) => void;
+    patientInfo?: PatientInfo;
+    examinationHistory?: MedicalData[];
+}
+
+interface ConclusionData {
+    diagnosis: string;
+    treatment: string;
+    followUp: string;
+    additionalNotes: string;
+    images: File[]; // Store the images as files
+}
+
+const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo = {}, examinationHistory = [] }) => {
+    const MySwal = withReactContent(Swal);
     // Hàm để thêm dòng mới vào bảng
     const addRow = () => {
         setTableData([...tableData, { testName: '', referenceValue: '', result: '', unit: '', machine: '' }]);
     };
-    const [conclusionData, setConclusionData] = useState({
+
+    const [tableData, setTableData] = useState<{ testName: string; referenceValue: string; result: string; unit: string; machine: string }[]>([]);
+    const [conclusionData, setConclusionData] = useState<ConclusionData>({
         diagnosis: '',
         treatment: '',
         followUp: '',
         additionalNotes: '',
-        images: [] // Thêm state để lưu trữ hình ảnh tải lên
+        images: []
     });
-    const [cccd, setCccd] = useState('');
-    const [error, setError] = useState(null);
-    const [patientData, setPatientInfo] = useState({});
-    const [medicalData, setMedicalData] = useState([]);
-    const [previewImages, setPreviewImages] = useState([]); // State để lưu trữ ảnh xem trước
+    const [cccd, setCccd] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
+    const [patientData, setPatientInfo] = useState<PatientInfo>({} as PatientInfo);
+    const [medicalData, setMedicalData] = useState<MedicalData[]>([]);
+    const [previewImages, setPreviewImages] = useState<string[]>([]); // Store preview images
 
-    const showdata = async (patientId) => {
+    const showdata = async (patientId: string) => {
         try {
             const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bycode", {
                 method: "POST",
@@ -36,7 +74,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                 body: JSON.stringify({ medicalRecordCode: patientId })
             });
             const data = await response.json();
-            setMedicalData(data.data); // Lưu dữ liệu vào state
+            setMedicalData(data.data); // Save data into state
             setError(null);
         } catch (error) {
             console.error("Error fetching medical data:", error);
@@ -44,7 +82,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
         }
     };
 
-    const handleAccessPatientInfo = async (patientId) => {
+    const handleAccessPatientInfo = async (patientId: string) => {
         try {
             const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
                 method: "POST",
@@ -55,6 +93,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
             });
 
             const data = await response.json();
+            console.log(data.data.fieldsToShare)
             if (response.ok) {
                 setPatientInfo({
                     fullname: data.data.fullname,
@@ -68,6 +107,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                     email: data.data.email,
                     phoneNumber: data.data.phoneNumber,
                     cccd: data.data.cccd,
+                    fieldsToShare: data.data.fieldsToShare,
                     avatar: data.data.avatar || "https://via.placeholder.com/100"
                 });
                 setError(null);
@@ -80,7 +120,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
         }
     };
 
-    const getQueryParam = (param) => {
+    const getQueryParam = (param: string) => {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     };
@@ -94,20 +134,32 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
         }
     }, []);
 
-    const handleInputChange = (field, value) => {
+    const handleInputChange = (field: keyof ConclusionData, value: string) => {
         setConclusionData({ ...conclusionData, [field]: value });
     };
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        setConclusionData({ ...conclusionData, images: files });
-        setPreviewImages(files.map(file => URL.createObjectURL(file))); // Hiển thị ảnh xem trước
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            setConclusionData({ ...conclusionData, images: files });
+            setPreviewImages(files.map(file => URL.createObjectURL(file))); // Show preview images
+        }
     };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const loadingSwal: any = MySwal.fire({
+            title: 'Please wait...',
+            text: 'Login Hospital, please wait!',
+            icon: 'info',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
         const token = localStorage.getItem('tokenadmin');
-        let decoded = null;
+        let decoded: any = null;
 
         if (token) {
             try {
@@ -126,7 +178,6 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
         const hospitalName = "Bệnh viện Đa khoa Tỉnh";
         const patientId = getQueryParam('patient');
 
-        // Kiểm tra các giá trị trước khi tạo resultData
         const resultData = {
             tokeorg: decoded['tokeorg'] || "",
             tokenbranch: decoded['branch'] || "",
@@ -135,7 +186,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
             namedisease: conclusionData.diagnosis || "",
             cccd: patientData.cccd || "",
             newData: {
-                Prescription: tableData || [], // Chuyển tableData thành chuỗi JSON
+                Prescription: tableData || [],
                 examinationHistory: medicalData || [],
                 hospitalName: decoded['nameorg'] || hospitalName,
                 patientInfo: patientData || {},
@@ -148,6 +199,8 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
 
         try {
             const _res = await PushDataMedical(resultData);
+            loadingSwal.close();
+
             console.log("Dữ liệu kết luận và bệnh nhân:", _res);
             Swal.fire({
                 title: 'Thêm Dữ liệu thành công!',
@@ -158,15 +211,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                 cancelButtonText: 'Ở lại trang',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Chuyển đến trang chủ
                     window.location.href = '/doctor/home';
-                } else {
-                    Swal.fire({
-                        title: 'Thất Bại!',
-                        text: 'Thêm Dữ Thất Bại.',
-                        icon: 'error',
-                        confirmButtonText: 'OK',
-                    });
                 }
             });
             onSubmit(resultData);
@@ -181,8 +226,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
         }
     };
 
-
-    const handlePrescriptionChange = (index, field, value) => {
+    const handlePrescriptionChange = (index: number, field: keyof typeof tableData[0], value: string) => {
         const newTableData = [...tableData];
         newTableData[index][field] = value;
         setTableData(newTableData);
@@ -190,7 +234,8 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
 
     return (
         <>
-            <PageTitle
+
+            {/* <PageTitle
                 breadCrumbItems={[
                     { label: "Tables", path: "/features/tables/advanced" },
                     {
@@ -200,7 +245,8 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                     },
                 ]}
                 title={"Chuẩn đoán Kết Luận Bệnh Nhân"}
-            />
+            /> */}
+            <CreateAppointment/>
             <Card className="border p-4 mt-4">
                 <Form onSubmit={handleSubmit}>
                     <h4>Chuyên Mục Khám và Kết quả</h4>
@@ -227,6 +273,43 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                 </Button>
                             </Col>
                         </Row>
+                    )}
+                    {patientData.fieldsToShare && (
+                        <Col md={12}>
+                            <Form.Label>Lịch sử bệnh nhân đã khám</Form.Label>
+                            <Form onSubmit={handleSubmit}>
+                                <Table className='table table-bordered text-center mt-5'>
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Mã bệnh</th>
+                                            <th scope="col">Tên Bệnh</th>
+                                            <th scope="col">Hành Động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {/* Chuyển đổi fieldsToShare thành mảng các cặp key-value */}
+                                        {Object.entries(patientData.fieldsToShare).map(([key, value], index) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{key}</td> {/* Hiển thị mã bệnh */}
+                                                <td>{value}</td> {/* Hiển thị tên bệnh (chuẩn đoán) */}
+                                                <td>
+                                                    <a
+                                                        href={`./hospital/medical-share?code=${key}&cccd=${patientData.cccd}`}
+                                                        style={{ fontSize: '12px', padding: '4px 10px', width: '150px', display: 'inline-block', textAlign: 'center', textDecoration: 'none', color: '#fff', backgroundColor: '#007bff', borderRadius: '4px' }}
+                                                    >
+                                                        Xem chi tiết bệnh
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+
+                            </Form>
+                        </Col>
                     )}
 
                     {/* Thông tin bệnh nhân */}
@@ -269,6 +352,8 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                     )}
 
                     {/* Quá trình khám bệnh */}
+                    {/* <p>{patientData.fieldsToShare}</p> */}
+
                     <div className="mb-4 mt-3">
                         <h5>Quá Trình Khám Bệnh</h5>
                         <Table bordered responsive className="text-center">
@@ -287,7 +372,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                 {medicalData.length > 0 ? (
                                     medicalData.map((record, index) => (
                                         <React.Fragment key={index}>
-                                            {record.exam_records.map((exam, examIndex) => (
+                                            {record.exam_records.map((exam: any, examIndex: any) => (
                                                 <tr key={examIndex}>
                                                     <td>{index + 1}</td>
                                                     <td>{exam.examination}</td>
@@ -318,7 +403,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="5">Không có dữ liệu</td>
+                                        <td >Không có dữ liệu</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -378,7 +463,6 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                             />
                         </Col>
                     </Row>
-                    <Row className="mb-3">
                         <Col md={12}>
                             <Form.Label>them don thuoc</Form.Label>
                             <Form onSubmit={handleSubmit}>
@@ -424,7 +508,7 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                                                         onChange={(e) => handlePrescriptionChange(index, 'unit', e.target.value)}
                                                     />
                                                 </td>
-                                                =
+                                                
                                             </tr>
                                         ))}
                                     </tbody>
@@ -436,7 +520,6 @@ const ConclusionForm = ({ onSubmit, patientInfo = {}, examinationHistory = [] })
                             </Form>
 
                         </Col>
-                    </Row>
 
                     <div className="d-flex justify-content-end mt-3">
                         <Button type="submit" variant="primary" style={{ fontSize: '14px', padding: '6px 12px' }}>

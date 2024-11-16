@@ -4,6 +4,7 @@ import { Row, Col, Card, Table } from "react-bootstrap";
 // components
 import PageTitle from "../../components/PageTitle";
 import { GetHistoryMedicalDetail } from "../../controller/MedicalController";
+import jwtDecode from 'jwt-decode';
 
 type RecordType = {
   exam_records: ExamType[];
@@ -21,18 +22,50 @@ type ExamType = {
 
 const MedicalRecordDetail: React.FC = (): JSX.Element => {
   const [medicalData, setMedicalData] = useState<any>(null);
+  const [datacheckprofile, setdatacheckprofile] = useState({
+    tokenmedical: '',
+    cccd: '',
+  });
+
+  const getQueryParam = (param: string): string | null => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  };
+
+  const code = getQueryParam('record');
+  const token = localStorage.getItem('jwtToken');
+
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        setdatacheckprofile({
+          tokenmedical: decodedToken.tokenmedical,
+          cccd: decodedToken.cccd,
+        });
+      } catch (err) {
+        console.error("Invalid token:", err);
+      }
+    }
+  }, [token]);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!datacheckprofile.cccd || !datacheckprofile.tokenmedical || !code) return;
+
       try {
         const data = {
-          cccd: "0869895748",
-          tokenmedical: "b1f5c5a9d6c40afdc5e428c4051cf033c748fd491d13fcbdeb76f0bc257fc2b2",
-          diseasecode: "3ca539b5a10bd53c8ba6"
+          cccd: datacheckprofile.cccd,
+          tokenmedical: datacheckprofile.tokenmedical,
+          diseasecode: code,
         };
+
         const res = await GetHistoryMedicalDetail(data);
+
+        // Parse disease detail data
         const parsedData = JSON.parse(res.data.diseaseDetail.data);
         console.log(parsedData.examinationHistory);
+
         setMedicalData(parsedData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -40,7 +73,7 @@ const MedicalRecordDetail: React.FC = (): JSX.Element => {
     };
 
     fetchData();
-  }, []);
+  }, [datacheckprofile, code]);
 
   return (
     <>
@@ -56,113 +89,71 @@ const MedicalRecordDetail: React.FC = (): JSX.Element => {
               <Card>
                 <Card.Body>
                   <h5>Thông tin bệnh nhân tại bệnh viện {medicalData.hospitalName}</h5>
-                  <p><strong>Họ tên:</strong> {medicalData.patientInfo.fullname}</p>
-                  <p><strong>Ngày sinh:</strong> {medicalData.patientInfo.birthday}</p>
-                  <p><strong>Địa chỉ:</strong> {medicalData.patientInfo.address}</p>
-                  <p><strong>Số bảo hiểm:</strong> {medicalData.patientInfo.sobh}</p>
+                  <p><strong>Họ tên:</strong> {medicalData.patientInfo?.fullname}</p>
+                  <p><strong>Ngày sinh:</strong> {medicalData.patientInfo?.birthday}</p>
+                  <p><strong>Địa chỉ:</strong> {medicalData.patientInfo?.address}</p>
+                  <p><strong>Số bảo hiểm:</strong> {medicalData.patientInfo?.sobh}</p>
                 </Card.Body>
               </Card>
 
               <Card>
                 <Card.Body>
-                  <h5>Chi tiết khám bệnh</h5>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Chuyên Mục</th>
-                        <th>Kết Mục</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Array.isArray(medicalData.examinationHistory) && medicalData.examinationHistory.length > 0 ? (
-                        medicalData.examinationHistory.map((historyItem: any, index: number) => (
-                          <React.Fragment key={index}>
-                            {Array.isArray(historyItem.exam_records) && historyItem.exam_records.length > 0 ? (
-                              historyItem.exam_records.map((item: any, idx: number) => (
-                                <tr key={idx}>
-                                  <td>{item.examination}</td>
-                                  <td>{item.result}</td>
-                                </tr>
-                              ))
-                            ) : (
-                              <tr>
-                                <td colSpan={2}>Không có kết quả xét nghiệm</td>
-                              </tr>
-                            )}
-                          </React.Fragment>
-                        ))
-                      ) : (
+                  <div className="mb-4 mt-3">
+                    <h5>Quá Trình Khám Bệnh</h5>
+                    <Table bordered responsive className="text-center">
+                      <thead className="thead-light">
                         <tr>
-                          <td colSpan={2}>Không có lịch sử khám bệnh</td>
+                          <th>STT</th>
+                          <th>Chuyên Mục Khám</th>
+                          <th>Kết Quả</th>
+                          <th>Hình Ảnh</th>
+                          <th>Triệu Chứng</th>
+                          <th>Kết Luận</th>
                         </tr>
-                      )}
-                    </tbody>
-                  </Table>
-
-                  {Array.isArray(medicalData.examinationHistory) &&
-                    medicalData.examinationHistory.map((historyItem: any, index: number) => (
-                      <div key={index}>
-                        <p><strong>Triệu chứng:</strong> {historyItem.diagnosis_info.symptom}</p>
-                        <p><strong>Kết quả:</strong> {historyItem.diagnosis_info.conclusion}</p>
-                      </div>
-                    ))}
+                      </thead>
+                      <tbody>
+                        {Array.isArray(medicalData.examinationHistory) && medicalData.examinationHistory.length > 0 ? (
+                          medicalData.examinationHistory.map((record: RecordType, index: number) => (
+                            <React.Fragment key={index}>
+                              {record.exam_records.map((exam: ExamType, examIndex: number) => (
+                                <tr key={examIndex}>
+                                  <td>{index + 1}</td>
+                                  <td>{exam.examination}</td>
+                                  <td>{exam.result}</td>
+                                  {examIndex === 0 && (
+                                    <>
+                                      <td rowSpan={record.exam_records.length}>
+                                        {record.patient_image && (
+                                          <img
+                                            src={record.patient_image}
+                                            alt="Patient"
+                                            className="small-image"
+                                            style={{ cursor: "pointer", width: "100px", height: "100px" }}
+                                          />
+                                        )}
+                                      </td>
+                                      <td rowSpan={record.exam_records.length}>
+                                        {record.diagnosis_info?.symptom}
+                                      </td>
+                                      <td rowSpan={record.exam_records.length}>
+                                        {record.diagnosis_info?.conclusion}
+                                      </td>
+                                    </>
+                                  )}
+                                </tr>
+                              ))}
+                            </React.Fragment>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={6}>Không có dữ liệu</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </Table>
+                  </div>
                 </Card.Body>
               </Card>
-
-              <div className="mb-4 mt-3">
-                <h5>Quá Trình Khám Bệnh</h5>
-                <Table bordered responsive className="text-center">
-                  <thead className="thead-light">
-                    <tr>
-                      <th>STT</th>
-                      <th>Chuyên Mục Khám</th>
-                      <th>Kết Quả</th>
-                      <th>Hình Ảnh</th>
-                      <th>Triệu Chứng</th>
-                      <th>Kết Luận</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.isArray(medicalData.examinationHistory) && medicalData.examinationHistory.length > 0 ? (
-                      medicalData.examinationHistory.map((record: RecordType, index: number) => (
-                        <React.Fragment key={index}>
-                          {record.exam_records.map((exam: ExamType, examIndex: number) => (
-                            <tr key={examIndex}>
-                              <td>{index + 1}</td>
-                              <td>{exam.examination}</td>
-                              <td>{exam.result}</td>
-                              {examIndex === 0 && (
-                                <>
-                                  <td rowSpan={record.exam_records.length}>
-                                    {record.patient_image && (
-                                      <img
-                                        src={record.patient_image}
-                                        alt="Patient"
-                                        className="small-image"
-                                        style={{ cursor: "pointer", width: "100px", height: "100px" }}
-                                      />
-                                    )}
-                                  </td>
-                                  <td rowSpan={record.exam_records.length}>
-                                    {record.diagnosis_info.symptom}
-                                  </td>
-                                  <td rowSpan={record.exam_records.length}>
-                                    {record.diagnosis_info.conclusion}
-                                  </td>
-                                </>
-                              )}
-                            </tr>
-                          ))}
-                        </React.Fragment>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={6}>Không có dữ liệu</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </Table>
-              </div>
 
               <Card>
                 <Card.Body>
@@ -215,5 +206,4 @@ const MedicalRecordDetail: React.FC = (): JSX.Element => {
     </>
   );
 };
-
 export default MedicalRecordDetail;

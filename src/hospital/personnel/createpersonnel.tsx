@@ -7,6 +7,9 @@ import { GetInfoFullPersonnel,CreatePersonnels } from '../../controller/Personne
 import { GetInfoHospital } from '../../controller/HospitalController'
 import { GetFullBranch } from '../../controller/BranchController'
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import Select from 'react-select';
 interface Branch {
     tokenbranch: string;
     branchname: string;
@@ -14,18 +17,21 @@ interface Branch {
 
 export default function CreatePersonnel() {
     const location = useLocation();
-    const [datatypeUser,setdatatypeUser] = useState([]);
+    const queryParams = new URLSearchParams(location.search);
 
+    const [datatypeUser,setdatatypeUser] = useState([]);
+    const model:any = queryParams.get("model");
+    console.log(model);
     const showDataSeveri = async () => {
         try {
-            const res = await fetch('http://127.0.0.1:8000/api/services', {
+            const res = await fetch('http://127.0.0.1:8000/api/department/bybranch', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    branchId: model
+                    tokenbranch: model
                 })
             });
 
@@ -33,7 +39,9 @@ export default function CreatePersonnel() {
 
             if (res.ok) {
                 // Cập nhật dữ liệu vào state `services`
-                console.log(data.data)
+                console.log('fgidfigidfg')
+
+                console.log(data)
                 setdatatypeUser(data.data);  // `data.data` chứa mảng dịch vụ từ server
             } else {
                 console.error("Failed to fetch services:", data);
@@ -45,29 +53,33 @@ export default function CreatePersonnel() {
         }
     };
 
-    const queryParams = new URLSearchParams(location.search);
-    const model:any = queryParams.get("model");
-    console.log(model);
-    const [formData, setFormData] = useState({
-        fullname: "",
-        address: "",
-        phone: "",
-        typeusers: "admin",
-        branch: "",
-        password: "",
-        tokeorg: "",
-        License:"",
-        value: "",
-        specialized:"",
-        avatar:"",
-        cccd: "",
-        imgidentification: "", // Đã cập nhật tên biến cho phù hợp
-    });
+
+    const MySwal = withReactContent(Swal);
+
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState({ title: '', body: '' });
     const handleClose = () => setShowModal(false);
     const [branches, setBranches] = useState<Branch[]>([]);
     const navigate = useNavigate();
+const [formData, setFormData] = useState({
+    fullname: "",
+    address: "",
+    phone: "",
+    typeusers: "admin",
+    branch: "",
+    password: "",
+    tokeorg: "",
+    License: "",
+    value: "",
+    specialized: [] as { value: string; label: string }[],  // Cập nhật specialized để lưu cả _id và name    avatar: "",
+    cccd: "",
+    avatar: "",
+
+    imgidentification: "",
+});
+
+
+
 
     useEffect(() => {
         showDataSeveri();
@@ -133,12 +145,15 @@ export default function CreatePersonnel() {
     // useEffect(()=>{
     //     console.log("gias tri data"+datatypeUser)
     // },[])
+  
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
     
         try {
             // Hiển thị modal thông báo đang xử lý
-            setModalContent({ title: 'Processing...', body: 'Creating branch, please wait...' });
+            setModalContent({ title: 'Đang xử lý...', body: 'Đang tạo chi nhánh, vui lòng đợi...' });
             setShowModal(true);
             console.log(formData);
             
@@ -149,18 +164,52 @@ export default function CreatePersonnel() {
             console.log(response.success);
             if (response) {
                 // Không cần chuyển đổi response thành JSON lần nữa
-                console.log("User created successfully:", response.result);
-                setModalContent({ title: 'Success', body: 'User created successfully: ' + response.result.tokenuser });
-    
+                console.log("Người dùng đã được tạo thành công:", response.result);
+                setModalContent({ title: 'Thành công', body: 'Người dùng đã được tạo thành công: ' + response.result.tokenuser });
+                
+                // Hiển thị modal SweetAlert với 2 lựa chọn
+                MySwal.fire({
+                    title: 'Thành công',
+                    text: 'Người dùng đã được tạo thành công. Bạn có muốn tạo thêm người dùng mới hay quay về trang quản lý?',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Tạo thêm',
+                    cancelButtonText: 'Quay về quản lý',
+                }).then((result: any) => {
+                    if (result.isConfirmed) {
+                        // Tạo tiếp nhân viên: reset form và tiếp tục
+                        setFormData({
+                            fullname: "",
+                            address: "",
+                            phone: "",
+                            typeusers: "admin",
+                            branch: "",
+                            password: "",
+                            tokeorg: "",
+                            License: "",
+                            value: "",
+                            specialized: [] as { value: string; label: string }[],  // Cập nhật specialized để lưu cả _id và name
+                                                        avatar: "",
+                            cccd: "",
+                            imgidentification: "",
+                        });
+                    } else {
+                        // Quay về trang quản lý
+                        window.location.href = '/management'; // Đổi link này nếu cần
+                    }
+                });
             } else {
-                setModalContent({ title: 'Error', body: 'Failed to create user. Please try again.' });
+                setModalContent({ title: 'Lỗi', body: 'Không thể tạo người dùng. Vui lòng thử lại.' });
+                MySwal.fire('Lỗi', 'Không thể tạo người dùng. Vui lòng thử lại.', 'error');
             }
         } catch (error) {
             // Xử lý lỗi kết nối hoặc lỗi khác
-            console.error("Unexpected error:", error);
-            setModalContent({ title: 'Error', body: 'An unexpected error occurred. Please try again.' });
+            console.error("Lỗi bất ngờ:", error);
+            setModalContent({ title: 'Lỗi', body: 'Đã xảy ra lỗi bất ngờ. Vui lòng thử lại.' });
+            MySwal.fire('Lỗi', 'Đã xảy ra lỗi bất ngờ. Vui lòng thử lại.', 'error');
         }
     };
+    
     const uploadToCloudinaryAvatar = async () => {
         try {
             const fileInput = document.getElementById('avatar') as HTMLInputElement;
@@ -276,12 +325,12 @@ export default function CreatePersonnel() {
             reader.readAsDataURL(file); // Convert to base64
         }
     };
-    const handleChangez = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormData({
-            ...formData,
-            specialized: e.target.value,
-        });
-    };
+    // const handleChangez = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     setFormData({
+    //         ...formData,
+    //         specialized: e.target.value,
+    //     });
+    // };
     return (
 <>
     <PageTitle
@@ -403,21 +452,24 @@ export default function CreatePersonnel() {
                            
 
                         <Form.Group className="mb-3">
-                <Form.Label>Chuyên Ngành</Form.Label>
-                <Form.Select
-                    name="specialized"
-                    value={formData.specialized}
-                    onChange={handleChangez}
-                    required
-                >
-                    <option value="">Chọn chuyên ngành</option>
-                    {datatypeUser.map((user: any) => (
-                        <option key={user._id} value={user.serviceName}>
-                            {user.serviceName}
-                        </option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
+    <Form.Label>Chuyên Khoa</Form.Label>
+    <Select
+        isMulti
+        options={datatypeUser.map((user: any) => ({
+            value: user._id,            // Dùng _id làm giá trị của option
+            label: user.departmentName     // Dùng serviceName làm nhãn
+        }))}
+        value={formData.specialized}
+        onChange={(selectedOptions: { value: string; label: string }[]) => {
+            // Cập nhật formData với mảng đối tượng chứa cả _id và serviceName
+            setFormData({
+                ...formData,
+                specialized: selectedOptions // Lưu cả value và label
+            });
+        }}
+    />
+</Form.Group>
+
 
                         <Form.Group className="mb-3">
                             <Form.Label>Mật Khẩu</Form.Label>

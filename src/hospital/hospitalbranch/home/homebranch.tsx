@@ -1,127 +1,227 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Container, Row, Col, Alert,Card } from 'react-bootstrap';
+import { Table, Form, Button, Container, Row, Col, Alert, Card, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import PageTitle from "../../../components/PageTitle";
-import { CheckInfoMedical, RequestMedical } from "../../../controller/MedicalController";
 import { ShowBranchRequestMedical } from "../../../controller/BranchController";
-import jwt_decode from 'jwt-decode';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import Statistics from "./Statistics";
-import classNames from "classnames";
-
-
 import PerformanceChart from "./PerformanceChart";
-interface RibbonProps {
-    label: string;
-    color: string;
-    direction?: string;
-  }
-const Ribbon1 = ({ label, color, direction }: RibbonProps) => {
-    return (
-      <Card className="ribbon-box">
+import CreateService from "../createrseveri"
+import CreateDepartment from "../createdepartment"
+import CreatePersonnel from "../../personnel/createpersonnel"
+import CreateClinic from "../createrclinic"
+
+const ManagementRequest: React.FC = () => {
+  const [datagetshow, setdatagetshow] = useState<{ tokeorg: string; value: string; tokenbranch: string }>({
+    tokeorg: '',
+    value: '',
+    tokenbranch: '',
+  });
+  const [datatable, setdatatanle] = useState<any[]>([]);
+
+  const showdatarequest = async () => {
+    const res: any = await ShowBranchRequestMedical(datagetshow);
+    if (Array.isArray(res)) {
+      setdatatanle(res);
+    } else {
+      setdatatanle([]); // Reset to empty array if response is not valid
+    }
+  };
+
+  useEffect(() => {
+    showdatarequest();
+  }, [datagetshow]);
+
+  // State to handle which section to show
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  const handleButtonClick = (section: string) => {
+    // Toggle the section content
+    if (activeSection === section) {
+      setActiveSection(null); // Hide the section if it's already active
+    } else {
+      setActiveSection(section); // Show the clicked section's content
+    }
+  };
+
+  return (
+    <>
+      <Card>
         <Card.Body>
-          <div
-            className={classNames(
-              "ribbon",
-              "ribbon-" + color,
-              direction === "left" ? "float-start" : "float-end"
-            )}
-          >
-            <i className="mdi mdi-access-point me-1"></i> {label}
-          </div>
-        
-          <div className="ribbon-content">
-    <p className="mb-0">
-        Hệ thống quản lý chi nhánh bệnh viện cung cấp đầy đủ thông tin về các chi nhánh và đội ngũ nhân viên,
-        hỗ trợ giám sát và quản lý hiệu quả. Các chi nhánh bệnh viện trên toàn quốc đều được kết nối và cập nhật thông tin
-        liên tục để đảm bảo chất lượng phục vụ tốt nhất cho bệnh nhân.
-    </p>
-</div>
+          <Row>
+            <Col lg={12}>
+              <h4>Quản Lý Yêu Cầu</h4>
+            </Col>
+          </Row>
+
+          {/* Statistics Section */}
+          <Row>
+            <Col lg={6} xl={4}>
+              <Statistics
+                icon="fe-book"
+                variant="primary"
+                stats="1234"
+                description="Tổng Số Bệnh Nhân"
+              />
+            </Col>
+            <Col lg={6} xl={4}>
+              <Statistics
+                icon="fe-clock"
+                variant="warning"
+                stats="567"
+                description="Tổng Số Nhân Viên"
+              />
+            </Col>
+            <Col lg={6} xl={4}>
+              <Statistics
+                icon="fe-check-circle"
+                variant="success"
+                stats="345"
+                description="Tổng Số Token"
+              />
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            {/* Tạo Tổ Dịch Vụ */}
+            <Col lg={2} xs={6}>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="create-service-tooltip">Tạo một tổ dịch vụ mới</Tooltip>}
+              >
+                <Card className="shadow-sm">
+                  <Card.Body>
+                    <h5>Tạo Tổ Dịch Vụ</h5>
+                    <Button
+                      variant="primary"
+                      className="w-100 btn-hover-shadow"
+                      onClick={() => handleButtonClick("createService")}
+                    >
+                      <i className="fe-plus me-2"></i> Tạo Mới
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </OverlayTrigger>
+            </Col>
+
+            {/* Tạo Khoa */}
+            <Col lg={2} xs={6}>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="create-department-tooltip">Tạo khoa bệnh viện mới</Tooltip>}
+              >
+                <Card className="shadow-sm">
+                  <Card.Body>
+                    <h5>Tạo Khoa</h5>
+                    <Button
+                      variant="secondary"
+                      className="w-100 btn-hover-shadow"
+                      onClick={() => handleButtonClick("createDepartment")}
+                    >
+                      <i className="fe-plus me-2"></i> Tạo Mới
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </OverlayTrigger>
+            </Col>
+
+            {/* Tạo Thành Viên */}
+            <Col lg={2} xs={6}>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="create-member-tooltip">Thêm thành viên mới</Tooltip>}
+              >
+                <Card className="shadow-sm">
+                  <Card.Body>
+                    <h5>Tạo Thành Viên</h5>
+                    <Button
+                      variant="success"
+                      className="w-100 btn-hover-shadow"
+                      onClick={() => handleButtonClick("createMember")}
+                    >
+                      <i className="fe-user-plus me-2"></i> Tạo Mới
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </OverlayTrigger>
+            </Col>
+
+            {/* Cập Nhật Thông Tin */}
+            <Col lg={2} xs={6}>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="update-info-tooltip">Cập nhật thông tin</Tooltip>}
+              >
+                <Card className="shadow-sm">
+                  <Card.Body>
+                    <h5>Cập Nhật Thông Tin</h5>
+                    <Button
+                      variant="warning"
+                      className="w-100 btn-hover-shadow"
+                      onClick={() => handleButtonClick("updateInfo")}
+                    >
+                      <i className="fe-refresh-ccw me-2"></i> Cập Nhật
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </OverlayTrigger>
+              {activeSection === "updateInfo" && (
+                <Card className="mt-3">
+                  <Card.Body>
+                    <h6>Thông tin cập nhật</h6>
+                    <p>Hiển thị các chi tiết cập nhật thông tin ở đây...</p>
+                  </Card.Body>
+                </Card>
+              )}
+            </Col>
+
+            {/* Tạo Phòng Khám */}
+            <Col lg={2} xs={6}>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="create-clinic-tooltip">Tạo phòng khám mới</Tooltip>}
+              >
+                <Card className="shadow-sm">
+                  <Card.Body>
+                    <h5>Tạo Phòng Khám</h5>
+                    <Button
+                      variant="info"
+                      className="w-100 btn-hover-shadow"
+                      onClick={() => handleButtonClick("createClinic")}
+                    >
+                      <i className="fe-hospital me-2"></i> Tạo Mới
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </OverlayTrigger>
+            </Col>
+          </Row>
+
+
+          {/* Performance Chart Section */}
+          <Row>
+            <Col xl={12}>
+              {/* Show content based on the active section */}
+              {activeSection === "createService" && (
+                <CreateService />
+              )}
+
+              {activeSection === "createMember" && (
+                <CreatePersonnel />
+              )}
+              {activeSection==="createClinic"&&(
+                <CreateClinic/>
+              )}
+
+              {activeSection === "createDepartment" ? (
+                <CreateDepartment />
+              ) : (
+                <PerformanceChart />
+              )}
+            </Col>
+          </Row>
 
         </Card.Body>
       </Card>
-    );
-  };
-const ManagementRequest: React.FC = () => {
-    const [datagetshow, setdatagetshow] = useState<{ tokeorg: string; value: string; tokenbranch: string }>({
-        tokeorg: '',
-        value: '',
-        tokenbranch: '',
-    });
-    const [datatable, setdatatanle] = useState<Request[]>([]); // Đảm bảo kiểu dữ liệu là Request[]
-    
-    const showdatarequest = async () => {
-        const res: any = await ShowBranchRequestMedical(datagetshow);
-        console.log(res);
-        if (Array.isArray(res)) {
-            setdatatanle(res);
-        } else {
-            console.error('Expected an array but got:', res);
-            setdatatanle([]); // Reset to empty array if response is not valid
-        }
-    };
-
-
-  
-
-  
-    useEffect(() => {
-        showdatarequest();
-    }, [datagetshow]); // Chạy lại khi datagetshow thay đổi
-    
-
-
-    const MySwal = withReactContent(Swal);
-   
-    return (
-        <>
-              <Card>
-              <Card.Body>
-                 <Row>
-        <Col lg={12}>
-          <Ribbon1 label="Thông báo" color="blue" direction="left" />
-        </Col>
-        
-      </Row>
-            <Row>
-  <Col lg={6} xl={4}>
-    <Statistics
-      icon="fe-book"
-      variant="primary"
-      stats="1234" // Giá trị của tổng số yêu cầu sổ khám bệnh
-      description="Tổng Số Bệnh Nhân"
-    />
-  </Col>
-  <Col lg={6} xl={4}>
-    <Statistics
-      icon="fe-clock"
-      variant="warning"
-      stats="567" // Giá trị của yêu cầu chưa được phê duyệt
-      description="Tổng Số Nhân Viên"
-    />
-  </Col>
-  <Col lg={6} xl={4}>
-    <Statistics
-      icon="fe-check-circle"
-      variant="success"
-      stats="345" // Giá trị của yêu cầu đã được phê duyệt
-      description="Tổng Số Token"
-    />
-  </Col>
-</Row>
-
-          
-<Row>
-        <Col xl={12}>
-        
-          <PerformanceChart />
-        </Col>
-      </Row>
-      </Card.Body>
-      </Card>
-        </>
-    );
+    </>
+  );
 };
 
 export default ManagementRequest;
-

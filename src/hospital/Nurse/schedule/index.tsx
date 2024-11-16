@@ -8,11 +8,34 @@ import { EventClickArg, EventInput } from "@fullcalendar/core";
 import TieuDeTrang from "../../../components/PageTitle";
 import Lich from "./Calendar";
 import ThemSuaSuKien from "./AddEditEvent";
+const getQueryParam = (param:any) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+};
 
 // Hàm để lấy dữ liệu từ API
 async function laySuKien(): Promise<EventInput[]> {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/schedule");
+    const medical  = getQueryParam('medical')
+    const _response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ cccd: medical })
+    });
+    // console.log(_response);
+    const _data: any = await _response.json();
+    console.log(_data.data.medicalRecordCode);
+    const response = await fetch("http://127.0.0.1:8000/api/schedule",{
+      method:"post",
+      headers:{
+        "Content-Type": "application/json"
+
+      },
+      body: JSON.stringify({ patient: _data.data.medicalRecordCode })
+
+    });
     const data = await response.json();
 
     // Chuyển đổi dữ liệu từ API thành EventInput cho FullCalendar
