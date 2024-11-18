@@ -50,7 +50,7 @@ export enum SideBarTypes {
 }
 
 export enum TopbarTheme {
-  TOPBAR_THEME_LIGHT = "dark",
-  TOPBAR_THEME_DARK = "dark",
+  TOPBAR_THEME_LIGHT = "light",
+  TOPBAR_THEME_DARK = "light",
   TOPBAR_THEME_BRAND = "brand",
 }

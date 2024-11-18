@@ -23,6 +23,23 @@ interface PatientInfo {
     fieldsToShare: string[];
     avatar: string;
 }
+interface Product {
+    sku: string;
+    name: string;
+    category?: {
+        name: string;
+    };
+    price?: {
+        measureUnitName: string;
+    };
+}
+
+interface Prescription {
+    testName: string;
+    referenceValue: string;
+    result: string;
+    unit: string;
+}
 
 interface MedicalData {
     // Define structure based on the API response you expect
@@ -46,11 +63,55 @@ interface ConclusionData {
 const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo = {}, examinationHistory = [] }) => {
     const MySwal = withReactContent(Swal);
     // Hàm để thêm dòng mới vào bảng
+    const [tableData, setTableData] = useState<Prescription[]>([]);
+    const [searchKeyword, setSearchKeyword] = useState<string>("");
+    const [searchResults, setSearchResults] = useState<Product[]>([]);
     const addRow = () => {
-        setTableData([...tableData, { testName: '', referenceValue: '', result: '', unit: '', machine: '' }]);
+        setTableData([
+            ...tableData,
+            { testName: "", referenceValue: "", result: "", unit: "" },
+        ]);
     };
 
-    const [tableData, setTableData] = useState<{ testName: string; referenceValue: string; result: string; unit: string; machine: string }[]>([]);
+    const handlePrescriptionChange = (index: number, field: keyof Prescription, value: string) => {
+        const newTableData = [...tableData];
+        newTableData[index][field] = value;
+        setTableData(newTableData);
+    };
+
+    const handleSearch = async () => {
+        try {
+            const response = await fetch(
+                `https://api.nhathuoclongchau.com.vn/lccus/search-product-service/api/products/ecom/product/suggest?keyword=${searchKeyword}&KeywordSuggestSize=1&CatEcomSuggestSize=1&ProductSuggestSize=5`
+            );
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json();
+            setSearchResults(data.products || []);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const addProductToTable = (product: Product) => {
+        setTableData([
+            ...tableData,
+            {
+                testName: product.name,
+                referenceValue: product.category?.name || "",
+                result: "",
+                unit: product.price?.measureUnitName || "",
+            },
+        ]);
+        setSearchResults([]); // Clear search results after adding
+    };
+
+    const handleDeleteRow = (index: number) => {
+        const updatedData = tableData.filter((_, i) => i !== index);
+        setTableData(updatedData);
+    };
+
     const [conclusionData, setConclusionData] = useState<ConclusionData>({
         diagnosis: '',
         treatment: '',
@@ -66,16 +127,26 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
 
     const showdata = async (patientId: string) => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bycode", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ medicalRecordCode: patientId })
-            });
-            const data = await response.json();
-            setMedicalData(data.data); // Save data into state
-            setError(null);
+            const token = localStorage.getItem('tokenadmin');
+            let decoded: any = null;
+
+            if (token) {
+
+                decoded = jwt_decode(token);
+                const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bycode", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        doctor: decoded['tokenuser'],
+                        medicalRecordCode: patientId
+                    })
+                });
+                const data = await response.json();
+                setMedicalData(data.data); // Save data into state
+                setError(null);
+            }
         } catch (error) {
             console.error("Error fetching medical data:", error);
             setError("Đã xảy ra lỗi khi lấy thông tin khám bệnh.");
@@ -226,11 +297,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
         }
     };
 
-    const handlePrescriptionChange = (index: number, field: keyof typeof tableData[0], value: string) => {
-        const newTableData = [...tableData];
-        newTableData[index][field] = value;
-        setTableData(newTableData);
-    };
+
 
     return (
         <>
@@ -246,7 +313,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                 ]}
                 title={"Chuẩn đoán Kết Luận Bệnh Nhân"}
             /> */}
-            <CreateAppointment/>
+            <CreateAppointment />
             <Card className="border p-4 mt-4">
                 <Form onSubmit={handleSubmit}>
                     <h4>Chuyên Mục Khám và Kết quả</h4>
@@ -278,13 +345,13 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                         <Col md={12}>
                             <Form.Label>Lịch sử bệnh nhân đã khám</Form.Label>
                             <Form onSubmit={handleSubmit}>
-                                <Table className='table table-bordered text-center mt-5'>
-                                    <thead className="thead-light">
+                            <Table bordered hover className="mt-4 text-center">
+                            <thead className="bg-primary text-white">
                                         <tr>
-                                            <th scope="col">STT</th>
-                                            <th scope="col">Mã bệnh</th>
-                                            <th scope="col">Tên Bệnh</th>
-                                            <th scope="col">Hành Động</th>
+                                            <th scope="col" style={{ color: 'white' }}>STT</th>
+                                            <th scope="col" style={{ color: 'white' }}>Mã bệnh</th>
+                                            <th scope="col" style={{ color: 'white' }}>Tên Bệnh</th>
+                                            <th scope="col" style={{ color: 'white' }}>Hành Động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -356,16 +423,16 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
 
                     <div className="mb-4 mt-3">
                         <h5>Quá Trình Khám Bệnh</h5>
-                        <Table bordered responsive className="text-center">
-                            <thead className="thead-light">
+                        <Table bordered hover className="mt-4 text-center">
+                        <thead className="bg-primary text-white">
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Chuyên Mục Khám</th>
-                                    <th>Kết Quả</th>
-                                    <th>Hình Ảnh</th>
+                                    <th style={{ color: 'white' }}>STT</th>
+                                    <th style={{ color: 'white' }}>Chuyên Mục Khám</th>
+                                    <th style={{ color: 'white' }}>Kết Quả</th>
+                                    <th style={{ color: 'white' }}>Hình Ảnh</th>
 
-                                    <th>Triệu Chứng</th>
-                                    <th>Kết Luận</th>
+                                    <th style={{ color: 'white' }}>Triệu Chứng</th>
+                                    <th style={{ color: 'white' }}>Kết Luận</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -463,63 +530,152 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                             />
                         </Col>
                     </Row>
-                        <Col md={12}>
-                            <Form.Label>them don thuoc</Form.Label>
-                            <Form onSubmit={handleSubmit}>
-                                <Table className='table table-bordered text-center mt-5'>
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th scope="col">STT</th>
-                                            <th scope="col">Tên thuốc</th>
-                                            <th scope="col">ĐVT</th>
-                                            <th scope="col">Số Lượng</th>
-                                            <th scope="col">Cách Dùng</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {tableData.map((item, index) => (
-                                            <tr key={index}>
-                                                <td>{index + 1}</td>
-                                                <td>
-                                                    <Form.Control
-                                                        type="text"
-                                                        value={item.testName}
-                                                        onChange={(e) => handlePrescriptionChange(index, 'testName', e.target.value)}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <Form.Control
-                                                        type="text"
-                                                        value={item.referenceValue}
-                                                        onChange={(e) => handlePrescriptionChange(index, 'referenceValue', e.target.value)}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <Form.Control
-                                                        type="text"
-                                                        value={item.result}
-                                                        onChange={(e) => handlePrescriptionChange(index, 'result', e.target.value)}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <Form.Control
-                                                        type="text"
-                                                        value={item.unit}
-                                                        onChange={(e) => handlePrescriptionChange(index, 'unit', e.target.value)}
-                                                    />
-                                                </td>
-                                                
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                                <div className="d-flex justify-content-between mt-3">
-                                    <Button onClick={addRow} style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }}>Thêm dòng</Button>
-                                    <Button type="submit" style={{ fontSize: '12px', padding: '4px 10px', width: '150px' }}>Lưu kết quả</Button>
+                    <div className="mb-4 mt-3">
+                    <h5>Kê Đơn Thuốc</h5>
+                    <Form onSubmit={handleSubmit}>
+                        <Row className="align-items-center mb-4">
+                            <Col md={9}>
+                                <div className="d-flex align-items-center">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Tìm tên thuốc"
+                                        value={searchKeyword}
+                                        onChange={(e) => setSearchKeyword(e.target.value)}
+                                        className="me-2"
+                                    />
+                                    <Button variant="primary" onClick={handleSearch}>
+                                        Tìm thuốc
+                                    </Button>
                                 </div>
-                            </Form>
+                            </Col>
 
-                        </Col>
+                        </Row>
+                        {searchResults.length > 0 && (
+                            <div className="border p-3 rounded mb-3 bg-light">
+                                <strong>Kết quả tìm kiếm:</strong>
+                                <ul className="list-unstyled mt-2">
+                                    {searchResults.map((product) => (
+                                        <li
+                                            key={product.sku}
+                                            onClick={() => addProductToTable(product)}
+                                            className="p-2 border-bottom"
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            {product.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        
+                        <Table bordered hover className="mt-4 text-center">
+                            <thead className="bg-primary text-white">
+                                <tr >
+                                    <th style={{ color: 'white' }}>STT</th>
+                                    <th style={{ color: 'white' }}>Tên thuốc</th>
+                                    <th style={{ color: 'white' }}>ĐVT</th>
+                                    <th style={{ color: 'white' }}>Số lượng</th>
+                                    <th style={{ color: 'white' }}>Cách dùng</th>
+                                    <th style={{ color: 'white' }}>Thao tác</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                {tableData.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>
+                                            <Form.Control
+                                                type="text"
+                                                value={item.testName}
+                                                onChange={(e) =>
+                                                    handlePrescriptionChange(
+                                                        index,
+                                                        "testName",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <Form.Control
+                                                type="text"
+                                                value={item.referenceValue}
+                                                onChange={(e) =>
+                                                    handlePrescriptionChange(
+                                                        index,
+                                                        "referenceValue",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <Form.Control
+                                                type="text"
+                                                value={item.result}
+                                                onChange={(e) =>
+                                                    handlePrescriptionChange(
+                                                        index,
+                                                        "result",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <Form.Control
+                                                type="text"
+                                                value={item.unit}
+                                                onChange={(e) =>
+                                                    handlePrescriptionChange(
+                                                        index,
+                                                        "unit",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <Button
+                                                variant="danger"
+                                                size="sm"
+                                                onClick={() => handleDeleteRow(index)}
+                                            >
+                                                Xóa
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+
+                        <div className="d-flex justify-content-between mt-4">
+                            <Button
+                                variant="outline-primary"
+                                onClick={addRow}
+                                style={{
+                                    fontSize: "14px",
+                                    padding: "6px 20px",
+                                    width: "150px",
+                                }}
+                            >
+                                Thêm dòng
+                            </Button>
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                style={{
+                                    fontSize: "14px",
+                                    padding: "6px 20px",
+                                    width: "150px",
+                                }}
+                            >
+                                Lưu kết quả
+                            </Button>
+                        </div>
+                    </Form>
+                    </div>
 
                     <div className="d-flex justify-content-end mt-3">
                         <Button type="submit" variant="primary" style={{ fontSize: '14px', padding: '6px 12px' }}>

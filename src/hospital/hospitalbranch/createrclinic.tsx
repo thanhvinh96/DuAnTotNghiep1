@@ -64,7 +64,7 @@ export default function CreateClinic() {
         }
     }
     const [dataserver, setdataserver] = useState<any[]>([]);  // Dữ liệu server
-    const [selectedService, setSelectedService] = useState<any>(null);  // Lưu dịch vụ đã chọn
+    const [selectedService, setSelectedService] = useState<string | null>(null);
 
     // Hàm lấy dữ liệu từ server
     const showdataserver = async () => {
@@ -81,9 +81,10 @@ export default function CreateClinic() {
         }
     };
     const handleServiceChange = (selectedOption: any) => {
-        console.log('Selected service:', selectedOption); // In ra đối tượng được chọn
-        setSelectedService(selectedOption);  // Lưu toàn bộ đối tượng vào state
+        console.log('Selected service ID:', selectedOption?.value); // In ra giá trị id (value)
+        setSelectedService(selectedOption?.value);  // Lưu giá trị id vào state
     };
+    
     const showdataTable = async () => {
         try {
             const datas = {
@@ -394,14 +395,23 @@ export default function CreateClinic() {
 <Form.Group className="mb-3">
             <Form.Label>Chọn Loại Dịch Vụ</Form.Label>
             <Select
-                options={dataserver.map((item) => ({
-                    value: item._id,  // Dùng serviceCode làm giá trị
-                    label: `${item.serviceName}`,  // Hiển thị serviceName và serviceFees
-                }))}
-                onChange={handleServiceChange}  // Gọi hàm khi người dùng chọn
-                placeholder="Chọn dịch vụ..."
-                value={selectedService}  // Set giá trị mặc định cho Select nếu cần
-            />
+    options={dataserver.map((item) => ({
+        value: item._id,  // Sử dụng _id làm giá trị
+        label: `${item.serviceName}`,  // Hiển thị tên dịch vụ
+    }))}
+    onChange={handleServiceChange}  // Gọi hàm khi người dùng chọn
+    placeholder="Chọn dịch vụ..."
+    value={
+        selectedService
+            ? dataserver.map((item) => ({
+                value: item._id,
+                label: `${item.serviceName}`,
+            })).find((option) => option.value === selectedService)
+            : null
+    }
+/>
+
+
         </Form.Group>
 
                                 <Form.Group className="mb-3">

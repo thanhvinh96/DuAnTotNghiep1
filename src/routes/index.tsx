@@ -77,7 +77,10 @@ const CreateAppointments = React.lazy(()=>import("../hospital/hospitalbranch/Cre
 const DoctorMedicalHistory = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/index"));
 const DoctorMedicalHistoryDetail = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/Medicalhistorydetail"));
 const Appointments = React.lazy(()=>import("../hospital/Nurse/appointments/index"));
-const HospitalMedicalshare =React.lazy(()=>import("../hospital/medicalShare/index"))
+const HospitalMedicalshare =React.lazy(()=>import("../hospital/medicalShare/index"));
+// bill medical
+const BillMedical =React.lazy(()=>import("../hospital/billmedical/index"));
+
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -298,6 +301,12 @@ const hospitalRouter: RoutesProps = {
       path: "/hospital/medical-share",
       name: "hospital/medical-share",
       element: <HospitalMedicalshare />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/hospital/medicalbill",
+      name: "hospital/medicalbill",
+      element: <BillMedical />,
       route: PrivateRoute,
     }
   ],
