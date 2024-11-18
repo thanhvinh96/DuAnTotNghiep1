@@ -210,11 +210,10 @@ const ManagementRequest: React.FC = () => {
                 <CreateClinic/>
               )}
 
-              {activeSection === "createDepartment" ? (
+              {activeSection === "createDepartment"&&(
                 <CreateDepartment />
-              ) : (
-                <PerformanceChart />
               )}
+                
             </Col>
           </Row>
 
@@ -225,3 +224,5 @@ const ManagementRequest: React.FC = () => {
 };
 
 export default ManagementRequest;
+// <PerformanceChart />
+              // )}

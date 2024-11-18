@@ -139,8 +139,8 @@ const CreateAppointment: React.FC = () => {
            }
             const res = await GetScheduleByMedical(data)
             console.log(res);
-            if(res){
-                setDataTable(res);  // Lưu dữ liệu vào state
+            if(res.status===true){
+                setDataTable(res.data);  // Lưu dữ liệu vào state
 
             }else{
                 setDataTable([]);  // Lưu dữ liệu vào state
@@ -296,6 +296,34 @@ const CreateAppointment: React.FC = () => {
             alert("Có lỗi xảy ra khi lấy dữ liệu phòng khám.");
         }
     };
+    const handleExportInvoice = () => {
+        const invoiceData: any = [];
+    
+        // Duyệt qua tất cả các lịch hẹn trong dataTable
+        dataTable.forEach((schedule: any) => {
+            const patient = schedule.patient || 'Chưa có thông tin bệnh nhân';
+    
+            // Tìm xem bệnh nhân đã có trong mảng invoiceData chưa
+            let existingPatient = invoiceData.find((item: any) => item.medical === patient);
+    
+            if (!existingPatient) {
+                // Nếu chưa có, tạo mới đối tượng cho bệnh nhân này
+                existingPatient = {
+                    medical: patient,
+                    dataservers: []  // Mảng chứa các lịch hẹn của bệnh nhân
+                };
+                // Thêm đối tượng bệnh nhân vào invoiceData
+                invoiceData.push(existingPatient);
+            }
+    
+            // Thêm lịch hẹn vào mảng dataservers của bệnh nhân
+            existingPatient.dataservers.push(schedule);
+        });
+    
+        // Log kết quả ra ngoài vòng lặp
+        console.log(invoiceData);
+    };
+    
     
 
     const filteredAppointments = appointments.filter(
@@ -476,17 +504,17 @@ const CreateAppointment: React.FC = () => {
                         />
                     </Form.Group>
 
-                    <Table striped bordered hover responsive className="mt-3">
-                        <thead>
+                    <Table bordered hover className="mt-4 text-center">
+                    <thead className="bg-primary text-white">
                             <tr>
-                                <th>Phòng Khám</th>
-                                <th>Khoa</th>
-                                <th>Mã Hồ Sơ</th>
-                                <th>Trạng Thái</th>
-                                <th>Thời Gian</th>
+                                <th style={{ color: 'white' }}>Phòng Khám</th>
+                                <th style={{ color: 'white' }}>Khoa</th>
+                                <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
+                                <th style={{ color: 'white' }}>Trạng Thái</th>
+                                <th style={{ color: 'white' }}>Thời Gian</th>
 
-                                <th>Loại Lịch Hẹn</th>
-                                <th>Bác Sĩ Tiếp Nhận</th>
+                                <th style={{ color: 'white' }}>Loại Lịch Hẹn</th>
+                                <th style={{ color: 'white' }}>Bác Sĩ Tiếp Nhận</th>
                                 {/* <th>Chi Tiết</th> */}
                             </tr>
                         </thead>
@@ -505,6 +533,22 @@ const CreateAppointment: React.FC = () => {
           ))}
                         </tbody>
                     </Table>
+                    <div className="d-flex justify-content-between mt-4">
+                          
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                style={{
+                                    fontSize: "14px",
+                                    padding: "6px 20px",
+                                    width: "150px",
+                                }}
+                                onClick={handleExportInvoice} // Gọi hàm khi nhấn nút
+
+                            >
+                               Xuất Hóa Đơn
+                            </Button>
+                        </div>
                 </Card.Body>
             </Card>
         </Col>
