@@ -3,12 +3,12 @@ import { Row, Col, Card, Button } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
 import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
-import jwtDecode from 'jwt-decode';
-import {GetInfoHospital} from '../../controller/HospitalController'
-import {GetInfoFullPersonnel} from '../../controller/PersonnelController'
-export default function Index() {
+import jwtDecode from "jwt-decode";
+import { GetInfoHospital } from "../../controller/HospitalController";
+import { GetInfoFullPersonnel } from "../../controller/PersonnelController";
 
-  interface Persinnel {
+export default function Index() {
+  interface Personnel {
     address: string;
     fullname: string;
     organizationalvalue: string;
@@ -17,143 +17,138 @@ export default function Index() {
     tokenuser: string;
   }
 
-  const [data, setdata] = useState<Persinnel[]>([]);
-  
+  const [data, setData] = useState<Personnel[]>([]);
+
   const columns = [
     {
-      Header: "User Type",
+      Header: "Loại người dùng",
       accessor: "typeusers",
       sort: false,
     },
     {
-      Header: "Full Name",
+      Header: "Họ và tên",
       accessor: "fullname",
       sort: true,
     },
     {
-      Header: "Phone Number",
+      Header: "Số điện thoại",
       accessor: "phone",
       sort: false,
     },
     {
-      Header: "Organizational Value",
+      Header: "Tổ chức",
       accessor: "organizationalvalue",
       sort: true,
     },
-  
     {
-      Header: "Address",
-      accessor: "address", 
+      Header: "Địa chỉ",
+      accessor: "address",
       sort: true,
     },
     {
-      Header: "Actions",
+      Header: "Hành động",
       accessor: "actions",
-    Cell: ({ row }: any) => {
-      const navigate = useNavigate();
+      Cell: ({ row }: any) => {
+        const navigate = useNavigate();
 
-      const clickEdit = () => {
-        const { tokenuser } = row.original;
-        navigate(`/hospital/edit-personnel?tokenuser=${tokenuser}`);
-      };
+        const clickEdit = () => {
+          const { tokenuser } = row.original;
+          navigate(`/hospital/edit-personnel?tokenuser=${tokenuser}`);
+        };
 
-      return (
-        <div>
-          <Button variant="primary" onClick={clickEdit} style={{ marginRight: '10px' }}>Edit</Button>
-          <Button variant="danger">Delete</Button>
-        </div>
-      );
-    },
-    sort: false,
+        return (
+          <div className="d-flex justify-content-center align-items-center">
+            <Button
+              variant="primary"
+              className="btn-sm me-2"
+              onClick={clickEdit}
+            >
+              <i className="fa fa-pencil"></i> Chỉnh sửa
+            </Button>
+            <Button variant="danger" className="btn-sm">
+              <i className="fa fa-trash"></i> Xóa
+            </Button>
+          </div>
+        );
+      },
+      sort: false,
     },
   ];
- 
 
   const sizePerPageList = [
     { text: "5", value: 5 },
     { text: "10", value: 10 },
     { text: "25", value: 25 },
-    { text: "All", value: data.length },
+    { text: "Tất cả", value: data.length },
   ];
 
   const navigate = useNavigate();
 
   const handleCreateMember = () => {
-    navigate('/hospital/create-personnel');
+    navigate("/hospital/create-personnel");
   };
 
   useEffect(() => {
-    const fetchBranches = async () => {
+    const fetchPersonnel = async () => {
       try {
-        const token = localStorage.getItem('tokenadmin');
+        const token = localStorage.getItem("tokenadmin");
         if (token) {
           const decodedToken: any = jwtDecode(token);
-          console.log(decodedToken['tokeorg']);
+          const tokeorg = decodedToken["tokeorg"];
+          const dataorg = { tokenorg: tokeorg };
 
-          const tokeorg = decodedToken['tokeorg'];
-          const dataorg = { "tokenorg": tokeorg };
+          const response: any = await GetInfoHospital(dataorg);
+          const dataorgs = {
+            tokeorg: response.result.tokeorg,
+            value: response.result.nameorg,
+          };
 
-          const response:any = await GetInfoHospital(dataorg);
-          console.log(response.result.tokeorg);
-          const dataorgs={
-          "tokeorg": response.result.tokeorg,
-          "value": response.result.nameorg 
-          }
-          // if (!response.ok) {
-          //   throw new Error('Network response was not ok');
-          // }
-
-          // const _data = await response.json();
-          const _res:any = await GetInfoFullPersonnel(dataorgs)
-          console.log(_res);
-         
-
-          // // Kiểm tra cấu trúc của responseData
-          const filteredRecords = _res.data.map((item: any) => ({
+          const personnelResponse: any = await GetInfoFullPersonnel(dataorgs);
+          const filteredRecords = personnelResponse.data.map((item: any) => ({
             typeusers: item.typeusers,
             fullname: item.fullname,
             organizationalvalue: item.organizationalvalue,
             phone: item.phone,
             address: item.address,
             tokenuser: item.tokenuser,
-
           }));
-          
-          setdata(filteredRecords);
+
+          setData(filteredRecords);
         }
       } catch (error) {
-        console.error("Error fetching branches:", error);
+        console.error("Lỗi khi lấy dữ liệu:", error);
       }
     };
 
-    fetchBranches();
+    fetchPersonnel();
   }, []);
 
   return (
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Tables", path: "/features/tables/advanced" },
+          { label: "Trang chủ", path: "/features/tables/advanced" },
           {
-            label: "Personnel Management",
+            label: "Quản lý nhân sự",
             path: "/hospital/personnel-management",
             active: true,
           },
         ]}
-        title={"Hospital branch"}
+        title={"Quản lý nhân sự"}
       />
 
       <Row>
         <Col>
           <Card>
             <Card.Body>
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h4 className="header-title">Search</h4>
-                  <p className="text-muted font-14 mb-4">A Table allowing search</p>
-                </div>
-                <Button style={{width:'130px'}} variant="primary" onClick={handleCreateMember}>
-                  Tạo thành viên
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <h4 className="header-title mb-0">Danh sách nhân sự</h4>
+                <Button
+                  style={{ width: "150px" }}
+                  variant="primary"
+                  onClick={handleCreateMember}
+                >
+                  <i className="fa fa-plus"></i> Thêm nhân sự
                 </Button>
               </div>
 
