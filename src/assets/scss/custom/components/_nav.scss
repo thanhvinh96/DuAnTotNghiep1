@@ -8,6 +8,8 @@
         > a {
             color: var(--#{$prefix}gray-700);
             font-weight: $font-weight-semibold;
+            background-color: #38adc1;
+
         }
     }
 }
@@ -16,6 +18,7 @@
     > a {
         color: var(--#{$prefix}gray-700);
         font-weight: $font-weight-semibold;
+        background-color: #38adc1;
     }
 }
 
@@ -24,6 +27,7 @@
     .nav-item {
         .nav-link {
             width: auto;
+
         }
     }
 }
@@ -33,6 +37,7 @@
     .nav-link {
         background-color: var(--#{$prefix}light);
         margin: 0 5px;
+        color: #38adc1; // Đảm bảo chữ có thể đọc rõ
     }
 }
 

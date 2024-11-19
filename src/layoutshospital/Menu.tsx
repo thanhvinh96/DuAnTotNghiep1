@@ -243,25 +243,37 @@ const MenuItem: React.FC<SubMenus> = ({ item, className, linkClassName }) => (
   </li>
 );
 
-const MenuItemLink: React.FC<SubMenus> = ({ item, className }) => (
-  <Link
-    to={item.url!}
-    target={item.target}
-    className={classNames("side-nav-link-ref menu-link", className)}
-    data-menu-key={item.key}
-  >
-    {item.icon && (
-      <span className="menu-icon">
-        <FeatherIcon icon={item.icon} />
-      </span>
-    )}
-    <span className="menu-text"> {item.label} </span>
-    {item.badge && (
-      <span className={`badge bg-${item.badge.variant}`}>
-        {item.badge.text}
-      </span>
-    )}
-  </Link>
-);
+const MenuItemLink: React.FC<SubMenus> = ({ item, className }) => {
+  const location = useLocation(); // Lấy URL hiện tại
+
+  // So sánh đường dẫn hiện tại với URL của item
+  const isActive = location.pathname === item.url;
+
+  return (
+    <Link
+      to={item.url!}
+      target={item.target}
+      className={classNames(
+        "side-nav-link-ref menu-link",
+        className,
+        { "active-menu": isActive } // Thêm class 'active-menu' nếu URL khớp
+      )}
+      data-menu-key={item.key}
+    >
+      {item.icon && (
+        <span className="menu-icon">
+          <FeatherIcon icon={item.icon} />
+        </span>
+      )}
+      <span className="menu-text"> {item.label} </span>
+      {item.badge && (
+        <span className={`badge bg-${item.badge.variant}`}>
+          {item.badge.text}
+        </span>
+      )}
+    </Link>
+  );
+};
+
 
 export default AppMenu;

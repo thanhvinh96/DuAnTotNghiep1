@@ -3,15 +3,16 @@ import { Row, Col, Card, Form, Button, Table } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import { ShowInfoMedicalBycccd } from "../../controller/MedicalController";
 import { CreaterSchedule, GetScheduleByMedical } from "../../controller/ScheduleController";
-
+// import {AddBillMedical} from"../../controller/PatientBillController";
 // components
 import PageTitle from "../../components/PageTitle";
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 const formatCurrency = (value: number) => {
     return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 };
 
-const calculateTotal = (data: any[]) => {
+const calculateTotal = (data: any[], valueisu: any) => {
     // Tính tổng phụ (Tổng chi phí) bằng cách sử dụng `reduce`
     const totalBeforeDiscount = data.reduce((sum, item) => {
         // Giả sử bạn muốn tính tổng giá trị từ `serviceFees`
@@ -20,22 +21,31 @@ const calculateTotal = (data: any[]) => {
     }, 0); // Giá trị khởi tạo là 0
 
     // Tính bảo hiểm (Giảm 20% tổng chi phí)
-    const insurance = totalBeforeDiscount * 0.2;
+    const insurance = totalBeforeDiscount * valueisu;
 
     // Tính thuế (0.2% của tổng chi phí)
     const tax = totalBeforeDiscount * 0.002;
 
     // Tính tổng cộng
-    const total = (totalBeforeDiscount - insurance) + tax;
+    let total = (totalBeforeDiscount - insurance) + tax;
+
+    // Kiểm tra nếu tổng nhỏ hơn 0
+    if (total < 0) {
+        total = 0;
+    }
 
     return { totalBeforeDiscount, insurance, tax, total };
 };
+
 // Tạo giao diện tính tiền cho bệnh nhân
 const PatientInvoiceDetails = () => {
+    const MySwal = withReactContent(Swal);
+
     const [hasCCCD, setHasCCCD] = useState(false);
     // const [insurance, setInsurance] = useState<string>("");
     const [subTotal, setSubTotal] = useState(610); // Tổng phụ ban đầu
     const [insuranceAmount, setInsuranceAmount] = useState(subTotal * 0.2); // Bảo hiểm là 20%
+    const [valueisu,setvalueisu] =useState<any>(null);
 
     // Hàm tính thuế (4% của subTotal)
     const calculateTax = () => {
@@ -60,6 +70,7 @@ const PatientInvoiceDetails = () => {
             currency: 'VND'
         }).format(amount);
     };
+    const medical = getQueryParam('medical')
 
     const showInfo = async () => {
         const medical = getQueryParam('medical')
@@ -80,7 +91,7 @@ const PatientInvoiceDetails = () => {
         console.log("gia tri" + _res);
         setDataTable(_res.data);
     }
-    const { totalBeforeDiscount, insurance, tax, total } = calculateTotal(dataTable);
+    const { totalBeforeDiscount, insurance, tax, total } = calculateTotal(dataTable,valueisu);
 
     useEffect(() => {
         showInfo();
@@ -89,7 +100,6 @@ const PatientInvoiceDetails = () => {
 
     // Cập nhật trạng thái có CCCD
     const [selectedOption, setSelectedOption] = useState<any>(null);
-
     const handleOptionChange = (option: string) => {
         if (selectedOption === option) {
             setSelectedOption(null); // Bỏ chọn nếu đang chọn cái này
@@ -98,15 +108,25 @@ const PatientInvoiceDetails = () => {
         }
 
         // Log phần trăm giảm giá tùy theo lựa chọn
-        if (option === "healthInsurance") {
-            console.log("Giảm giá bảo hiểm y tế là 20%.");
-        } else if (option === "noHealthInsurance") {
-            console.log("Không có bảo hiểm y tế.");
-        } else if (option === "specialCitizen") {
-            console.log("Giảm giá cho người có công là 100%."); // Giảm 100% ví dụ
-        } else if (option === "student") {
-            console.log("Giảm giá cho học sinh là 50%."); // Giảm 50% ví dụ
-        }
+      if (option === "healthInsurance") {
+        setvalueisu(80)
+      console.log("Giảm giá bảo hiểm y tế là 80%.");
+    } else if (option === "noHealthInsurance") {
+        setvalueisu(0)
+
+      console.log("Không có bảo hiểm y tế.");
+    } else if (option === "specialCitizen") {
+      console.log("Giảm giá cho người có công là 100%."); // Giảm 100% ví dụ
+      setvalueisu(100)
+
+    } else if (option === "relatives") {
+        setvalueisu(95)
+
+      console.log(
+        "Người hưởng lương hưu, trợ cấp mất sức lao động hằng tháng là 95%."
+
+      ); // Giảm 95% ví dụ
+    }
     };
 
     // // Thông tin bệnh nhân
@@ -126,7 +146,56 @@ const PatientInvoiceDetails = () => {
     //     cccd: "123123123123123",
     //     medicalRecordCode: "fccc6422d6cf45637806",
     // };
-
+    const saverBill = async () => {
+        const data = {
+            server: dataTable,
+            totalsum: totalBeforeDiscount,
+            insurancestatus: valueisu,
+            medicalRecordCode: medical
+        }
+    
+        // try {
+        //     const res: any = await AddBillMedical(data); // Make the API call
+            
+        //     if (res.status === true) {
+        //         // Success case
+        //         MySwal.fire({
+        //             title: 'Hóa đơn đã được thêm thành công!',
+        //             text: 'Chọn một trong hai lựa chọn:',
+        //             icon: 'success',
+        //             showCancelButton: true,
+        //             confirmButtonText: 'Chuyển về trang quản lý',
+        //             cancelButtonText: 'Tạo thêm lịch hẹn',
+        //         }).then(result => {
+        //             if (result.isConfirmed) {
+        //                 // Redirect to management page
+        //                 window.location.href = "/management-page"; // Adjust to your route
+        //             } else {
+        //                 // Redirect to create a new appointment
+        //                 window.location.href = "/create-appointment"; // Adjust to your route
+        //             }
+        //         });
+        //     } else {
+        //         // Failure case
+        //         MySwal.fire({
+        //             title: 'Có lỗi xảy ra!',
+        //             text: 'Không thể thêm hóa đơn. Hãy thử lại.',
+        //             icon: 'error',
+        //             confirmButtonText: 'Thử lại',
+        //         });
+        //     }
+        // } catch (error) {
+        //     // Error handling if the API call fails
+        //     console.error("Error:", error);
+        //     MySwal.fire({
+        //         title: 'Lỗi kết nối!',
+        //         text: 'Đã xảy ra lỗi khi kết nối với hệ thống. Vui lòng thử lại sau.',
+        //         icon: 'error',
+        //         confirmButtonText: 'Thử lại',
+        //     });
+        // }
+    }
+    
     return (
         <React.Fragment>
             <Row>
@@ -197,34 +266,56 @@ const PatientInvoiceDetails = () => {
 
                             <h5 className="mb-3">Lựa chọn bảo hiểm và CCCD</h5>
 
-                <Form.Check
-                    type="checkbox"
-                    label="Có bảo hiểm y tế"
-                    checked={selectedOption === "healthInsurance"}
-                    onChange={() => handleOptionChange("healthInsurance")}
-                />
-                <Form.Check
-                    type="checkbox"
-                    label="Không có bảo hiểm y tế"
-                    checked={selectedOption === "noHealthInsurance"}
-                    onChange={() => handleOptionChange("noHealthInsurance")}
-                />
-                <Form.Check
-                    type="checkbox"
-                    label="Người có công"
-                    checked={selectedOption === "specialCitizen"}
-                    onChange={() => handleOptionChange("specialCitizen")}
-                />
-                <Form.Check
-                    type="checkbox"
-                    label="Học sinh"
-                    checked={selectedOption === "student"}
-                    onChange={() => handleOptionChange("student")}
-                />
+                            <Form.Check
+    type="checkbox"
+    label={<span className="small">Có bảo hiểm y tế</span>}
+    checked={selectedOption === "healthInsurance"}
+    onChange={() => handleOptionChange("healthInsurance")}
+/>
+<Form.Check
+    type="checkbox"
+    label={<span className="small">Không có bảo hiểm y tế</span>}
+    checked={selectedOption === "noHealthInsurance"}
+    onChange={() => handleOptionChange("noHealthInsurance")}
+/>
+<Form.Check
+    type="checkbox"
+    label={<span className="small">Người có công</span>}
+    checked={selectedOption === "specialCitizen"}
+    onChange={() => handleOptionChange("specialCitizen")}
+/>
+<Form.Check
+    type="checkbox"
+    label={<span className="small">Học sinh</span>}
+    checked={selectedOption === "student"}
+    onChange={() => handleOptionChange("student")}
+/>
+
+                 {/* Lựa chọn thanh toán */}
+                 <h5 className="mb-3 mt-4">Lựa chọn phương thức thanh toán</h5>
+                 <Form.Check
+    type="radio"
+    label={<span className="small">Thanh toán tiền mặt</span>}
+    name="paymentMethod"
+    // checked={paymentMethod === "cash"}
+    // onChange={() => handlePaymentChange("cash")}
+/>
+<Form.Check
+    type="radio"
+    label={<span className="small">Thanh toán online</span>}
+    name="paymentMethod"
+    // checked={paymentMethod === "online"}
+    // onChange={() => handlePaymentChange("online")}
+/>
+
+
                             <div className="text-start mt-4">
-                                <Link to="#" className="btn btn-primary">
-                                    Lập hóa đơn
-                                </Link>
+                                <Button className="btn btn-primary"                                     onClick={saverBill}
+>
+                                Lập hóa đơn
+
+                                </Button>
+                               
                             </div>
 
                         </Card.Body>

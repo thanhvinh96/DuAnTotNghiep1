@@ -23,7 +23,6 @@ import logoLight2 from "../assets/images/Logo.png";
 
 /* user box */
 const UserBox = () => {
-  // get the profilemenu
   const ProfileMenus = [
     {
       label: "My Account",
@@ -98,9 +97,7 @@ const SideBarContent = () => {
     <>
       <UserBox />
 
-      {/* <div id="sidebar-menu"> */}
       <AppMenu menuItems={getMenuItems()} />
-      {/* </div> */}
 
       <div className="clearfix" />
     </>
@@ -120,9 +117,17 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
     leftSideBarType: state.Layout.leftSideBarType,
   }));
 
-  /**
-   * Handle the click anywhere in doc
-   */
+  const [isLoading, setIsLoading] = useState(true); // Thêm trạng thái để hiển thị lớp mờ
+
+  useEffect(() => {
+    // Hiệu ứng lớp mờ sẽ tự động biến mất sau 1.5 giây
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleOtherClick = (e: any) => {
     if (
       menuNodeRef &&
@@ -130,7 +135,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
       menuNodeRef.current.contains(e.target)
     )
       return;
-    // else hide the menubar
+
     if (document.body) {
       document.body.classList.remove("sidebar-enable");
     }
@@ -145,18 +150,19 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
+      {/* Lớp mờ hiển thị khi tải */}
+      {isLoading && <div className="overlay"></div>}
+
       <div
-        className="app-menu"
+        className={`app-menu ${isLoading ? "blur" : ""}`}
         ref={menuNodeRef}
         style={{
-          background: "#D7E6EF",
+          background: "#38ADC1",
           width: "350px",
           fontSize: "90px",
         }}
       >
-        {" "}
-        {/* Thay đổi màu nền */}
         {!hideLogo && (
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
@@ -200,7 +206,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         )}
         {isCondensed && <SideBarContent />}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
