@@ -3,8 +3,10 @@ import { Row, Col, Card, Form, Button, Table } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import { ShowInfoMedicalBycccd } from "../../controller/MedicalController";
 import { CreaterSchedule, GetScheduleByMedical } from "../../controller/ScheduleController";
-// import {AddBillMedical} from"../../controller/PatientBillController";
+import {AddBillMedical} from"../../controller/PatientBillController";
 // components
+import {getPayCode,getPayCodeUpdate,CrontData} from "../../controller/PayController";
+
 import PageTitle from "../../components/PageTitle";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -21,7 +23,7 @@ const calculateTotal = (data: any[], valueisu: any) => {
     }, 0); // Giá trị khởi tạo là 0
 
     // Tính bảo hiểm (Giảm 20% tổng chi phí)
-    const insurance = totalBeforeDiscount * valueisu;
+    const insurance = totalBeforeDiscount * (valueisu / 100);
 
     // Tính thuế (0.2% của tổng chi phí)
     const tax = totalBeforeDiscount * 0.002;
@@ -71,6 +73,7 @@ const PatientInvoiceDetails = () => {
         }).format(amount);
     };
     const medical = getQueryParam('medical')
+    const [branchInfo, setbranchInfo] = useState<any>([]);
 
     const showInfo = async () => {
         const medical = getQueryParam('medical')
@@ -88,7 +91,8 @@ const PatientInvoiceDetails = () => {
         }
         console.clear();
         const _res: any = await GetScheduleByMedical(datas)
-        console.log("gia tri" + _res);
+        console.log("gia tri" + _res.data[0].branch);
+        setbranchInfo(_res.data[0].branch);
         setDataTable(_res.data);
     }
     const { totalBeforeDiscount, insurance, tax, total } = calculateTotal(dataTable,valueisu);
@@ -109,18 +113,23 @@ const PatientInvoiceDetails = () => {
 
         // Log phần trăm giảm giá tùy theo lựa chọn
       if (option === "healthInsurance") {
+        alert(`giảm 80%`)
         setvalueisu(80)
       console.log("Giảm giá bảo hiểm y tế là 80%.");
     } else if (option === "noHealthInsurance") {
         setvalueisu(0)
+        alert(`giảm 0%`)
+
 
       console.log("Không có bảo hiểm y tế.");
     } else if (option === "specialCitizen") {
       console.log("Giảm giá cho người có công là 100%."); // Giảm 100% ví dụ
       setvalueisu(100)
+      alert(`giảm 100%`)
 
     } else if (option === "relatives") {
         setvalueisu(95)
+        alert(`giảm 95%`)
 
       console.log(
         "Người hưởng lương hưu, trợ cấp mất sức lao động hằng tháng là 95%."
@@ -131,7 +140,7 @@ const PatientInvoiceDetails = () => {
 
     // // Thông tin bệnh nhân
     // const patientInfo = {
-    //     fullname: "Phan Thành Vinh",
+    //     fullname: "Phan Thành Vinh",brnac
     //     birthday: "2024-11-05",
     //     address: "ThanhThuyenDev",
     //     tokenmedical: "d457d1f9f6a92377362854220a956d7c19087b583f6acdcc3fc66169a1a7dbf0",
@@ -154,46 +163,41 @@ const PatientInvoiceDetails = () => {
             medicalRecordCode: medical
         }
     
-        // try {
-        //     const res: any = await AddBillMedical(data); // Make the API call
-            
-        //     if (res.status === true) {
-        //         // Success case
-        //         MySwal.fire({
-        //             title: 'Hóa đơn đã được thêm thành công!',
-        //             text: 'Chọn một trong hai lựa chọn:',
-        //             icon: 'success',
-        //             showCancelButton: true,
-        //             confirmButtonText: 'Chuyển về trang quản lý',
-        //             cancelButtonText: 'Tạo thêm lịch hẹn',
-        //         }).then(result => {
-        //             if (result.isConfirmed) {
-        //                 // Redirect to management page
-        //                 window.location.href = "/management-page"; // Adjust to your route
-        //             } else {
-        //                 // Redirect to create a new appointment
-        //                 window.location.href = "/create-appointment"; // Adjust to your route
-        //             }
-        //         });
-        //     } else {
-        //         // Failure case
-        //         MySwal.fire({
-        //             title: 'Có lỗi xảy ra!',
-        //             text: 'Không thể thêm hóa đơn. Hãy thử lại.',
-        //             icon: 'error',
-        //             confirmButtonText: 'Thử lại',
-        //         });
-        //     }
-        // } catch (error) {
-        //     // Error handling if the API call fails
-        //     console.error("Error:", error);
-        //     MySwal.fire({
-        //         title: 'Lỗi kết nối!',
-        //         text: 'Đã xảy ra lỗi khi kết nối với hệ thống. Vui lòng thử lại sau.',
-        //         icon: 'error',
-        //         confirmButtonText: 'Thử lại',
-        //     });
-        // }
+        try {
+            const res: any = await AddBillMedical(data); // Make the API call
+            console.log(res.data._id)
+            if (res.status === true) {
+                // Success case
+                MySwal.fire({
+                    title: 'Hóa đơn đã được thêm thành công!',
+                    text: 'Chọn một trong hai lựa chọn:',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Đến trang thanh toán',
+                }).then(result => {
+                    // Mặc định là chuyển đến trang thanh toán online
+                    window.location.href = `/hospital/branch/pay-bill?bill=${res.data._id}`;
+                });
+                
+            } else {
+                // Failure case
+                MySwal.fire({
+                    title: 'Có lỗi xảy ra!',
+                    text: 'Không thể thêm hóa đơn. Hãy thử lại.',
+                    icon: 'error',
+                    confirmButtonText: 'Thử lại',
+                });
+            }
+        } catch (error) {
+            // Error handling if the API call fails
+            console.error("Error:", error);
+            MySwal.fire({
+                title: 'Lỗi kết nối!',
+                text: 'Đã xảy ra lỗi khi kết nối với hệ thống. Vui lòng thử lại sau.',
+                icon: 'error',
+                confirmButtonText: 'Thử lại',
+            });
+        }
     }
     
     return (
@@ -329,8 +333,8 @@ const PatientInvoiceDetails = () => {
                 <div className="table-responsive">
                     <Table bordered hover className="mt-4 text-center">
                         <thead className="bg-primary text-white">
-                            <tr>
-                                <th style={{ color: 'white' }}>Phòng Khám</th>
+                        <tr style={{ background: '#38adc1' }}>
+                        <th style={{ color: 'white' }}>Phòng Khám</th>
                                 <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
                                 <th style={{ color: 'white' }}>Thời gian</th>
                                 <th style={{ color: 'white' }}>Chi Phí</th>

@@ -133,7 +133,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             if (token) {
 
                 decoded = jwt_decode(token);
-                const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bycode", {
+                const response = await fetch("http://127.0.0.1:8000/api/medicaldata/code", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -345,10 +345,9 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                         <Col md={12}>
                             <Form.Label>Lịch sử bệnh nhân đã khám</Form.Label>
                             <Form onSubmit={handleSubmit}>
-                            <Table bordered hover className="mt-4 text-center">
-                            <thead className="bg-primary text-white">
-                                        <tr>
-                                            <th scope="col" style={{ color: 'white' }}>STT</th>
+                                <Table bordered hover className="mt-4 text-center">
+                                    <thead className="bg-primary text-white">
+                                        <tr style={{ background: '#38adc1' }}>                                            <th scope="col" style={{ color: 'white' }}>STT</th>
                                             <th scope="col" style={{ color: 'white' }}>Mã bệnh</th>
                                             <th scope="col" style={{ color: 'white' }}>Tên Bệnh</th>
                                             <th scope="col" style={{ color: 'white' }}>Hành Động</th>
@@ -424,8 +423,8 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                     <div className="mb-4 mt-3">
                         <h5>Quá Trình Khám Bệnh</h5>
                         <Table bordered hover className="mt-4 text-center">
-                        <thead className="bg-primary text-white">
-                                <tr>
+                            <thead className="bg-primary text-white">
+                                <tr style={{ background: '#38adc1' }}>
                                     <th style={{ color: 'white' }}>STT</th>
                                     <th style={{ color: 'white' }}>Chuyên Mục Khám</th>
                                     <th style={{ color: 'white' }}>Kết Quả</th>
@@ -531,150 +530,150 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                         </Col>
                     </Row>
                     <div className="mb-4 mt-3">
-                    <h5>Kê Đơn Thuốc</h5>
-                    <Form onSubmit={handleSubmit}>
-                        <Row className="align-items-center mb-4">
-                            <Col md={9}>
-                                <div className="d-flex align-items-center">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Tìm tên thuốc"
-                                        value={searchKeyword}
-                                        onChange={(e) => setSearchKeyword(e.target.value)}
-                                        className="me-2"
-                                    />
-                                    <Button variant="primary" onClick={handleSearch}>
-                                        Tìm thuốc
-                                    </Button>
-                                </div>
-                            </Col>
+                        <h5>Kê Đơn Thuốc</h5>
+                        <Form onSubmit={handleSubmit}>
+                            <Row className="align-items-center mb-4">
+                                <Col md={9}>
+                                    <div className="d-flex align-items-center">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Tìm tên thuốc"
+                                            value={searchKeyword}
+                                            onChange={(e) => setSearchKeyword(e.target.value)}
+                                            className="me-2"
+                                        />
+                                        <Button variant="primary" onClick={handleSearch}>
+                                            Tìm thuốc
+                                        </Button>
+                                    </div>
+                                </Col>
 
-                        </Row>
-                        {searchResults.length > 0 && (
-                            <div className="border p-3 rounded mb-3 bg-light">
-                                <strong>Kết quả tìm kiếm:</strong>
-                                <ul className="list-unstyled mt-2">
-                                    {searchResults.map((product) => (
-                                        <li
-                                            key={product.sku}
-                                            onClick={() => addProductToTable(product)}
-                                            className="p-2 border-bottom"
-                                            style={{ cursor: "pointer" }}
-                                        >
-                                            {product.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                        
-                        <Table bordered hover className="mt-4 text-center">
-                            <thead className="bg-primary text-white">
-                                <tr >
-                                    <th style={{ color: 'white' }}>STT</th>
-                                    <th style={{ color: 'white' }}>Tên thuốc</th>
-                                    <th style={{ color: 'white' }}>ĐVT</th>
-                                    <th style={{ color: 'white' }}>Số lượng</th>
-                                    <th style={{ color: 'white' }}>Cách dùng</th>
-                                    <th style={{ color: 'white' }}>Thao tác</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                {tableData.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>
-                                            <Form.Control
-                                                type="text"
-                                                value={item.testName}
-                                                onChange={(e) =>
-                                                    handlePrescriptionChange(
-                                                        index,
-                                                        "testName",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                type="text"
-                                                value={item.referenceValue}
-                                                onChange={(e) =>
-                                                    handlePrescriptionChange(
-                                                        index,
-                                                        "referenceValue",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                type="text"
-                                                value={item.result}
-                                                onChange={(e) =>
-                                                    handlePrescriptionChange(
-                                                        index,
-                                                        "result",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                type="text"
-                                                value={item.unit}
-                                                onChange={(e) =>
-                                                    handlePrescriptionChange(
-                                                        index,
-                                                        "unit",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                        <td>
-                                            <Button
-                                                variant="danger"
-                                                size="sm"
-                                                onClick={() => handleDeleteRow(index)}
+                            </Row>
+                            {searchResults.length > 0 && (
+                                <div className="border p-3 rounded mb-3 bg-light">
+                                    <strong>Kết quả tìm kiếm:</strong>
+                                    <ul className="list-unstyled mt-2">
+                                        {searchResults.map((product) => (
+                                            <li
+                                                key={product.sku}
+                                                onClick={() => addProductToTable(product)}
+                                                className="p-2 border-bottom"
+                                                style={{ cursor: "pointer" }}
                                             >
-                                                Xóa
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                                                {product.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
 
-                        <div className="d-flex justify-content-between mt-4">
-                            <Button
-                                variant="outline-primary"
-                                onClick={addRow}
-                                style={{
-                                    fontSize: "14px",
-                                    padding: "6px 20px",
-                                    width: "150px",
-                                }}
-                            >
-                                Thêm dòng
-                            </Button>
-                            <Button
-                                type="submit"
-                                variant="primary"
-                                style={{
-                                    fontSize: "14px",
-                                    padding: "6px 20px",
-                                    width: "150px",
-                                }}
-                            >
-                                Lưu kết quả
-                            </Button>
-                        </div>
-                    </Form>
+                            <Table bordered hover className="mt-4 text-center">
+                                <thead className="bg-primary text-white">
+                                    <tr style={{ background: '#38adc1' }}>                                    <th style={{ color: 'white' }}>STT</th>
+                                        <th style={{ color: 'white' }}>Tên thuốc</th>
+                                        <th style={{ color: 'white' }}>ĐVT</th>
+                                        <th style={{ color: 'white' }}>Số lượng</th>
+                                        <th style={{ color: 'white' }}>Cách dùng</th>
+                                        <th style={{ color: 'white' }}>Thao tác</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    {tableData.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={item.testName}
+                                                    onChange={(e) =>
+                                                        handlePrescriptionChange(
+                                                            index,
+                                                            "testName",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={item.referenceValue}
+                                                    onChange={(e) =>
+                                                        handlePrescriptionChange(
+                                                            index,
+                                                            "referenceValue",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={item.result}
+                                                    onChange={(e) =>
+                                                        handlePrescriptionChange(
+                                                            index,
+                                                            "result",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={item.unit}
+                                                    onChange={(e) =>
+                                                        handlePrescriptionChange(
+                                                            index,
+                                                            "unit",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                            <td>
+                                                <Button
+                                                    variant="danger"
+                                                    size="sm"
+                                                    onClick={() => handleDeleteRow(index)}
+                                                >
+                                                    Xóa
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+
+                            <div className="d-flex justify-content-between mt-4">
+                                <Button
+                                    variant="danger"
+                                    onClick={addRow}
+                                    style={{
+                                        fontSize: "14px",
+                                        padding: "6px 20px",
+                                        width: "150px",
+                                    }}
+                                >
+                                    Thêm dòng
+                                </Button>
+
+                                <Button
+                                    type="submit"
+                                    variant="primary"
+                                    style={{
+                                        fontSize: "14px",
+                                        padding: "6px 20px",
+                                        width: "150px",
+                                    }}
+                                >
+                                    Lưu kết quả
+                                </Button>
+                            </div>
+                        </Form>
                     </div>
 
                     <div className="d-flex justify-content-end mt-3">

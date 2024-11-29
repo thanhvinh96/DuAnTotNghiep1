@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import jwt_decode from 'jwt-decode';
+import FileUploader from "../../../components/FileUploader";
 
 const MedicalForm = ({ onSubmit }) => {
     const MySwal = withReactContent(Swal);
@@ -183,10 +184,32 @@ const MedicalForm = ({ onSubmit }) => {
         }
     };
     
+    const handleFileUpload = async (file, field) => {
+        try {
+            const data = new FormData();
+            data.append("file", file);
+            data.append("upload_preset", "Phanthuyen");
 
+            const response = await fetch("https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload", {
+                method: "POST",
+                body: data,
+            });
+
+            const result = await response.json();
+            if (result.url) {
+                setPatientImage(result.url); // Sử dụng URL của ảnh đã tải lên
+
+                alert(`${field} tải lên thành công!`);
+            }
+        } catch (error) {
+            console.error(`Error uploading ${field}:`, error);
+            alert(`Có lỗi xảy ra khi tải ${field}. Vui lòng thử lại.`);
+        }
+    };
     return (
-        <Card className="border p-4 mt-4">
-            <Form onSubmit={handleSubmit}>
+        <Card>
+            <Card.Body>
+                            <Form onSubmit={handleSubmit}>
                 <h4>Chuyên Mục Khám và Kết quả</h4>
 
                 {/* Form nhập CCCD */}
@@ -291,7 +314,7 @@ Xem chi tiết bệnh
                     </Alert>
                 )}
 
-                <Table className="table table-bordered text-center mt-3">
+                <Table className="table table-bordered text-center mt-3"> 
                     <thead className="thead-light">
                         <tr>
                             <th>STT</th>
@@ -328,7 +351,7 @@ Xem chi tiết bệnh
                     <Button onClick={addRow} style={{ fontSize: '12px', padding: '4px 10px' }}>Thêm dòng</Button>
                 </div>
  <div className="mt-4">
-                    <h4>Upload Image</h4>
+                    {/* <h4>Upload Image</h4>
                     <Form.Group>
                         <Row>
                             <Col md={9}>
@@ -336,7 +359,15 @@ Xem chi tiết bệnh
                                 <Form.Control type="file" id="ImagesMedical" onChange={handlePatientImageChange} />
                             </Col>
                         </Row>
-                    </Form.Group>
+                    </Form.Group> */}
+                    <Col md={12}>
+                            <Form.Group className="mb-3">
+                            <Form.Label>Chọn ảnh để tải lên</Form.Label>
+                            <FileUploader
+                                    onFileUpload={(files) => handleFileUpload(files[0], "ImagesMedical")}
+                                />
+                            </Form.Group>
+                        </Col>
                 </div>
                 <div className="mt-4">
                     <h5>Biểu hiện và Kết luận</h5>
@@ -366,6 +397,7 @@ Xem chi tiết bệnh
                     <Button type="submit" style={{ fontSize: '12px', padding: '4px 10px' }}>Thêm kết quả</Button>
                 </div>
             </Form>
+            </Card.Body>
 
             {/* Hiển thị dữ liệu đã thêm nếu có */}
            {/* Hiển thị dữ liệu đã thêm nếu có */}

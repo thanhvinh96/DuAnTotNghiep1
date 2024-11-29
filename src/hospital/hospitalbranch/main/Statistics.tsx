@@ -6,7 +6,7 @@ import CountUp from "react-countup";
 interface StatisticsProps {
   icon: string;
   variant: string;
-  stats: string;
+  stats: number;
   description: string;
   counterOptions?: any;
 }

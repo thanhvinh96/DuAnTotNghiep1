@@ -23,6 +23,50 @@ export const handleCreateMedical = async (formData: any) => {
     throw error;
   }
 };
+export const Forgotpassword = async (formData: any) => {
+  try {
+    const response = await fetch(`http://103.179.185.78:3002/medical/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData), // Gửi dữ liệu đăng nhập qua body
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const result = await response.json();
+  
+    return result;
+  } catch (error) {
+    console.error("Error during create:", error);
+    throw error;
+  }
+};
+export const Newpassword = async (formData: any) => {
+  try {
+    const response = await fetch(`http://103.179.185.78:3002/medical/verify-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData), // Gửi dữ liệu đăng nhập qua body
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const result = await response.json();
+  
+    return result;
+  } catch (error) {
+    console.error("Error during create:", error);
+    throw error;
+  }
+};
 export const CheckInfoMedical = async (formData: any) => {
   try {
     const response = await fetch(`http://103.179.185.78:3002/medical/checkinfo`, {
