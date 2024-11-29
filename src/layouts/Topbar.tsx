@@ -279,7 +279,7 @@ const Topbar = ({
       <div
         className={`navbar-custom ${navbarCssClasses}`}
         style={{
-          background: "#1A3A6D",
+          background: "#ffffff",
         }}
       >
         <div className={`topbar ${containerCssClasses}`}>

@@ -1,18 +1,68 @@
-import React from "react";
+import React ,{useEffect,useState} from "react";
 import { Row, Col, Card, Tab, Nav } from "react-bootstrap";
 import classnames from "classnames";
 import Statistics from "./Statistics";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // components
 import PageTitle from "../../../components/PageTitle";
-
+import {CountMedicalByBranch,CountUserByBranch} from "../../../controller/HospitalBranch";
 import CreateDepartment from "../createdepartment";
 import CreatePersonnel from "../../personnel/createpersonnel";
 import CreateService from "../createrseveri"
 
 import CreateClinic from "../createrclinic"
+import BranchInfo from "../BranchInfo"
 // Quản lý
 const Management = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const model = queryParams.get("model");
+
+  // State to store the count of medical records
+  const [medicalCount, setMedicalCount] = useState(0);
+  const [userCount,setuserCount] = useState(0);
+
+  // Fetch the count of medical records by branch
+  useEffect(() => {
+    const fetchMedicalCount = async () => {
+      if (model) {
+        try {
+          const data = { tokenbranch: model };
+          const res = await CountMedicalByBranch(data);
+          console.log("gfdfgdfg"+res)
+          if (res) {
+            setMedicalCount(res.total_records); // Assuming API returns total_records
+          } else {
+            console.error("Failed to fetch medical count:", res.message);
+          }
+        } catch (error) {
+          console.error("Error fetching medical count:", error);
+        }
+      }
+    };
+    const fetchUserCount = async () => {
+      if (model) {
+        try {
+          const data = {branch: model };
+          const res = await CountUserByBranch(data);
+          console.clear()
+          console.log("gfdfgdfg"+res.total_users)
+          
+          if (res) {
+            setuserCount(res.total_users); // Assuming API returns total_records
+          } else {
+            console.error("Failed to fetch medical count:", res.message);
+          }
+        } catch (error) {
+          console.error("Error fetching medical count:", error);
+        }
+      }
+    };
+    fetchMedicalCount();
+    fetchUserCount();
+  }, [model]); // Re-run when `model` changes
+
   return (
     <>
       <PageTitle
@@ -26,7 +76,7 @@ const Management = () => {
               <Statistics
                 icon="fe-book"
                 variant="primary"
-                stats="1234"
+                stats={medicalCount} // Use the state value
                 description="Tổng Số Bệnh Nhân"
               />
             </Col>
@@ -34,7 +84,7 @@ const Management = () => {
               <Statistics
                 icon="fe-clock"
                 variant="warning"
-                stats="567"
+                stats={userCount} // Use the state value
                 description="Tổng Số Nhân Viên"
               />
             </Col>
@@ -42,8 +92,8 @@ const Management = () => {
               <Statistics
                 icon="fe-check-circle"
                 variant="success"
-                stats="345"
-                description="Tổng Số Token"
+                stats={medicalCount} // Use the state value
+                description="Tổng Doanh Thu"
               />
             </Col>
           </Row>
@@ -124,7 +174,7 @@ const Management = () => {
                 <CreateDepartment />
               </Tab.Pane>
               <Tab.Pane eventKey="4"> <CreateClinic /> </Tab.Pane>
-              <Tab.Pane eventKey="5">{/* <UpdateInfo /> */}</Tab.Pane>
+              <Tab.Pane eventKey="5"><BranchInfo /></Tab.Pane>
             </Tab.Content>
           </Card.Body>
         </Card>

@@ -174,7 +174,7 @@ export default function Home() {
         title="Đồng Hành Vì Sức Khỏe Của Bạn"
         subTitle="Chúng tôi cam kết mang đến dịch vụ y tế tốt nhất giúp bạn sống khỏe mạnh và hạnh phúc"
         bgUrl="/images/home_1/hero_bg.jpeg"
-        imgUrl="/images/img/banner.png"
+        imgUrl="/images/img/Blue Modern School Logo.png"
         videoBtnText="Xem cách chúng tôi làm việc"
         videoUrl="https://www.youtube.com/embed/VcaAVWtP48A"
         infoList={[

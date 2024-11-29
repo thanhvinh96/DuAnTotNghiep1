@@ -3,6 +3,8 @@ import { Button, Alert, Modal } from "react-bootstrap";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import jwtDecode from 'jwt-decode';
+
 import {
   VerticalForm,
   FormInput,
@@ -140,14 +142,27 @@ const Login2 = () => {
 
         setModalContent({ title: "Success...", body: "Login hospital," });
         loadingSwal.close();
-
-        Swal.fire({
+        const token = localStorage.getItem('tokenadmin');
+        if (token) {
+            Swal.fire({
           title: "Login Hospital Success!",
           text: "Your Login Hospital was successful.",
           icon: "success",
           confirmButtonText: "OK",
         });
-        window.location.href = "/hospital/home"; // hoặc sử dụng phương pháp điều hướng của framework (React Router)
+            const decodedToken: any = jwtDecode(token);
+            console.log(decodedToken['typeusers']);
+            if (decodedToken['typeusers'] === 'doctor') {
+              window.location.href = "/doctor/home"; // Chuyển hướng bác sĩ
+          } else if (decodedToken['typeusers'] === 'nurse') {
+              window.location.href = "/request-medical-nurse"; // Chuyển hướng bác sĩ với vai trò nuser
+          } else {
+              window.location.href = "/hospital/home"; // Chuyển hướng quản trị bệnh viện
+          }
+          
+        }
+      
+        // window.location.href = "/hospital/home"; // hoặc sử dụng phương pháp điều hướng của framework (React Router)
       } else {
         setModalContent({ title: "Enroll...", body: "Login hospital," });
         Swal.fire({

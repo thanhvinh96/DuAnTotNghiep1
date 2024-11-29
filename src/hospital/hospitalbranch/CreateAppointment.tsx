@@ -23,6 +23,13 @@ interface AppointmentData {
     tokenorg:string;
     clinic:string;
 }
+interface service_branch{
+    _id:String;
+    serviceCode:String;
+    serviceName:String;
+    serviceType:String;
+    serviceFees:String;
+}
 interface Clinic {
     _id: string;
     code: string;
@@ -34,6 +41,7 @@ interface Clinic {
     branch: string;
     roomType: string;
     departmentType: string;
+    service_branch: service_branch;
   }
   interface Departments {
     _id: string;                // ID of the department
@@ -297,31 +305,32 @@ const CreateAppointment: React.FC = () => {
         }
     };
     const handleExportInvoice = () => {
-        const invoiceData: any = [];
+        // const invoiceData: any = [];
     
-        // Duyệt qua tất cả các lịch hẹn trong dataTable
-        dataTable.forEach((schedule: any) => {
-            const patient = schedule.patient || 'Chưa có thông tin bệnh nhân';
+        // // Duyệt qua tất cả các lịch hẹn trong dataTable
+        // dataTable.forEach((schedule: any) => {
+        //     const patient = schedule.patient || 'Chưa có thông tin bệnh nhân';
     
-            // Tìm xem bệnh nhân đã có trong mảng invoiceData chưa
-            let existingPatient = invoiceData.find((item: any) => item.medical === patient);
+        //     // Tìm xem bệnh nhân đã có trong mảng invoiceData chưa
+        //     let existingPatient = invoiceData.find((item: any) => item.medical === patient);
     
-            if (!existingPatient) {
-                // Nếu chưa có, tạo mới đối tượng cho bệnh nhân này
-                existingPatient = {
-                    medical: patient,
-                    dataservers: []  // Mảng chứa các lịch hẹn của bệnh nhân
-                };
-                // Thêm đối tượng bệnh nhân vào invoiceData
-                invoiceData.push(existingPatient);
-            }
+        //     if (!existingPatient) {
+        //         // Nếu chưa có, tạo mới đối tượng cho bệnh nhân này
+        //         existingPatient = {
+        //             medical: patient,
+        //             dataservers: []  // Mảng chứa các lịch hẹn của bệnh nhân
+        //         };
+        //         // Thêm đối tượng bệnh nhân vào invoiceData
+        //         invoiceData.push(existingPatient);
+        //     }
     
-            // Thêm lịch hẹn vào mảng dataservers của bệnh nhân
-            existingPatient.dataservers.push(schedule);
-        });
+        //     // Thêm lịch hẹn vào mảng dataservers của bệnh nhân
+        //     existingPatient.dataservers.push(schedule);
+        // });
     
-        // Log kết quả ra ngoài vòng lặp
-        console.log(invoiceData);
+        // // Log kết quả ra ngoài vòng lặp
+        // console.log(invoiceData);
+        window.location.href =`hospital/medicalbill?medical=${patient}`;
     };
     
     
@@ -503,36 +512,38 @@ const CreateAppointment: React.FC = () => {
                             onChange={handleSearchChange}
                         />
                     </Form.Group>
+                    <div style={{ overflowX: 'auto' }}>
+  <Table bordered hover className="mt-4 text-center table-responsive">
+    <thead className="bg-primary text-white">
+      <tr style={{ background: '#38adc1' }}>
+        <th style={{ color: 'white' }}>Phòng Khám</th>
+        <th style={{ color: 'white' }}>Khoa</th>
+        <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
+        <th style={{ color: 'white' }}>Trạng Thái</th>
+        <th style={{ color: 'white' }}>Thời Gian</th>
+        <th style={{ color: 'white' }}>Loại Lịch Hẹn</th>
+        <th style={{ color: 'white' }}>Bác Sĩ Tiếp Nhận</th>
+        <th style={{ color: 'white' }}>Phí Dịch Vụ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {dataTable.map((schedule, index) => (
+        <tr key={schedule._id}>
+          <td>{schedule.clinics?.name}</td>
+          <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td>
+          <td>{schedule.patient || 'Chưa có chuyên khoa'}</td>
+          <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
+          <td>{new Date(schedule.timeschedule).toLocaleString()}</td>
+          <td>{schedule.notes}</td>
+          <td>{schedule.accepted_by_doctor || 'Chưa cập nhật'}</td>
+          <td>{schedule.clinics?.service_branch?.serviceFees || 'Không có phí'}</td>
+        </tr>
+      ))}
+    </tbody>
+  </Table>
+</div>
 
-                    <Table bordered hover className="mt-4 text-center">
-                    <thead className="bg-primary text-white">
-                            <tr>
-                                <th style={{ color: 'white' }}>Phòng Khám</th>
-                                <th style={{ color: 'white' }}>Khoa</th>
-                                <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
-                                <th style={{ color: 'white' }}>Trạng Thái</th>
-                                <th style={{ color: 'white' }}>Thời Gian</th>
 
-                                <th style={{ color: 'white' }}>Loại Lịch Hẹn</th>
-                                <th style={{ color: 'white' }}>Bác Sĩ Tiếp Nhận</th>
-                                {/* <th>Chi Tiết</th> */}
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {dataTable.map((schedule, index) => (
-            <tr key={schedule._id}>
-              <td>{schedule.clinics?.name}</td>
-              <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td>
-              <td>{schedule.patient || 'Chưa có chuyên khoa'}</td>
-              <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
-              <td>{new Date(schedule.timeschedule).toLocaleString()}</td>
-              <td>{schedule.notes}</td>
-              <th>{schedule.accepted_by_doctor}</th>
-
-            </tr>
-          ))}
-                        </tbody>
-                    </Table>
                     <div className="d-flex justify-content-between mt-4">
                           
                             <Button

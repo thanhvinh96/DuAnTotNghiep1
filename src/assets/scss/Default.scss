@@ -119,3 +119,44 @@
     color: var(--ct-nav-pills-link-active-color);
     background-color: #267c8b;
 }
+
+* {
+  font-family: 'Signika', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.bg-primary-custom{
+  background-color: #38adc1 !important;
+  color: #ffffff;
+}
+.text-custom{
+  color: #ffffff;
+}
+.text-primary{
+  color: #38adc1;
+
+}
+.cs_hero_title{
+  font-size: 38px;
+}
+
+.cs_hero.cs_style_1 .cs_hero_wrap {
+  margin-top: 100px;
+  height: 80%;
+  width: 100%;
+  padding-top: 125px;
+  position: relative;
+}
+.cs_hero.cs_style_1 .cs_hero_info_wrap {
+  /* padding: 70px 140px; */
+  margin-bottom: -85px;
+  flex-wrap: wrap;
+  /* display: flex
+; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  /* gap: 30px; */
+  /* position: relative; */
+  /* z-index: 2; */
+  margin-top: 200px;
+}

@@ -157,9 +157,10 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         style={{
           // background: "linear-gradient(to top, #35a2c6, #ccf2d8)",
           width: "350px",
-          background: "#D7E6EF",
+          background: "#102A50",
           fontSize: "90px",
-        }}
+          color: "#FFFFFF"      
+         }}
       >
         {!hideLogo && (
           <div className="logo-box" style={{ margin: " 30px 0 20px 0" }}>

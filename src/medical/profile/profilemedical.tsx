@@ -270,7 +270,19 @@ const ProfileMedical: React.FC = () => {
       alert("Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.");
     }
   };
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let phone = e.target.value;
 
+    // Xử lý loại bỏ số 0 đầu và thêm 84 vào đầu nếu có
+    if (phone.startsWith('0')) {
+      phone = '84' + phone.slice(1); // Bỏ số 0 đầu và thêm 84 vào đầu
+    }
+
+    setRecord({
+      ...record,
+      phoneNumber: phone,
+    });
+  };
   return (
     <>
       <div style={{marginTop:"-50px"}}>
@@ -377,7 +389,7 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="formPhoneNumber"
                       value={record.phoneNumber}
-                      onChange={(e) => setRecord({ ...record, phoneNumber: e.target.value })}
+                      onChange={handlePhoneNumberChange}
                     />
                   </Form.Group>
                 </Col>

@@ -42,9 +42,11 @@ const Dashboard3 = () => {
       if (res && res.data && res.data.length > 0) {
         
         setDatatable(res.data);
-        console.log('gia tri'+res.data[0].selectedService.value)
+        console.log('gia tri'+res.data[0].selectedService)
+
+        console.log('gia tri'+res.data[0].selectedService)
         const dataZ={
-          id:res.data[0].selectedService.value
+          id:res.data[0].selectedService
         }
         const _resz = await GetScheduleID(dataZ);
         console.log("gia tri type form"+_resz.data[0].serviceType)
@@ -190,8 +192,8 @@ const Dashboard3 = () => {
       <Row className="mb-4">
         <Col>
           <Card className="shadow-sm border-0">
-            <Card.Header className="bg-primary" style={{ color: "white" }}>
-              <h4 className="mb-0">Phòng khám hiện tại bác sĩ đang làm việc</h4>
+            <Card.Header className="bg bg-primary-custom" style={{ color: "white" }}>
+              <h4 className="text-custom">Phòng khám hiện tại bác sĩ đang làm việc</h4>
             </Card.Header>
             <Card.Body>
               <div className="table-responsive">
@@ -236,8 +238,8 @@ const Dashboard3 = () => {
       <Row>
         <Col>
           <Card className="shadow-sm border-0">
-            <Card.Header className="bg-primary custom-header">
-              <h4 className="mb-0">Danh sách lịch hẹn</h4>
+            <Card.Header className="bg-primary-custom custom-header">
+              <h4 className="mb-0 text-custom" >Danh sách lịch hẹn</h4>
             </Card.Header>
             <Card.Body>
               <div className="table-responsive">

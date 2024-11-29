@@ -15,6 +15,9 @@ const Confirm2 = React.lazy(() => import("../medical/auth2/Confirm2"));
 const ForgetPassword2 = React.lazy(
   () => import("../medical/auth2/ForgetPassword2")
 );
+const ResetPassword = React.lazy(
+  () => import("../medical/auth2/ResetPassword")
+);
 const LockScreen2 = React.lazy(() => import("../medical/auth2/LockScreen2"));
 const SignInSignUp2 = React.lazy(() => import("../medical/auth2/SignInSignUp2"));
 
@@ -79,6 +82,8 @@ const DoctorMedicalHistory = React.lazy(()=>import("../hospital/Nurse/Medicalhis
 const DoctorMedicalHistoryDetail = React.lazy(()=>import("../hospital/Nurse/Medicalhistory/Medicalhistorydetail"));
 const Appointments = React.lazy(()=>import("../hospital/Nurse/appointments/index"));
 const HospitalMedicalshare =React.lazy(()=>import("../hospital/medicalShare/index"));
+const PayOnline =React.lazy(()=>import("../hospital/billmedical/payonline"));
+const PayBill =React.lazy(()=>import("../hospital/billmedical/paybill"));
 // bill medical
 const BillMedical =React.lazy(()=>import("../hospital/billmedical/index"));
 
@@ -315,8 +320,13 @@ const hospitalRouter: RoutesProps = {
       name: "hospital/hospital-branch",
       element: <HospitalMain />,
       route: PrivateRoute,
-    }
-
+    },
+    {
+      path: "/hospital/branch/pay-bill",
+      name: "hospital/hospital-bill",
+      element: <PayBill />,
+      route: PrivateRoute,
+    },
   ],
 };
 const dashboardRoutes: RoutesProps = {
@@ -407,6 +417,13 @@ const authRoutes: RoutesProps[] = [
     route: Route,
   },
   {
+    path: "/hospital/branch/pay-online",
+    name: "hospital/hospital-branch",
+    element: <PayOnline />,
+    route: Route,
+  },
+
+  {
     path: "/medical/auth/register2",
     name: "Register2",
     element: <Register2 />,
@@ -422,6 +439,12 @@ const authRoutes: RoutesProps[] = [
     path: "/medical/auth/forget-password2",
     name: "Forget Password2",
     element: <ForgetPassword2 />,
+    route: Route,
+  },
+  {
+    path: "/medical/auth/reset-password",
+    name: "Forget Password2",
+    element: <ResetPassword />,
     route: Route,
   },
   {
