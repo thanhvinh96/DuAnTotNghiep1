@@ -4,9 +4,13 @@ import { Row, Col, Button, Modal,Table } from "react-bootstrap";
 import jwtDecode from 'jwt-decode';
 import PageTitle from "../../components/PageTitle";
 import { GetInfoHospital } from "../../controller/HospitalController";
-import { showSuperadmin ,addAdminChangeRequest} from "../../controller/NetworkManagent";
+import { showSuperadmin ,addAdminChangeRequest,ShowAdminChangeRequest} from "../../controller/NetworkManagent";
 import { GetInfoFullPersonnel } from "../../controller/PersonnelController";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const Profile = () => {
+  const MySwal = withReactContent(Swal);
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [profileData, setProfileData] = useState<any>(null);
   const [tokenHospital, setTokenHospital] = useState<null | string>(null);
@@ -27,9 +31,39 @@ const Profile = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [datarequest, setdatarequest] = useState<any[]>([]);
   // Fetch data for organization and hospital profile
-  const getData = async () => {
+  const showdataReuquest = async () => {
+    const token = localStorage.getItem('tokenadmin');
+    if (token) {
+        try {
+            const decodedToken: any = jwtDecode(token);
+            console.log("Tê tổ chức: " + decodedToken['branch']);
+
+            const tokeorg = decodedToken['tokeorg'];
+            if (tokeorg) {
+                // Thực hiện hành động khi có 'tokeorg'
+                const data = {
+                  tokeorg :tokeorg
+                }
+                const res = await ShowAdminChangeRequest(data);
+                if(res){
+                  setdatarequest(res);
+                }else{
+                  console.log('error')
+                }
+                console.log("Tổ chức:", tokeorg);
+            } else {
+                console.log("Không có mã tổ chức.");
+            }
+        } catch (error) {
+            console.error("Lỗi khi giải mã token:", error);
+        }
+    } else {
+        console.log("Token không tồn tại.");
+    }
+};
+const getData = async () => {
     const token = localStorage.getItem('tokenadmin');
     if (token) {
       try {
@@ -62,14 +96,26 @@ const Profile = () => {
   // Fetch the admin profile data
   const showDataProfileHospital = async () => {
     try {
+     
+  
       const data = { tokenorg: tokenHospital };
       const res = await showSuperadmin(data);
       setProfileData(res);
-      console.log('profile admin', res);
+  
+    
+  
+      console.log('Thông tin admin', res);
     } catch (error) {
-      console.log('Error fetching admin profile:', error);
+      console.log('Lỗi khi lấy thông tin admin:', error);
+      Swal.fire({
+        title: "Có lỗi xảy ra!",
+        text: "Không thể lấy thông tin admin hiện tại. Vui lòng thử lại sau.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
+  
   const [data, setData] = useState<any[]>([]);  // Array state to hold multiple personnel
   const [tokenOrg,settokenOrg] = useState<any>({});
 
@@ -100,6 +146,7 @@ const Profile = () => {
     };
 
     fetchPersonnel();
+    showdataReuquest();
   }, []);
   useEffect(() => {
     getData();
@@ -121,6 +168,16 @@ const Profile = () => {
 
   // Hàm gửi yêu cầu đổi tài khoản admin
   const handleSubmit = async() => {
+    const loadingSwal: any = MySwal.fire({
+      title: "Vui lòng đợi...",
+      text: "Đang cập nhật thông tin admin, vui lòng chờ!",
+      icon: "info",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     console.log('Mục Đích Đổi Admin:', oldToken);
     console.log('Token Admin Mới:', newToken);
     console.log('token admin ',profileData.tokenuser )
@@ -131,8 +188,22 @@ const Profile = () => {
       tokeorg:tokenOrg,
     }
     const res = await addAdminChangeRequest(data)
-    console.log(res);
-    // You can add your logic here to handle the submission (e.g., making an API request)
+    if (res.status === true) {
+      handleCloseModal()
+      Swal.fire({
+        title: "Cập nhật admin thành công!",
+        text: "Cập nhật admin mới cho bệnh viện thành công.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } else {
+      Swal.fire({
+        title: "Cập nhật thất bại!",
+        text: "Có lỗi xảy ra trong quá trình cập nhật admin mới.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }    // You can add your logic here to handle the submission (e.g., making an API request)
   };
   return (
     <>
@@ -295,7 +366,20 @@ const Profile = () => {
               </tr>
             </thead>
             <tbody>
-              {/* Lấy dữ liệu hiển thị ở đây */}
+            {datarequest.map((request, index) => {
+          // Chuyển timestamp từ chuỗi sang dạng thời gian
+          const timestamp = new Date(parseInt(request.timestamp)).toLocaleString();
+
+          return (
+            <tr key={request.requestId}>
+              <td>{index + 1}</td>
+              <td>{timestamp}</td>
+              <td>{request.currentAdminToken}</td>
+              <td>{request.newAdminToken}</td>
+              <td>{request.status === 'PENDING' ? 'Chưa xử lý' : request.status}</td>
+            </tr>
+          );
+        })}
             </tbody>
           </Table>
         </div>
