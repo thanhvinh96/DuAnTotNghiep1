@@ -1,7 +1,7 @@
 import React, { useEffect, ChangeEvent, FormEvent, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Link } from "react-router-dom";
-import { Button, Alert, Row, Col, Form, Modal } from "react-bootstrap";
+import { Button, Alert, Row, Col, Form, Modal, Card } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,7 @@ import { RegisterHospital } from "../../controller/HospitalController";
 import { resetAuth, signupUser } from "../../redux/actions";
 
 import { RootState, AppDispatch } from "../../redux/store";
+import FileUploader from "../../components/FileUploader";
 
 // components
 import { VerticalForm, FormInput } from "../../components/";
@@ -68,69 +69,106 @@ const Register = () => {
   useEffect(() => {
     dispatch(resetAuth());
   }, [dispatch]);
-  const [record, setRecord] = useState<Record>({
-    cccdImagebase64: "",
-  });
+
   /*
    * form validation schema
    */
+  const [orgData, setOrgData] = useState<any>({
+    nameorg: "",
+    nameadmin: "",
+    emailadmin: "",
+    addressadmin: "",
+    cccdadmin: "",
+    phoneadmin: "",
+    passwordadmin: "",
+    businessBase64: "",
+    imgidentification: "",
+    cccdImage: "",
+    license: "",
+    avatar: "",
+    businesslicense:"",
+    License:"",
+  });
+  const handleFileUpload = async (file: File, field: string) => {
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "Phanthuyen");
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        console.log("Base64 String: ", base64String); // For debugging
-        setRecord((prevRecord) => ({
-          ...prevRecord,
-          cccdImagebase64: base64String, // Set base64 string to state
+      const response = await fetch("https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload", {
+        method: "POST",
+        body: data,
+      });
+
+      const result = await response.json();
+      if (result.url) {
+        setOrgData((prevFormData: any) => ({
+          ...prevFormData,
+          [field]: result.url,
         }));
-      };
-      reader.onerror = (error) => {
-        console.error("Error reading file: ", error);
-      };
-      reader.readAsDataURL(file); // Read the file as a Data URL (base64 string)
-    } else {
-      console.error("No file selected");
+        alert(`${field} tải lên thành công!`);
+      }
+    } catch (error) {
+      console.error(`Error uploading ${field}:`, error);
+      alert(`Có lỗi xảy ra khi tải ${field}. Vui lòng thử lại.`);
     }
   };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    console.log(`Changing ${name} to ${value}`); // Kiểm tra giá trị input
+    setOrgData((prevOrgData: any) => ({
+      ...prevOrgData,
+      [name]: value,
+    }));
+  };
+  const handleInputPassword = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    console.log(`Changing ${name} to ${value}`); // Log giá trị
+    setOrgData((prevOrgData: any) => ({
+      ...prevOrgData,
+      [name]: value,
+    }));
+  };
+
   /*
    * handle form submission
    */
-  const onSubmit = async (formData: UserData) => {
-    const nameorg =
-      (document.getElementById("nameorg") as HTMLInputElement)?.value || "";
-    const nameadmin =
-      (document.getElementById("nameadmin") as HTMLInputElement)?.value || "";
-    const emailadmin =
-      (document.getElementById("emailadmin") as HTMLInputElement)?.value || "";
-    const addressadmin =
-      (document.getElementById("addressadmin") as HTMLInputElement)?.value ||
-      "";
-    const cccdadmin =
-      (document.getElementById("cccdadmin") as HTMLInputElement)?.value || "";
-    const phoneadmin =
-      (document.getElementById("phoneadmin") as HTMLInputElement)?.value || "";
-    const passwordadmin =
-      (document.getElementById("passworkadmin") as HTMLInputElement)?.value ||
-      ""; // Đảm bảo tên đúng
-    const businessBase64 =
-      (document.getElementById("cccdImagebase64") as HTMLInputElement)?.value ||
-      "";
+  const onSubmit = async () => {
+    console.log(orgData)
+    // const nameorg =
+    //   (document.getElementById("nameorg") as HTMLInputElement)?.value || "";
+    // const nameadmin =
+    //   (document.getElementById("nameadmin") as HTMLInputElement)?.value || "";
+    // const emailadmin =
+    //   (document.getElementById("emailadmin") as HTMLInputElement)?.value || "";
+    // const addressadmin =
+    //   (document.getElementById("addressadmin") as HTMLInputElement)?.value ||
+    //   "";
+    // const cccdadmin =
+    //   (document.getElementById("cccdadmin") as HTMLInputElement)?.value || "";
+    // const phoneadmin =
+    //   (document.getElementById("phoneadmin") as HTMLInputElement)?.value || "";
+    // const passwordadmin =
+    //   (document.getElementById("passworkadmin") as HTMLInputElement)?.value ||
+    //   ""; // Đảm bảo tên đúng
+    // const businessBase64 =
+    //   (document.getElementById("cccdImagebase64") as HTMLInputElement)?.value ||
+    //   "";
 
-    const data = {
-      nameorg,
-      nameadmin,
-      emailadmin,
-      addressadmin,
-      cccdadmin,
-      phoneadmin,
-      passwordadmin,
-      businessBase64,
-    };
+    // const data = {
+    //   nameorg,
+    //   nameadmin,
+    //   emailadmin,
+    //   addressadmin,
+    //   cccdadmin,
+    //   phoneadmin,
+    //   passwordadmin,
+    //   businessBase64,
+    // };
 
-    console.log("Submitted data:", data);
+    // console.log("Submitted data:", data);
 
     const loadingSwal: any = MySwal.fire({
       title: "Please wait...",
@@ -144,7 +182,7 @@ const Register = () => {
     });
 
     try {
-      const res: any = await RegisterHospital(data);
+      const res: any = await RegisterHospital(orgData);
       console.log(res);
       console.log("giá trị res");
 
@@ -176,50 +214,11 @@ const Register = () => {
       });
     }
   };
-  const [images, setImages] = useState<string[]>([]);
 
-  const uploadToCloudinary = async () => {
-    try {
-      const fileInput = document.getElementById(
-        "productImages"
-      ) as HTMLInputElement;
-      const file = fileInput?.files?.[0];
-      if (file) {
-        const data = new FormData();
-        data.append("file", file);
-        data.append("upload_preset", "Phanthuyen");
-
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload",
-          {
-            method: "POST",
-            body: data,
-          }
-        );
-
-        const result = await response.json();
-
-        if (result) {
-          MySwal.fire({
-            title: "Hospital Success",
-            text: "Updloads Hospital Successfully",
-            icon: "success",
-          });
-          console.log("Uploaded image:", result["url"]);
-          setRecord((prevRecord) => ({
-            ...prevRecord,
-            cccdImagebase64: result["url"], // Set base64 string to state
-          }));
-        }
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  };
 
   return (
     <>
-      {userSignUp ? <Navigate to={"/auth/confirm"}></Navigate> : null}
+      {userSignUp && <Navigate to={"/auth/confirm"} />}
 
       <AuthLayout
         helpText={t(
@@ -233,124 +232,132 @@ const Register = () => {
           </Alert>
         )}
 
-        <VerticalForm onSubmit={onSubmit}>
-          <div className="d-flex flex-wrap mb-3">
-            <div className="col-md-6 p-2">
-              <FormInput
-                label="Tên Bệnh Viện"
-                type="text"
-                name="nameorg"
-                placeholder="Enter organization name"
-                containerClass="mb-3"
-                // {...register('nameorg', { required: "Organization name is required" })}
-              />
-              {/* {errors.nameorg && <p className="text-danger">{errors.nameorg.message}</p>} */}
+<VerticalForm onSubmit={onSubmit}>
+  <div className="row g-4">
+    {/* Organization Information */}
+    <div className="col-md-6">
+      <Card className="p-4 shadow border-0 rounded">
+        <h5 className="mb-4 text-primary">Thông Tin Tổ Chức</h5>
+        <FormInput
+          label="Tên Bệnh Viện"
+          type="text"
+          name="nameorg"
+          placeholder="Nhập tên tổ chức"
+          value={orgData.nameorg}
+          onChange={handleInputChange}
+          containerClass="mb-4"
+        />
+        <FormInput
+          label="Email Admin"
+          type="email"
+          name="emailadmin"
+          placeholder="Nhập email admin"
+          value={orgData.emailadmin}
+          onChange={handleInputChange}
+          containerClass="mb-4"
+        />
+        <Form.Group className="mb-4">
+          <Form.Label className="fw-bold">Giấy phép kinh doanh</Form.Label>
+          <FileUploader
+            onFileUpload={(files) => handleFileUpload(files[0], "businesslicense")}
+          />
+        </Form.Group>
+      </Card>
+    </div>
 
-              <FormInput
-                label="Admin Email"
-                type="email"
-                name="emailadmin"
-                placeholder="Enter admin email"
-                containerClass="mb-3"
-                // {...register('emailadmin', { required: "Email is required" })}
-              />
-              {/* {errors.emailadmin && <p className="text-danger">{errors.emailadmin.message}</p>} */}
+    {/* Admin Information */}
+    <div className="col-md-6">
+      <Card className="p-4 shadow border-0 rounded">
+        <h5 className="mb-4 text-primary">Thông Tin Admin</h5>
+        <FormInput
+          label="Tên Admin"
+          type="text"
+          name="nameadmin"
+          placeholder="Nhập tên admin"
+          value={orgData.nameadmin}
+          onChange={handleInputChange}
+          containerClass="mb-4"
+        />
+        <FormInput
+          label="CCCD Admin"
+          type="text"
+          name="cccdadmin"
+          placeholder="Nhập CCCD admin"
+          value={orgData.cccdadmin}
+          onChange={handleInputChange}
+          containerClass="mb-4"
+        />
+        <FormInput
+          label="Địa Chỉ Admin"
+          type="text"
+          name="addressadmin"
+          placeholder="Nhập địa chỉ admin"
+          value={orgData.addressadmin}
+          onChange={handleInputChange}
+          containerClass="mb-4"
+        />
+        <FormInput
+          label="Số Điện Thoại Admin"
+          type="text"
+          name="phoneadmin"
+          placeholder="Nhập số điện thoại admin"
+          value={orgData.phoneadmin}
+          onChange={handleInputChange}
+          containerClass="mb-4"
+        />
+        <Form.Group className="mb-4">
+          <Form.Label className="fw-bold">Ảnh đại diện</Form.Label>
+          <FileUploader
+            onFileUpload={(files) => handleFileUpload(files[0], "avatar")}
+          />
+        </Form.Group>
+        <Form.Group className="mb-4">
+          <Form.Label className="fw-bold">Thẻ CCCD</Form.Label>
+          <FileUploader
+            onFileUpload={(files) => handleFileUpload(files[0], "imgidentification")}
+          />
+        </Form.Group>
+        <Form.Group className="mb-4">
+          <Form.Label className="fw-bold">Giấy phép hành nghề</Form.Label>
+          <FileUploader
+            onFileUpload={(files) => handleFileUpload(files[0], "License")}
+          />
+        </Form.Group>
+        <FormInput
+          label="Mật Khẩu Admin"
+          // type="password"
+          name="passwordadmin"
+          placeholder="Nhập mật khẩu"
+          value={orgData.passwordadmin}
+          onChange={handleInputPassword}
+          containerClass="mb-4"
+        />
+      </Card>
+    </div>
+  </div>
 
-              <FormInput
-                label="Admin CCCD"
-                type="text"
-                name="cccdadmin"
-                placeholder="Enter admin CCCD"
-                containerClass="mb-3"
-                // {...register('cccdadmin', { required: "CCCD is required" })}
-              />
-              {/* {errors.cccdadmin && <p className="text-danger">{errors.cccdadmin.message}</p>} */}
+  {/* Submit Button */}
+  <div className="text-center mt-4">
+    <Button variant="primary" type="submit" className="px-5 py-2 fw-bold shadow">
+      Đăng Kí
+    </Button>
+  </div>
+</VerticalForm>
 
-              <FormInput
-                label="Admin Password"
-                type="password"
-                name="passworkadmin"
-                placeholder="Enter admin password"
-                containerClass="mb-3"
-                // {...register('passworkadmin', { required: "Password is required" })}
-              />
-              {/* {errors.passworkadmin && <p className="text-danger">{errors.passworkadmin.message}</p>} */}
-            </div>
-
-            <div className="col-md-6 p-2">
-              <FormInput
-                label="Admin Name"
-                type="text"
-                name="nameadmin"
-                placeholder="Enter admin name"
-                containerClass="mb-3"
-                // {...register('nameadmin', { required: "Admin name is required" })}
-              />
-              {/* {errors.nameadmin && <p className="text-danger">{errors.nameadmin.message}</p>} */}
-
-              <FormInput
-                label="Admin Address"
-                type="text"
-                name="addressadmin"
-                placeholder="Enter admin address"
-                containerClass="mb-3"
-                // {...register('addressadmin', { required: "Address is required" })}
-              />
-              {/* {errors.addressadmin && <p className="text-danger">{errors.addressadmin.message}</p>} */}
-
-              <FormInput
-                label="Admin Phone Number"
-                type="text"
-                name="phoneadmin"
-                placeholder="Enter admin phone number"
-                containerClass="mb-3"
-                // {...register('phoneadmin', { required: "Phone number is required" })}
-              />
-              {/* {errors.phoneadmin && <p className="text-danger">{errors.phoneadmin.message}</p>} */}
-
-              <Form.Group controlId="formCccdImage">
-                <Form.Label>CCCD Image</Form.Label>
-                <div className="d-flex align-items-center">
-                  <Form.Control
-                    type="file"
-                    name="cccdImage"
-                    className="me-2"
-                    id="productImages"
-                    onChange={uploadToCloudinary}
-                  />
-                </div>
-              </Form.Group>
-              <Form.Group controlId="cccdImagebase64">
-                <Form.Control
-                  type="hidden"
-                  id="cccdImagebase64"
-                  defaultValue={record.cccdImagebase64}
-                />
-              </Form.Group>
-            </div>
-          </div>
-
-          <div className="text-center d-grid">
-            <Button variant="success" type="submit">
-              Đăng Kí
+        <Modal show={showModal} onHide={handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{modalContent.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{modalContent.body}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Đóng
             </Button>
-          </div>
-        </VerticalForm>
-
-        <div className="text-center"></div>
+          </Modal.Footer>
+        </Modal>
       </AuthLayout>
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalContent.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{modalContent.body}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
+
   );
 };
 
