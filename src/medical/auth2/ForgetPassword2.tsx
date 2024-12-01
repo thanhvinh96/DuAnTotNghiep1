@@ -70,16 +70,15 @@ const ForgetPassword2 = () => {
    * xử lý khi gửi form
    */
   const onSubmit = async (formData: UserData) => {
-    // Lấy giá trị căn cước công dân từ formData
     console.log("Căn cước công dân: ", formData.username);
-
+  
     const data = {
       cccd: formData.username,
     };
-
+  
     try {
       const res = await Forgotpassword(data); // Gọi API
-
+  
       if (res.success) {
         // Tạo modal thông báo thành công
         const MySwal = withReactContent(Swal);
@@ -87,8 +86,10 @@ const ForgetPassword2 = () => {
           icon: "success",
           title: t("Yêu cầu đặt lại mật khẩu thành công"),
           text: t("Chúng tôi đã gửi hướng dẫn đến Số điện thoại của bạn"),
+        }).then(() => {
+          // Chuyển trang sau khi người dùng nhấn OK
+          window.location.href = "/medical/auth/reset-password?medical=" + formData.username;
         });
-        window.location.href = "/medical/auth/reset-password?medical=" + formData.username;
       } else {
         // Nếu có lỗi từ API, thông báo lỗi
         const MySwal = withReactContent(Swal);
@@ -109,7 +110,7 @@ const ForgetPassword2 = () => {
       });
     }
   };
-
+  
   return (
     <>
       <AuthLayout bottomLinks={<BottomLink />}>
