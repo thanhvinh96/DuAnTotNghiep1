@@ -112,10 +112,15 @@ const Register2 = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required(t("Please enter name")),
-      email: yup.string().required(t("Please enter Email address")),
-      passwordmedical: yup.string().required(t("Please enter Password")),
-      cccd: yup.string().required(t("Please enter CCCd")),
+      name: yup.string().required(t("Vui lòng nhập tên của bạn")),
+      email: yup.string().email(t("Email không tồn tại")).required(t("Vui lòng nhập địa chỉ Email của bạn")),
+      passwordmedical: yup.string()
+      .required(t("Vui lòng nhập mật khẩu của bạn"))
+      .min(10, t("Mật khẩu phải dài hơn 10 ký tự"))
+      .matches(/[A-Z]/, t("Mật khẩu phải có ít nhất 1 chữ cái in hoa"))
+      .matches(/[!@#$%^&*(),.?":{}|<>]/, t("Mật khẩu phải có ký tự đặt biệt")),
+      cccd: yup.string().required(t("Vui lòng nhập căn cước công dân của bạn"))
+      .matches(/^[0-9]{12}$/, t("vui lòng nhập đúng số cccd của bạn"))
     })
   );
 

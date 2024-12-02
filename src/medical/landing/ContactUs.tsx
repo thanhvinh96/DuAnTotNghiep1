@@ -18,9 +18,9 @@ const ContactUs = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      fullname: yup.string().required("Please enter your name"),
-      emailaddress: yup.string().required("Please enter your name"),
-      subject: yup.string().required("Please enter your name"),
+      fullname: yup.string().required("vui lòng nhập your name"),
+      emailaddress: yup.string().required("vui lòng nhập your name"),
+      subject: yup.string().required("vui lòng nhập your name"),
     })
   );
 

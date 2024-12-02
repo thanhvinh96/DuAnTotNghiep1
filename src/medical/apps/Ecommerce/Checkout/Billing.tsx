@@ -20,9 +20,9 @@ const Billing = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      billing_firstname: yup.string().required("Please enter firstname"),
-      billing_lastname: yup.string().required("Please enter lastname"),
-      billing_email: yup.string().required("Please enter Email address"),
+      billing_firstname: yup.string().required("Vui lòng nhập firstname"),
+      billing_lastname: yup.string().required("Vui lòng nhập lastname"),
+      billing_email: yup.string().required("Vui lòng nhập Email") .email('Vui lòng nhập địa chỉ email'),
     })
   );
 

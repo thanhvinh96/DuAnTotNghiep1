@@ -104,12 +104,15 @@ const Register = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      fullname: yup.string().required(t("Please enter Fullname")),
+      fullname: yup.string().required(t("vui lòng nhập tên tài khoản")),
       email: yup
         .string()
-        .required("Please enter Email")
-        .email("Please enter valid Email"),
-      password: yup.string().required(t("Please enter Password")),
+        .required("Vui lòng nhập email của bạn")
+        .email("Vui lòng điền đúng email của bạn"),
+      password: yup.string().required(t("Vui lòng nhập mật khẩu của bạn"))
+      .min(10, t("Mật khẩu phải dài hơn 10 ký tự"))
+      .matches(/[A-Z]/, t("Mật khẩu phải có ít nhất 1 chữ cái in hoa"))
+      .matches(/[!@#$%^&*(),.?":{}|<>]/, t("Mật khẩu phải có ký tự đặt biệt")),
     })
   );
 

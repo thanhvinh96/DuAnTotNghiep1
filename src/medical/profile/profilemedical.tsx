@@ -59,7 +59,8 @@ interface DecodedToken {
 
 
 const schema = yup.object().shape({
-  cccd: yup.string().required("Please enter your CCCD"),
+  cccd: yup.string().required("Vui lòng nhập your CCCD")
+  .matches(/^[0-9]{12}$/, ("vui lòng nhập đúng số cccd của bạn")),
 });
 
 const ProfileMedical: React.FC = () => {
