@@ -104,12 +104,12 @@ const Register = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      fullname: yup.string().required(t("Please enter Fullname")),
+      fullname: yup.string().required(t("Vui lòng nhập họ tên")),
       email: yup
         .string()
-        .required("Please enter Email")
-        .email("Please enter valid Email"),
-      password: yup.string().required(t("Please enter Password")),
+        .required("Vui lòng nhập Email")
+        .email("Vui lòng nhập địa chỉ Email"),
+      password: yup.string().required(t("Vui lòng nhập mật khẩu")),
     })
   );
 

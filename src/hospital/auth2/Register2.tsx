@@ -104,10 +104,10 @@ const Register2 = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required(t("Please enter name")),
-      email: yup.string().required(t("Please enter Email address")),
-      passwordmedical: yup.string().required(t("Please enter Password")),
-      cccd: yup.string().required(t("Please enter CCCd")),
+      name: yup.string().required(t("Vui lòng nhập tên của bạn")),
+      email: yup.string().required(t("Vui lòng nhập Email")),
+      passwordmedical: yup.string().required(t("Vui lòng nhập Password")),
+      cccd: yup.string().required(t("Vui lòng nhập CCCD")),
     })
   );
 

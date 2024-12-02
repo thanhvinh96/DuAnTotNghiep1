@@ -382,15 +382,15 @@ const WizardWithFormValidation = () => {
    */
   const validationSchema = yupResolver(
     yup.object().shape({
-      email: yup.string().required("Please enter Email address"),
-      password: yup.string().required("Please enter Password"),
+      email: yup.string().required("vui lòng nhập Email"),
+      password: yup.string().required("vui lòng nhập Password"),
       checkbox: yup.bool().oneOf([true]),
     })
   );
   const validationSchema2 = yupResolver(
     yup.object().shape({
-      firstname: yup.string().required("Please enter First Name"),
-      lastname: yup.string().required("Please enter Last Name"),
+      firstname: yup.string().required("vui lòng nhập First Name"),
+      lastname: yup.string().required("vui lòng nhập Last Name"),
       checkbox: yup.bool().oneOf([true]),
     })
   );

@@ -102,7 +102,8 @@ const ChatForm = ({
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      newMessage: yup.string().required("Please enter your messsage"),
+      newMessage: yup.string().required("Vui lòng nhập mail của bạn")
+      .email("email không tồn tại"),
     })
   );
 

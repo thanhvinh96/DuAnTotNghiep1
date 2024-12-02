@@ -40,7 +40,7 @@ const LockScreen2 = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      password: yup.string().required(t("Please enter Password")),
+      password: yup.string().required(t("Vui lòng nhập Password")),
     })
   );
 

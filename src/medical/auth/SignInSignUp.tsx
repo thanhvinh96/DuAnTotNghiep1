@@ -46,19 +46,19 @@ const SignInSignUp = () => {
     */
   const loginSchema = yupResolver(
     yup.object().shape({
-      username: yup.string().required(t("Please enter Username")),
-      loginpassword: yup.string().required(t("Please enter Password")),
+      username: yup.string().required(t("Vui lòng nhập tài khoản")),
+      loginpassword: yup.string().required(t("Vui lòng nhập mật khẩu")),
     })
   );
 
   const signUpSchema = yupResolver(
     yup.object().shape({
-      password: yup.string().required(t("Please enter Password")),
-      fullname: yup.string().required(t("Please enter Fullname")),
+      password: yup.string().required(t("Vui lòng nhập mật khẩu")),
+      fullname: yup.string().required(t("Vui lòng nhập họ tên")),
       email: yup
         .string()
-        .required("Please enter Email")
-        .email("Please enter valid Email"),
+        .required("Vui lòng nhập Email")
+        .email("Vui lòng nhập địa chỉ Email"),
     })
   );
 

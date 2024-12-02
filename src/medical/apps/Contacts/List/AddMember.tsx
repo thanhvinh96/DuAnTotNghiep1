@@ -18,13 +18,13 @@ const AddMember = ({ show, onHide, onSubmit }: AddMemberProps) => {
     */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required("Please enter name"),
-      position: yup.string().required("Please enter position"),
-      company: yup.string().required("Please enter company"),
+      name: yup.string().required("Vui lòng nhập tên thành viên"),
+      position: yup.string().required("Vui lòng nhập chức vụ"),
+      company: yup.string().required("Vui lòng nhập bệnh viện"),
       email: yup
         .string()
-        .required("Please enter email")
-        .email("Please enter valid email"),
+        .required("Vui lòng nhập email")
+        .email("Vui lòng nhập địa chỉ email"),
     })
   );
 

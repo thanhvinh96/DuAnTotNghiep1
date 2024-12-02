@@ -112,8 +112,8 @@ const Login = () => {
   */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      username: yup.string().required(t("Please enter Username")),
-      password: yup.string().required(t("Please enter Password")),
+      username: yup.string().required(t("Vui lòng nhập Username")),
+      password: yup.string().required(t("Vui lòng nhập Password")),
     })
   );
 

@@ -59,7 +59,7 @@ const ForgetPassword2 = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      username: yup.string().required(t("Please enter Username")),
+      username: yup.string().required(t("Vui lòng nhập tài khoản")),
     })
   );
 

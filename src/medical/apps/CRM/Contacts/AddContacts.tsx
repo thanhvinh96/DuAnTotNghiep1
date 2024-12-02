@@ -18,16 +18,16 @@ const AddContacts = ({ show, onHide, onSubmit }: AddContactsProps) => {
     */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required("Please enter name"),
+      name: yup.string().required("Vui lòng nhập họ tên"),
       email: yup
         .string()
-        .required("Please enter email")
-        .email("Please enter valid email"),
+        .required("Vui lòng nhập email")
+        .email("Vui lòng nhập địa chỉ email"),
       phone: yup
         .string()
-        .required("Please enter phone")
-        .matches(/^\d{10}$/, "Phone number is not valid"),
-      location: yup.string().required("Please enter location"),
+        .required("Vui lòng nhập phone")
+        .matches(/^\d{10}$/, "số điện thoại không tồn tại"),
+      location: yup.string().required("Vui lòng nhập location"),
     })
   );
 

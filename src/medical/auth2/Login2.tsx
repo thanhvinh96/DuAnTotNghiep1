@@ -120,8 +120,8 @@ const Login2 = () => {
   // Validation schema
   const schemaResolver = yupResolver(
     yup.object().shape({
-      cccd: yup.string().required(t("Please enter your CCCD")),
-      passwordmedical: yup.string().required(t("Please enter your password")),
+      cccd: yup.string().required(t("Vui lòng nhập CCCD")),
+      passwordmedical: yup.string().required(t("Vui lòng nhập password")),
     })
   );
 

@@ -73,7 +73,7 @@ const ProjectForm = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required("Please enter Project Name"),
+      name: yup.string().required("Vui lòng nhập Project Name"),
     })
   );
 
