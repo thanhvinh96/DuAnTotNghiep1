@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Modal, Row, Col, Button, Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import jwtDecode from 'jwt-decode';
-import { useLocation } from 'react-router-dom';
+import jwtDecode from "jwt-decode";
+import { useLocation } from "react-router-dom";
 
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface Department {
   serviceCode: string;
@@ -15,7 +15,7 @@ interface Department {
 const MySwal = withReactContent(Swal);
 interface Doctor {
   _id: string;
-  tokenuser:string;
+  tokenuser: string;
   fullname: string;
 }
 
@@ -48,14 +48,13 @@ const AddEditEvent = ({
     department: "",
     doctor: "",
     timeschedule: "",
-    tokenorg:"",
-    branch:"",
-    patient:"",
-
+    tokenorg: "",
+    branch: "",
+    patient: "",
   });
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const medical = queryParams.get('medical');
+  const medical = queryParams.get("medical");
 
   const getDataMedical = async () => {
     if (medical) {
@@ -63,15 +62,15 @@ const AddEditEvent = ({
         const response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ cccd: medical })
+          body: JSON.stringify({ cccd: medical }),
         });
 
         const data: any = await response.json();
         console.log("Dữ liệu bệnh nhân:", data);
 
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
           patient: data.data?.medicalRecordCode || "",
         }));
@@ -89,7 +88,7 @@ const AddEditEvent = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ branchId: branch })
+        body: JSON.stringify({ branchId: branch }),
       });
 
       const data = await response.json();
@@ -102,17 +101,17 @@ const AddEditEvent = ({
 
   // Lấy thông tin `branch` và `tokenorg` từ token và cập nhật `formData`
   const getData = async () => {
-    const token = localStorage.getItem('tokenadmin');
+    const token = localStorage.getItem("tokenadmin");
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
-        const branch = decodedToken['branch'];
-        const tokenorg = decodedToken['tokeorg'];
+        const branch = decodedToken["branch"];
+        const tokenorg = decodedToken["tokeorg"];
 
         console.log("Chi nhánh:", branch);
         console.log("Tổ chức:", tokenorg);
 
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
           branch: branch || "",
           tokenorg: tokenorg || "",
@@ -123,7 +122,7 @@ const AddEditEvent = ({
           await fetchDataServices(branch);
         }
       } catch (error) {
-        console.error('Có lỗi xảy ra khi giải mã token:', error);
+        console.error("Có lỗi xảy ra khi giải mã token:", error);
       }
     }
   };
@@ -132,7 +131,7 @@ const AddEditEvent = ({
     // Gọi các hàm lấy dữ liệu khi component mount
     getData();
     getDataMedical();
-  }, []); 
+  }, []);
   const handleDepartmentChange = async (department: string) => {
     setSelectedDepartment(department);
     setFormData({ ...formData, department });
@@ -153,9 +152,9 @@ const AddEditEvent = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleChange = (e: any) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     setSelectedDate(e.target.value);
-    setFormData({ ...formData, timeschedule: e.target.value  });
+    setFormData({ ...formData, timeschedule: e.target.value });
     // setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleDateChange = (date: Date | null) => {
@@ -167,30 +166,33 @@ const AddEditEvent = ({
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/schedule-create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/schedule-create",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
       const result = await response.json();
       if (response.ok) {
         isEditable ? onUpdateEvent(formData) : onAddEvent(formData);
         onClose?.();
         MySwal.fire({
-          icon: 'success',
-          title: 'Tạo lịch hẹn thành công',
-          text: 'Lịch hẹn của bạn đã được tạo thành công!',
-          confirmButtonText: 'OK',
+          icon: "success",
+          title: "Tạo lịch hẹn thành công",
+          text: "Lịch hẹn của bạn đã được tạo thành công!",
+          confirmButtonText: "OK",
         }).then(() => {
           window.location.reload(); // Tải lại trang sau khi người dùng nhấn OK
         });
       } else {
         console.error("Error:", result);
         MySwal.fire({
-          icon: 'error',
-          title: 'Tạo lịch hẹn thất bại',
-          text: 'Có lỗi xảy ra trong quá trình tạo lịch hẹn. Vui lòng thử lại!',
-          confirmButtonText: 'OK',
+          icon: "error",
+          title: "Tạo lịch hẹn thất bại",
+          text: "Có lỗi xảy ra trong quá trình tạo lịch hẹn. Vui lòng thử lại!",
+          confirmButtonText: "OK",
         });
       }
     } catch (error) {
@@ -220,7 +222,7 @@ const AddEditEvent = ({
             </Col>
             <Col sm={12}>
               <Form.Group>
-                <Form.Label>Trạng Thái Bệnh Nhân</Form.Label>
+                <Form.Label></Form.Label>
                 <Form.Control
                   as="select"
                   name="className"
@@ -271,14 +273,15 @@ const AddEditEvent = ({
               </Form.Group>
             </Col>
             <Col xs={12}>
-            <Form.Group controlId="formDate" className="mt-3">
-              <Form.Label>Thời Gian Lịch Hẹn</Form.Label>
-              <Form.Control 
-                                onChange={handleChange}
-                                // selected={selectedDate}
+              <Form.Group controlId="formDate" className="mt-3">
+                <Form.Label>Thời Gian Lịch Hẹn</Form.Label>
+                <Form.Control
+                  onChange={handleChange}
+                  // selected={selectedDate}
 
-              type="datetime-local" />
-            </Form.Group>
+                  type="datetime-local"
+                />
+              </Form.Group>
               {/* <Form.Label className="fw-bold text-primary">Thời Gian Lịch Hẹn</Form.Label>
               
               <DatePicker

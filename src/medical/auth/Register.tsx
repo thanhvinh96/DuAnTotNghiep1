@@ -31,9 +31,9 @@ const BottomLink = () => {
     <Row className="mt-3">
       <Col className="text-center">
         <p className="text-white-50">
-          {t("Already have account?")}{" "}
+          {t("Đã có tài khoản?")}{" "}
           <Link to={"/auth/login"} className="text-white ms-1">
-            <b>{t("Sign In")}</b>
+            <b>{t("Đăng nhập")}</b>
           </Link>
         </p>
       </Col>

@@ -1,16 +1,19 @@
 // src/pages/profile/ProfileMedical.tsx
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { Row, Col, Form, Button, Card, Modal } from 'react-bootstrap';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { Row, Col, Form, Button, Card, Modal } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 // Define an interface for the record object
-import { showdataprofiles, updataprofiles } from '../../controller/MedicalController'; // Import controller
+import {
+  showdataprofiles,
+  updataprofiles,
+} from "../../controller/MedicalController"; // Import controller
 
 interface Record {
   tokenmedical: string;
@@ -57,35 +60,34 @@ interface DecodedToken {
   avatar: string; // New field
 }
 
-
 const schema = yup.object().shape({
-  cccd: yup.string().required("Vui lòng nhập your CCCD")
-  .matches(/^[0-9]{12}$/, ("vui lòng nhập đúng số cccd của bạn")),
+  cccd: yup
+    .string()
+    .required("Vui lòng nhập your CCCD")
+    .matches(/^[0-9]{12}$/, "vui lòng nhập đúng số cccd của bạn"),
 });
 
 const ProfileMedical: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [record, setRecord] = useState<Record>({
-    tokenmedical: '',
-    name: '',
-    email: '',
-    birthDate: '',
-    gender: '',
-    address: '',
-    phoneNumber: '',
-    cccd: '',
-    avatarImagebase64: '',
-    height: '', // Initialize new field
-    weight: '', // Initialize new field
-    medicalinsurance: '', // Initialize new field
-    avatar: '', // Initialize new field
+    tokenmedical: "",
+    name: "",
+    email: "",
+    birthDate: "",
+    gender: "",
+    address: "",
+    phoneNumber: "",
+    cccd: "",
+    avatarImagebase64: "",
+    height: "", // Initialize new field
+    weight: "", // Initialize new field
+    medicalinsurance: "", // Initialize new field
+    avatar: "", // Initialize new field
   });
   const [datacheckprofile, setdatacheckprofile] = useState({
-    tokenmedical: '',
-    cccd: ''
+    tokenmedical: "",
+    cccd: "",
   });
-
-
 
   const showdataprofile = async () => {
     try {
@@ -103,29 +105,28 @@ const ProfileMedical: React.FC = () => {
       // // const data:any = JSON.stringify(result)
       // // Xử lý kết quả nhận được
       if (response.success === true) {
-        console.log('thành công');
-        console.log('Data received:', response.record);
+        console.log("thành công");
+        console.log("Data received:", response.record);
         setRecord({
-          tokenmedical: response.record.tokenmedical || '',
-          name: response.record.name || '',
-          email: response.record.email || '',
-          birthDate: response.record.birthDate || '',
-          gender: response.record.gender || '',
-          address: response.record.address || '',
-          phoneNumber: response.record.phoneNumber || '',
-          cccd: response.record.cccd || '',
-          avatarImagebase64: response.record.avatarImagebase64 || '', // Ensure this is included
-          height: response.record.height || '', // New field
-          weight: response.record.weight || '', // New field
-          medicalinsurance: response.record.medicalinsurance || '', // New field
-          avatar: response.record.avatar || '', // New field
+          tokenmedical: response.record.tokenmedical || "",
+          name: response.record.name || "",
+          email: response.record.email || "",
+          birthDate: response.record.birthDate || "",
+          gender: response.record.gender || "",
+          address: response.record.address || "",
+          phoneNumber: response.record.phoneNumber || "",
+          cccd: response.record.cccd || "",
+          avatarImagebase64: response.record.avatarImagebase64 || "", // Ensure this is included
+          height: response.record.height || "", // New field
+          weight: response.record.weight || "", // New field
+          medicalinsurance: response.record.medicalinsurance || "", // New field
+          avatar: response.record.avatar || "", // New field
         });
       }
 
       // // Bạn có thể cập nhật state hoặc làm gì đó với dữ liệu nhận được ở đây
-
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
     }
   };
@@ -136,16 +137,15 @@ const ProfileMedical: React.FC = () => {
   }, [datacheckprofile]);
 
   useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem("jwtToken");
     if (token) {
       const decodedToken: any = jwtDecode(token);
-      setdatacheckprofile(prevState => ({
+      setdatacheckprofile((prevState) => ({
         ...prevState, // Giữ lại các thuộc tính cũ
         tokenmedical: decodedToken.tokenmedical, // Cập nhật giá trị mới
         cccd: decodedToken.cccd, // Cập nhật giá trị mới
         // Nếu cần cập nhật cccd cũng có thể làm tương tự
       }));
-
     }
   }, []);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -174,9 +174,9 @@ const ProfileMedical: React.FC = () => {
     event.preventDefault();
 
     const loadingSwal: any = MySwal.fire({
-      title: 'Please wait...',
-      text: 'Update Profile medical, please wait!',
-      icon: 'info',
+      title: "Please wait...",
+      text: "Update Profile medical, please wait!",
+      icon: "info",
       allowOutsideClick: false,
       showConfirmButton: false,
       didOpen: () => {
@@ -198,7 +198,7 @@ const ProfileMedical: React.FC = () => {
       avatar: record.avatarImagebase64,
     };
 
-    console.log('Submitted data:', data);
+    console.log("Submitted data:", data);
 
     try {
       updataprofiles(data)
@@ -208,17 +208,17 @@ const ProfileMedical: React.FC = () => {
           console.log(response.transactionResult.success); // Bây giờ response sẽ là kết quả thực tế
           if (response.transactionResult.success === true) {
             Swal.fire({
-              title: 'Update Success!',
-              text: 'Your Update Profile was successful.',
-              icon: 'success',
-              confirmButtonText: 'OK',
+              title: "Update Success!",
+              text: "Your Update Profile was successful.",
+              icon: "success",
+              confirmButtonText: "OK",
             });
           } else {
             Swal.fire({
-              title: 'Update Error!',
-              text: 'There was an error during registration. Please try again.',
-              icon: 'error',
-              confirmButtonText: 'OK',
+              title: "Update Error!",
+              text: "There was an error during registration. Please try again.",
+              icon: "error",
+              confirmButtonText: "OK",
             });
           }
         })
@@ -228,46 +228,51 @@ const ProfileMedical: React.FC = () => {
     } catch (error) {
       loadingSwal.close();
       Swal.fire({
-        title: 'Update Error!',
-        text: 'There was an error during registration. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
+        title: "Update Error!",
+        text: "There was an error during registration. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
       });
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
   const uploadToCloudinaryAvatar = async () => {
     try {
-      const fileInput = document.getElementById('uploadsavatart') as HTMLInputElement;
+      const fileInput = document.getElementById(
+        "uploadsavatart"
+      ) as HTMLInputElement;
       const file = fileInput?.files?.[0];
 
       if (file) {
         const data = new FormData();
-        data.append('file', file);
-        data.append('upload_preset', 'Phanthuyen');
+        data.append("file", file);
+        data.append("upload_preset", "Phanthuyen");
 
-        const response = await fetch('https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload', {
-          method: 'POST',
-          body: data
-        });
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dst5yu9ay/image/upload",
+          {
+            method: "POST",
+            body: data,
+          }
+        );
 
         const result = await response.json();
 
         if (result) {
           setRecord((prevRecord) => ({
             ...prevRecord,
-            avatarImagebase64: result['url'], // Set base64 string to state
+            avatarImagebase64: result["url"], // Set base64 string to state
           }));
           // setFormData((prevFormData) => ({
           //     ...prevFormData,
-          //     avatar: result['url'], 
+          //     avatar: result['url'],
           // }));
-          alert('Tải lên thành công!');
-          console.log('Uploaded Avatar URL:', result['url']);
+          alert("Tải lên thành công!");
+          console.log("Uploaded Avatar URL:", result["url"]);
         }
       }
     } catch (error) {
-      console.error('Lỗi khi tải ảnh lên:', error);
+      console.error("Lỗi khi tải ảnh lên:", error);
       alert("Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.");
     }
   };
@@ -275,8 +280,8 @@ const ProfileMedical: React.FC = () => {
     let phone = e.target.value;
 
     // Xử lý loại bỏ số 0 đầu và thêm 84 vào đầu nếu có
-    if (phone.startsWith('0')) {
-      phone = '84' + phone.slice(1); // Bỏ số 0 đầu và thêm 84 vào đầu
+    if (phone.startsWith("0")) {
+      phone = "84" + phone.slice(1); // Bỏ số 0 đầu và thêm 84 vào đầu
     }
 
     setRecord({
@@ -286,11 +291,15 @@ const ProfileMedical: React.FC = () => {
   };
   return (
     <>
-      <div style={{marginTop:"-50px"}}>
+      <div style={{ marginTop: "-50px" }}>
         <PageTitle
           breadCrumbItems={[
             { label: "Profile Medical", path: "/profile/medical" },
-            { label: "Profile Medical", path: "/profile/medical", active: true },
+            {
+              label: "Profile Medical",
+              path: "/profile/medical",
+              active: true,
+            },
           ]}
           title={"Thông Tin Cá Nhân"}
         />
@@ -317,7 +326,9 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="formName"
                       value={record.name}
-                      onChange={(e) => setRecord({ ...record, name: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, name: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -332,7 +343,9 @@ const ProfileMedical: React.FC = () => {
                       type="email"
                       id="formEmail"
                       value={record.email}
-                      onChange={(e) => setRecord({ ...record, email: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, email: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -343,11 +356,12 @@ const ProfileMedical: React.FC = () => {
                       type="date"
                       id="formBirthDate"
                       value={record.birthDate || ""}
-                      onChange={(e) => setRecord({ ...record, birthDate: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, birthDate: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
-
               </Row>
 
               {/* Gender and Address */}
@@ -359,7 +373,9 @@ const ProfileMedical: React.FC = () => {
                       as="select"
                       id="formGender"
                       value={record.gender}
-                      onChange={(e) => setRecord({ ...record, gender: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, gender: e.target.value })
+                      }
                     >
                       <option value="">Chọn Giới Tính</option>
                       <option value="male">Nam</option>
@@ -375,7 +391,9 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="formAddress"
                       value={record.address}
-                      onChange={(e) => setRecord({ ...record, address: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, address: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -401,7 +419,9 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="numbercccd"
                       value={record.cccd}
-                      onChange={(e) => setRecord({ ...record, cccd: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, cccd: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -414,7 +434,9 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="formHeight"
                       value={record.height}
-                      onChange={(e) => setRecord({ ...record, height: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, height: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -425,7 +447,9 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="formWeight"
                       value={record.weight}
-                      onChange={(e) => setRecord({ ...record, weight: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({ ...record, weight: e.target.value })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -439,7 +463,12 @@ const ProfileMedical: React.FC = () => {
                       type="text"
                       id="formmedicalinsurance"
                       value={record.medicalinsurance}
-                      onChange={(e) => setRecord({ ...record, medicalinsurance: e.target.value })}
+                      onChange={(e) =>
+                        setRecord({
+                          ...record,
+                          medicalinsurance: e.target.value,
+                        })
+                      }
                     />
                   </Form.Group>
                 </Col>
@@ -454,9 +483,16 @@ const ProfileMedical: React.FC = () => {
                         className="me-2"
                         onChange={uploadToCloudinaryAvatar}
                       />
-                      <Button variant="primary" onClick={() => setShowModal(true)}>
+                      <button
+                        className="btn btn-info waves-effect waves-light"
+                        style={{
+                          background: "#102A50",
+                          border: "none",
+                        }}
+                        onClick={() => setShowModal(true)}
+                      >
                         Hiện
-                      </Button>
+                      </button>
                     </div>
                   </Form.Group>
                   <Form.Group controlId="avatarImagebase64">
@@ -470,11 +506,17 @@ const ProfileMedical: React.FC = () => {
               </Row>
               {/* CCCD Image */}
 
-
               {/* Save Button */}
-              <Button variant="primary" type="submit" className="mt-3">
+              <button
+                className="btn mt-3 btn-info waves-effect waves-light"
+                style={{
+                  background: "#102A50",
+                  border: "none",
+                }}
+                type="submit"
+              >
                 Lưu
-              </Button>
+              </button>
             </Form>
           </Card.Body>
         </Card>
@@ -486,7 +528,11 @@ const ProfileMedical: React.FC = () => {
           </Modal.Header>
           <Modal.Body>
             {record.avatarImagebase64 && (
-              <img src={record.avatarImagebase64} alt="CCCD" style={{ width: '100%' }} />
+              <img
+                src={record.avatarImagebase64}
+                alt="CCCD"
+                style={{ width: "100%" }}
+              />
             )}
           </Modal.Body>
           <Modal.Footer>

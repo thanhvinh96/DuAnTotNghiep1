@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // Components
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 // API
 import { GetHistoryMedical } from "../../controller/MedicalController";
@@ -23,21 +23,30 @@ function Index(): JSX.Element {
 
   const columns = [
     {
-      Header: 'Mã Hồ Sơ',
-      accessor: 'recordCode',
+      Header: "Mã Hồ Sơ",
+      accessor: "recordCode",
       sort: true,
     },
     {
-      Header: 'Tên bệnh án',
-      accessor: 'date',
+      Header: "Tên bệnh án",
+      accessor: "date",
       sort: true,
     },
     {
-      Header: 'Hành Động',
-      accessor: 'action',
+      Header: "Hành Động",
+      accessor: "action",
       Cell: ({ row }: { row: { original: RowData } }) => (
-        <Link to={`/medical/medical-record-detail?record=${row.original.recordCode}`}>
-          <button className="btn btn-primary" onClick={() => handleAction(row.original)}>
+        <Link
+          to={`/medical/medical-record-detail?record=${row.original.recordCode}`}
+        >
+          <button
+            className="btn btn-info waves-effect waves-light"
+            style={{
+              background: "#102A50",
+              border: "none",
+            }}
+            onClick={() => handleAction(row.original)}
+          >
             Xem Chi Tiết
           </button>
         </Link>
@@ -51,21 +60,21 @@ function Index(): JSX.Element {
 
   const showdata = async () => {
     try {
-      const token:any = localStorage.getItem('jwtToken');
-      console.log('du lieu token')
+      const token: any = localStorage.getItem("jwtToken");
+      console.log("du lieu token");
       console.log(token);
       const decodedToken: any = jwtDecode(token);
 
       const data = {
         tokenmedical: decodedToken.tokenmedical,
-        cccd: decodedToken.cccd
+        cccd: decodedToken.cccd,
       };
       const res = await GetHistoryMedical(data);
-      console.log(res.data.diseaseInfo)
+      console.log(res.data.diseaseInfo);
       const records = res.data.diseaseInfo.map((item: any, index: number) => ({
         id: index + 1, // tạo ID cho mỗi dòng
-        recordCode: item.diseasecode || 'N/A', // giả sử `recordCode` là mã hồ sơ
-        date: item.namedisease || 'N/A', // giả sử `date` là thời gian khám
+        recordCode: item.diseasecode || "N/A", // giả sử `recordCode` là mã hồ sơ
+        date: item.namedisease || "N/A", // giả sử `date` là thời gian khám
       }));
       setTableData(records);
     } catch (e) {

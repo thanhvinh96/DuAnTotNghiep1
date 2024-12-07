@@ -26,25 +26,24 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "Ho_so_y_te",
     label: "Thông Tin Cá Nhân",
     isTitle: false,
-    icon: "calendar",
+    icon: "user",
     url: "/medical/profile-medical",
   },
   {
     key: "lich_su_kham",
     label: "Lịch sử khám bệnh",
     isTitle: false,
-    icon: "calendar",
+    icon: "clipboard",
     url: "/medical/medical-history",
   },
   {
     key: "Quan_ly_duyet",
     label: "Quản lý phê duyệt",
     isTitle: false,
-    icon: "calendar",
+    icon: "lock",
     url: "/medical/medical-managent-approve",
   },
 ];
-
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
   {
@@ -59,7 +58,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         url: "/medical/dashboard-1",
         parentKey: "dashboard",
       },
-    ]
+    ],
   },
 ];
 
@@ -96,8 +95,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
-  
-     
+
   {
     isTitle: true,
     key: "widgets",

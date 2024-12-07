@@ -57,7 +57,7 @@ const Landing = () => {
   return (
     <div id="landing">
       {/* navbar */}
-      <NavBar  />
+      <NavBar />
 
       {/* hero */}
       <Hero />
@@ -68,7 +68,6 @@ const Landing = () => {
       {/* services */}
       <Services services={services} />
 
-  
       {/* testimonial */}
       <Testimonial testimonial={testimonial} />
 
@@ -81,7 +80,11 @@ const Landing = () => {
       <Link
         to="#"
         onClick={() => topFunction()}
-        className="back-to-top-btn btn btn-primary"
+        className="back-to-top-btn btn"
+        style={{
+          background: "#102A50",
+          border: "none",
+        }}
         id="back-to-top-btn"
       >
         <i className="mdi mdi-chevron-up"></i>
@@ -89,6 +92,5 @@ const Landing = () => {
     </div>
   );
 };
-
 
 export default Landing;
