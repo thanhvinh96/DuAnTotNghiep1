@@ -369,9 +369,8 @@
           position: relative;
           height: inherit;
           align-items: center;
-          color: black;
+          color: #274760;
           font-size: 18px;
-
         }
 
         > ul {
@@ -391,7 +390,7 @@
           > a {
             position: relative;
             &::after {
-              content: '';
+              content: "";
               display: inline-block;
               height: 6px;
               width: 6px;
@@ -582,7 +581,7 @@
       line-height: 1.2em;
       &:before,
       &:after {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         left: 50%;
@@ -597,7 +596,7 @@
       &:before {
         transform: translate(-50%, -50%) rotate(90deg);
       }
-    } 
+    }
     &.active {
       span {
         &:before {
@@ -686,7 +685,7 @@
       transition-delay: 0.2s;
 
       &:before {
-        content: '';
+        content: "";
         position: absolute;
         margin-top: -9px;
         transition-property: margin, transform;
@@ -695,7 +694,7 @@
       }
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         margin-top: 9px;
         transition-property: margin, transform;
