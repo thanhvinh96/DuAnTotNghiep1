@@ -40,7 +40,6 @@ const MenuItemWithChildren = ({
   //
   useEffect(() => {
     setOpen(activeMenuItems!.includes(item.key));
-    
   }, [activeMenuItems, item]);
 
   const toggleMenuItem = (e: any) => {
@@ -63,11 +62,15 @@ const MenuItemWithChildren = ({
           onClick={toggleMenuItem}
           data-menu-key={item.key}
           aria-expanded={open}
-          className={classNames("menu-link justify-content-between", linkClassName, {
-            "menuitem-active": activeMenuItems!.includes(item.key)
-              ? "active"
-              : "",
-          })}
+          className={classNames(
+            "menu-link justify-content-between",
+            linkClassName,
+            {
+              "menuitem-active": activeMenuItems!.includes(item.key)
+                ? "active"
+                : "",
+            }
+          )}
         >
           <span className="menu-text"> {item.label} </span>
           {!item.badge ? (
@@ -141,7 +144,10 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
     <Link
       to={item.url!}
       target={item.target}
-      className={classNames("menu-link nav-link-ref justify-content-between", className)}
+      className={classNames(
+        "menu-link nav-link-ref justify-content-between",
+        className
+      )}
       data-menu-key={item.key}
     >
       <span className="menu-text"> {item.label} </span>
@@ -218,7 +224,7 @@ const MainMenu = ({
                   activeMenuItems &&
                   activeMenuItems.length &&
                   activeMenuItems[activeMenuItems.length - 1] ===
-                  menuItem["key"];
+                    menuItem["key"];
                 return (
                   <div
                     key={key}

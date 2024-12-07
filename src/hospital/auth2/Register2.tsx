@@ -32,9 +32,9 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Already have account?")}{" "}
+        {t("Đã có tài khoản??")}{" "}
         <Link to={"/auth/login2"} className="text-muted ms-1">
-          <b>{t("Log In")}</b>
+          <b>{t("Đăng nhập")}</b>
         </Link>
       </p>
     </footer>

@@ -84,7 +84,7 @@ html[data-bs-theme="dark"] {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  width: 100%;
+  width: 160%;
   position: relative;
   transition: $menu-transition;
 
@@ -293,7 +293,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="horizontal"]) {
 
     .logo-box {
       background: $menu-bg;
-      border-radius: var(--#{$prefix}border-radius);
+      // border-radius: var(--#{$prefix}border-radius);
 
       .logo-lg {
         display: none;
