@@ -27,7 +27,7 @@ const BottomLink = () => {
     <Row className="mt-3">
       <Col className="text-center">
         <p className="text-white-50">
-          {t("Back to")}{" "}
+          {t("Trở lại")}{" "}
           <Link to={"/auth/login"} className="text-white ms-1">
             <b>{t("Log in")}</b>
           </Link>

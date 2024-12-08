@@ -127,7 +127,7 @@ const ConclusionForm = ({
   ) => {
     const { name, value } = e.target;
     if (name === "department") {
-      showClinicsByDepartment(value);
+      showClinicsByssDepartment(value);
     }
     setAppointmentData((prevData) => ({
       ...prevData,
@@ -834,8 +834,8 @@ const ConclusionForm = ({
                   <Button
                     onClick={addRow}
                     style={{
-                      fontSize: "12px",
-                      padding: "4px 10px",
+                      fontSize: "16px",
+                      padding: "5px 10px",
                       width: "150px",
                     }}
                   >
@@ -844,8 +844,8 @@ const ConclusionForm = ({
                   <Button
                     type="submit"
                     style={{
-                      fontSize: "12px",
-                      padding: "4px 10px",
+                      fontSize: "16px",
+                      padding: "5px 10px",
                       width: "150px",
                     }}
                   >
