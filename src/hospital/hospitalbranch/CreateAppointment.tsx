@@ -139,6 +139,7 @@ const CreateAppointment: React.FC = () => {
             alert("Có lỗi xảy ra khi lấy dữ liệu phòng khám.");
         }
     };
+    const [codeMedicalBook,setcodeMedicalBool] = useState<any>({});
     const [dataTable, setDataTable] = useState<Schedule[]>([]);
         const showdataTable = async ()=>{
         try {
@@ -148,6 +149,7 @@ const CreateAppointment: React.FC = () => {
             const res = await GetScheduleByMedical(data)
             console.log(res);
             if(res.status===true){
+                setcodeMedicalBool(res.data[0].patient)
                 setDataTable(res.data);  // Lưu dữ liệu vào state
 
             }else{
@@ -330,7 +332,7 @@ const CreateAppointment: React.FC = () => {
     
         // // Log kết quả ra ngoài vòng lặp
         // console.log(invoiceData);
-        window.location.href =`hospital/medicalbill?medical=${patient}`;
+        window.location.href =`hospital/medicalbill?medical=${codeMedicalBook}`;
     };
     
     

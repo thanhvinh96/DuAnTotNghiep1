@@ -46,8 +46,29 @@ export default function CreateClinic() {
     // Lấy danh sách bác sĩ từ API
     const fetchDoctors = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/users"); // URL API bác sĩ
+            console.clear()
+            console.log(" duwx lieu mafu"+model)
+            const s = {
+                branch: model, // Thay bằng token branch thật
+            };
+            
+            const response = await fetch("http://127.0.0.1:8000/api/users/bybranch", {
+                method: "POST", // Method nên là POST
+                headers: {
+                    "Content-Type": "application/json", // Xác định kiểu dữ liệu gửi
+                },
+                body: JSON.stringify(s), // Chuyển object thành JSON string
+            });
+            
+            if (!response.ok) {
+                console.error("Error:", response.status, response.statusText);
+            // } else {
+            //     const data = await response.json(); // Parse kết quả JSON từ API
+            //     console.log("Response data:", data);
+            }
+            
             const data = await response.json();
+            console.log("sdfsdf"+data.data)
             setDoctors(data.data); // Giả sử API trả về mảng bác sĩ
         } catch (error) {
             console.error("Lỗi khi lấy danh sách bác sĩ:", error);
@@ -123,9 +144,11 @@ export default function CreateClinic() {
         setShowModal(false);  // Đóng modal
         setSelectedDoctors([]);  // Reset danh sách bác sĩ
     };
-
-    useEffect(() => {
+    useEffect(()=>{
         fetchDoctors(); // Gọi API khi component mount
+
+    },[model])
+    useEffect(() => {
         showdata();
         showdataserver();
         showdataTable();

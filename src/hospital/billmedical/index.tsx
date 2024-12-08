@@ -296,7 +296,7 @@ const PatientInvoiceDetails = () => {
 />
 
                  {/* Lựa chọn thanh toán */}
-                 <h5 className="mb-3 mt-4">Lựa chọn phương thức thanh toán</h5>
+                 {/* <h5 className="mb-3 mt-4">Lựa chọn phương thức thanh toán</h5>
                  <Form.Check
     type="radio"
     label={<span className="small">Thanh toán tiền mặt</span>}
@@ -310,7 +310,7 @@ const PatientInvoiceDetails = () => {
     name="paymentMethod"
     // checked={paymentMethod === "online"}
     // onChange={() => handlePaymentChange("online")}
-/>
+/> */}
 
 
                             <div className="text-start mt-4">
