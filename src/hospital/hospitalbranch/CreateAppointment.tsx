@@ -447,9 +447,9 @@ const CreateAppointment: React.FC = () => {
                                         onChange={handleInputChange}
                                     >
                                         <option value="">Chọn trạng thái lịch hẹn</option>
-                                        <option value="pending">Chờ xác nhận</option>
-                                        <option value="confirmed">Đã xác nhận</option>
-                                        <option value="completed">Đã hoàn thành</option>
+                                        <option value="pending">Tiếp nhận</option>
+                                        <option value="confirmed">Chờ khám</option>
+                                        <option value="completed">Kết thúc</option>
                                         <option value="cancelled">Đã hủy</option>
                                     </Form.Control>
                                   
@@ -467,7 +467,7 @@ const CreateAppointment: React.FC = () => {
                 onChange={handleInputChange}
             >
                 <option value="">Chọn trạng thái bệnh nhân</option>
-                <option value="healthy">Khỏe mạnh</option>
+                <option value="healthy">Khám</option>
                 <option value="under_treatment">Đang điều trị</option>
                 <option value="recovered">Đã hồi phục</option>
             </Form.Control>

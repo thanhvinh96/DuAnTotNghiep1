@@ -4,159 +4,121 @@
 @import "./config/default/bootstrap.scss";
 @import "./config/default/app.scss";
 .menu .menu-title {
-    opacity: 0.6;
-    cursor: default;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #ffffff;
-    font-weight: 900;
-    font-size: 12px;
+  opacity: 0.6;
+  cursor: default;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 12px;
 }
 
 .menu {
-    padding-left: 0;
-    display: flex
-;
-    flex-direction: column;
-    list-style-type: none;
-  
-    padding-top: 30px;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+
+  padding-top: 30px;
 }
 
-
-.menu .menu-item .menu-link[aria-expanded=true], .menu .menu-item .menu-link.show, .menu .menu-item .menu-link:focus, .menu .menu-item .menu-link:hover {
-    color: #c4c4c4;
+.menu .menu-item .menu-link[aria-expanded="true"],
+.menu .menu-item .menu-link.show,
+.menu .menu-item .menu-link:focus,
+.menu .menu-item .menu-link:hover {
+  color: #c4c4c4;
 }
 
 .menu .menu-item .menu-link {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    position: relative;
-    color: #ffffff;
-    transition: background-color 0.3s ease; /* Thêm hiệu ứng chuyển màu nền */
+  display: flex;
+  align-items: center;
+  list-style: none;
+  position: relative;
+  color: #ffffff;
+  transition: background-color 0.3s ease; /* Thêm hiệu ứng chuyển màu nền */
 }
 
 .menu .menu-item .menu-link:hover {
-    background-color: #a9c7cc; /* Màu nền khi hover */
-    color: #ffffff;
-
+  background-color: #a9c7cc; /* Màu nền khi hover */
+  color: #ffffff;
 }
 
 /* Mặc định của menu link */
 .menu-link {
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s ease, background-color 0.3s ease;
-  }
-  
-  /* Khi mục menu được kích hoạt */
-  .menu-link.active-menu {
-    color: #fff;
-    background-color: #a9c7cc; /* Màu nền đỏ */
-    font-weight: bold;
-    border-radius: 5px; /* Bo góc */
-  }
-  
-  /* Hiệu ứng khi di chuột */
-  .menu-link:hover {
-    color: #fff;
-    background-color: #a9c7cc; /* Màu hover */
-  }
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
 
-  .menu .menu-item.menuitem-active > .menu-link {
-    color: #ffffff;
+/* Khi mục menu được kích hoạt */
+.menu-link.active-menu {
+  color: #fff;
+  background-color: #a9c7cc; /* Màu nền đỏ */
+  font-weight: bold;
+  border-radius: 5px; /* Bo góc */
+}
+
+/* Hiệu ứng khi di chuột */
+.menu-link:hover {
+  color: #fff;
+  background-color: #a9c7cc; /* Màu hover */
+}
+
+.menu .menu-item.menuitem-active > .menu-link {
+  color: #ffffff;
 }
 .btn-primary {
-   background-color: #38adc1;
+  background-color: #38adc1;
 }
 .btn-primary {
-    background-color: #38adc1 !important; /* Thay đổi màu nền */
-    border-color: #38adc1 !important;    /* Thay đổi màu viền */
-    color: #fff;                         /* Màu chữ */
+  background-color: #38adc1 !important; /* Thay đổi màu nền */
+  border-color: #38adc1 !important; /* Thay đổi màu viền */
+  color: #fff; /* Màu chữ */
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: #2f96a8 !important; /* Màu nền khi hover hoặc focus */
-    border-color: #2f96a8 !important;    /* Màu viền khi hover hoặc focus */
+  background-color: #2f96a8 !important; /* Màu nền khi hover hoặc focus */
+  border-color: #2f96a8 !important; /* Màu viền khi hover hoặc focus */
 }
 
 .btn-primary:active,
 .btn-primary.active {
-    background-color: #267c8b !important; /* Màu nền khi active */
-    border-color: #267c8b !important;    /* Màu viền khi active */
+  background-color: #267c8b !important; /* Màu nền khi active */
+  border-color: #267c8b !important; /* Màu viền khi active */
 }
 
 .btn-primary:disabled,
 .btn-primary.disabled {
-    background-color: #38adc1 !important; /* Màu nền khi bị disabled */
-    border-color: #38adc1 !important;    /* Màu viền khi bị disabled */
-    opacity: 0.65;                       /* Độ mờ cho nút bị disabled */
+  background-color: #38adc1 !important; /* Màu nền khi bị disabled */
+  border-color: #38adc1 !important; /* Màu viền khi bị disabled */
+  opacity: 0.65; /* Độ mờ cho nút bị disabled */
 }
 
 .custom-nav .nav-link {
-    background-color: transparent;
-    color: #000; /* Màu chữ mặc định */
-    text-align: center;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .custom-nav .nav-link i {
-    color: #38adc1; /* Màu logo mặc định */
-    transition: color 0.3s;
-  }
-  
-  .custom-nav .nav-link.active {
-    background-color: #38adc1; /* Màu nền khi được chọn */
-    color: #fff; /* Màu chữ khi được chọn */
-  }
-  
-  .custom-nav .nav-link.active i {
-    color: #fff; /* Màu logo khi được chọn */
-  }
-  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: var(--ct-nav-pills-link-active-color);
-    background-color: #267c8b;
+  background-color: transparent;
+  color: #000; /* Màu chữ mặc định */
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-* {
-  font-family: 'Signika', sans-serif;
-  letter-spacing: 0.5px;
+.custom-nav .nav-link i {
+  color: #38adc1; /* Màu logo mặc định */
+  transition: color 0.3s;
 }
 
-.bg-primary-custom{
-  background-color: #38adc1 !important;
-  color: #ffffff;
-}
-.text-custom{
-  color: #ffffff;
-}
-.text-primary{
-  color: #38adc1;
-
-}
-.cs_hero_title{
-  font-size: 38px;
+.custom-nav .nav-link.active {
+  background-color: #38adc1; /* Màu nền khi được chọn */
+  color: #fff; /* Màu chữ khi được chọn */
 }
 
-.cs_hero.cs_style_1 .cs_hero_wrap {
-  margin-top: 100px;
-  height: 80%;
-  width: 100%;
-  padding-top: 125px;
-  position: relative;
+.custom-nav .nav-link.active i {
+  color: #fff; /* Màu logo khi được chọn */
 }
-.cs_hero.cs_style_1 .cs_hero_info_wrap {
-  /* padding: 70px 140px; */
-  margin-bottom: -85px;
-  flex-wrap: wrap;
-  /* display: flex
-; */
-  /* justify-content: space-between; */
-  /* align-items: center; */
-  /* gap: 30px; */
-  /* position: relative; */
-  /* z-index: 2; */
-  margin-top: 200px;
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: var(--ct-nav-pills-link-active-color);
+}
+.thuyendev {
+  background-color: #000;
 }

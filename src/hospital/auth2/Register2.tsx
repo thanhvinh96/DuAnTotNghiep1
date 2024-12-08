@@ -32,9 +32,9 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Already have account?")}{" "}
+        {t("Đã có tài khoản??")}{" "}
         <Link to={"/auth/login2"} className="text-muted ms-1">
-          <b>{t("Log In")}</b>
+          <b>{t("Đăng nhập")}</b>
         </Link>
       </p>
     </footer>
@@ -104,10 +104,10 @@ const Register2 = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required(t("Please enter name")),
-      email: yup.string().required(t("Please enter Email address")),
-      passwordmedical: yup.string().required(t("Please enter Password")),
-      cccd: yup.string().required(t("Please enter CCCd")),
+      name: yup.string().required(t("Vui lòng nhập tên của bạn")),
+      email: yup.string().required(t("Vui lòng nhập Email")),
+      passwordmedical: yup.string().required(t("Vui lòng nhập Password")),
+      cccd: yup.string().required(t("Vui lòng nhập CCCD")),
     })
   );
 

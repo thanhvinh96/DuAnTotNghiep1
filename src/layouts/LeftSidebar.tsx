@@ -15,10 +15,10 @@ import { LayoutTypes } from "../constants/layouthospital";
 import AppMenu from "./Menu";
 import profileImg from "../assets/images/users/user-1.jpg";
 import logoSm from "../assets/images/Logo.png";
-import logoDark from "../assets/images/Logo.png";
-import logoDark2 from "../assets/images/Logo.png";
-import logoLight from "../assets/images/Logo.png";
-import logoLight2 from "../assets/images/Logo.png";
+import logoDark from "../assets/images/LogoWhite.png";
+import logoDark2 from "../assets/images/LogoWhite.png";
+import logoLight from "../assets/images/LogoWhite.png";
+import logoLight2 from "../assets/images/LogoWhite.png";
 
 /* user box */
 const UserBox = () => {
@@ -156,14 +156,12 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
         ref={menuNodeRef}
         style={{
           // background: "linear-gradient(to top, #35a2c6, #ccf2d8)",
-          width: "350px",
           background: "#102A50",
-          fontSize: "90px",
-          color: "#FFFFFF"      
-         }}
+          // width: "370px",
+        }}
       >
         {!hideLogo && (
-          <div className="logo-box" style={{ margin: " 30px 0 20px 0" }}>
+          <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
               <span className="logo-sm">
                 <img src={logoSm} alt="" height="22" />
@@ -176,7 +174,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                       : logoDark
                   }
                   alt=""
-                  height="30"
+                  height="20"
                 />
               </span>
             </Link>
@@ -192,7 +190,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                       : logoLight
                   }
                   alt=""
-                  height="30"
+                  height="20"
                 />
               </span>
             </Link>

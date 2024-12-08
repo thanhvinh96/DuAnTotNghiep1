@@ -20,7 +20,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "/hospital/home",
     label: "Trang chủ",
     isTitle: false,
-    icon: "calendar",
+    icon: "home",
     url: "/hospital/home",
     allowedRoles: ["superadmin"], // Chỉ cho phép superadmin
   },
@@ -34,7 +34,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "/hospital/profile-hospital",
     label: "Thông tin tổ chức",
     isTitle: false,
-    icon: "calendar",
+    icon: "user",
     url: "/hospital/profile-hospital",
     allowedRoles: ["superadmin"], // Chỉ cho phép superadmin
   },
@@ -42,7 +42,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "Hospital branch",
     label: "Chi nhánh bệnh viện",
     isTitle: false,
-    icon: "calendar",
+    icon: "git-branch",
     url: "/hospital/hospital-branch",
     allowedRoles: ["superadmin"], // Chỉ cho phép superadmin
   },
@@ -50,7 +50,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "personnel management",
     label: "Quản lý nhân sự",
     isTitle: false,
-    icon: "user",
+    icon: "briefcase",
     url: "/hospital/personnel-management",
     allowedRoles: ["superadmin"], // Chỉ cho phép superadmin
   },
@@ -58,7 +58,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "patient management",
     label: "Quản lý bệnh nhân",
     isTitle: false,
-    icon: "user",
+    icon: "briefcase",
     url: "/hospital/patient-management",
     allowedRoles: ["superadmin"], // Chỉ cho phép superadmin
   },
@@ -66,7 +66,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "dashboard-1",
     label: "Quản lý quyền truy cập",
     isTitle: false,
-    icon: "book",
+    icon: "lock",
     url: "/request-medical-nurse",
     allowedRoles: ["superadmin"], // Chỉ cho phép superadmin
   },
@@ -94,7 +94,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "home",
     label: "Trang chủ",
     isTitle: false,
-    icon: "user",
+    icon: "home",
     url: "/doctor/home",
     allowedRoles: ["doctor", "nurse"], // Chỉ cho phép doctors và nurses
   },
@@ -110,7 +110,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "history-medical",
     label: "Lịch sử khám",
     isTitle: false,
-    icon: "user",
+    icon: "clipboard",
     url: "/doctor/history",
     allowedRoles: ["doctor", "nurse"], // Chỉ cho phép doctors và nurses
   },
@@ -118,7 +118,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "appointment-history",
     label: "Lịch sử hẹn bệnh nhân",
     isTitle: false,
-    icon: "user",
+    icon: "calendar",
     url: "/doctor/appointments",
     allowedRoles: ["doctor"], // Chỉ cho phép doctors và nurses
   },
@@ -126,7 +126,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "Request Access Medical",
     label: "Yêu cầu truy cập hồ sơ",
     isTitle: false,
-    icon: "calendar",
+    icon: "key",
     url: "/request-medical-nurse",
     allowedRoles: ["doctors", "nurse"], // Chỉ cho phép doctors
   },
@@ -136,7 +136,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "home",
     label: "Trang chủ",
     isTitle: false,
-    icon: "calendar",
+    icon: "home",
     url: "/hospital/branch/home",
     allowedRoles: ["admin"], // Chỉ cho phép superadmin
   },
@@ -144,7 +144,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "Thông tin tài khoản",
     label: "Thông tin tài khoản",
     isTitle: false,
-    icon: "calendar",
+    icon: "user",
     url: "/hospital/branch/profile",
     allowedRoles: ["admin"], // Chỉ cho phép superadmin
   },
@@ -152,7 +152,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "personnel-management",
     label: "Quản lý nhân sự",
     isTitle: false,
-    icon: "calendar",
+    icon: "briefcase",
     url: "/hospital/brach/personnel-management",
     allowedRoles: ["admin"], // Chỉ cho phép superadmin
   },
@@ -160,7 +160,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "Manage medical records",
     label: "Quản lý hồ sơ y tế",
     isTitle: false,
-    icon: "calendar",
+    icon: "briefcase",
     url: "/hospital/brach/manage-medical-records",
     allowedRoles: ["admin"], // Chỉ cho phép superadmin
   },
@@ -168,7 +168,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "Right to medical",
     label: "Quyền truy cập y tế",
     isTitle: false,
-    icon: "calendar",
+    icon: "lock",
     url: "/hospital/brach/right-to-medical",
     allowedRoles: ["admin"], // Chỉ cho phép superadmin
   },

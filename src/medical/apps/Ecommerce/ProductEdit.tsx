@@ -49,14 +49,14 @@ const ProductEdit = () => {
    */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required("Please enter Project Name"),
-      reference: yup.string().required("Please enter Project Name"),
-      summary: yup.string().required("Please enter Project Name"),
-      price: yup.string().required("Please enter Project Name"),
-      comment: yup.string().required("Please enter Project Name"),
-      metatitle: yup.string().required("Please enter Project Name"),
-      metakeywords: yup.string().required("Please enter Project Name"),
-      metadescription: yup.string().required("Please enter Project Name"),
+      name: yup.string().required("Vui lòng nhập Project Name"),
+      reference: yup.string().required("Vui lòng nhập Project Name"),
+      summary: yup.string().required("Vui lòng nhập Project Name"),
+      price: yup.string().required("Vui lòng nhập Project Name"),
+      comment: yup.string().required("Vui lòng nhập Project Name"),
+      metatitle: yup.string().required("Vui lòng nhập Project Name"),
+      metakeywords: yup.string().required("Vui lòng nhập Project Name"),
+      metadescription: yup.string().required("Vui lòng nhập Project Name"),
     })
   );
 

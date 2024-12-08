@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Modal, Button } from "react-bootstrap";
 import jwtDecode from "jwt-decode";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 // components
 import PageTitle from "../../components/PageTitle";
 import Table from "../../components/Table";
 import "../../style.css";
-import { showdataprofiles, ApproveAccessRequests, ShowFunAccessRequests, ShowFunDiseasecode } from "../../controller/MedicalController"; // Import controller
+import {
+  showdataprofiles,
+  ApproveAccessRequests,
+  ShowFunAccessRequests,
+  ShowFunDiseasecode,
+} from "../../controller/MedicalController"; // Import controller
 
 interface Disease {
   diseasecode: string; // sử dụng id thay vì diseasecode
@@ -24,7 +29,6 @@ interface RowData {
   tokeorg?: string; // Add these properties as optional
   tokenbranch?: string; // Add these properties as optional
 }
-
 
 const Index: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -53,17 +57,19 @@ const Index: React.FC = () => {
       const res = await ShowFunAccessRequests(datacheckprofile);
 
       if (res.status === true) {
-        const accessRequests = res.data.accessRequests.map((request: any, index: number) => ({
-          id: index + 1,
-          time: new Date(request.timestamp).toLocaleString(),
-          value: request.nameorganization || 'Unknown Hospital',
-          requestContent: request.content || 'No Content',
-          status: request.approved ? 'Approved' : 'Pending',
-          personalInfo: request.personalInfo || [],
-          diseases: request.diseases || [],
-          tokeorg: request.tokeorg,      // New field
-          tokenbranch: request.tokenbranch // New field
-        }));
+        const accessRequests = res.data.accessRequests.map(
+          (request: any, index: number) => ({
+            id: index + 1,
+            time: new Date(request.timestamp).toLocaleString(),
+            value: request.nameorganization || "Unknown Hospital",
+            requestContent: request.content || "No Content",
+            status: request.approved ? "Approved" : "Pending",
+            personalInfo: request.personalInfo || [],
+            diseases: request.diseases || [],
+            tokeorg: request.tokeorg, // New field
+            tokenbranch: request.tokenbranch, // New field
+          })
+        );
 
         console.log(accessRequests);
         setExpandableRecords(accessRequests);
@@ -82,12 +88,11 @@ const Index: React.FC = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
 
   useEffect(() => {
     showdata();
     // ShowFunDiseasecodes();
-
   }, [datacheckprofile]);
 
   // useEffect(() => {
@@ -100,7 +105,6 @@ const Index: React.FC = () => {
     // Chờ hàm ShowFunDiseasecodes hoàn thành trước khi mở modal
     await ShowFunDiseasecodes();
     setShowModal(true);
-
   };
 
   const handleClose = () => {
@@ -111,7 +115,9 @@ const Index: React.FC = () => {
 
   const handleDiseaseChange = (disease: string) => {
     setfieldsToShare((prev) =>
-      prev.includes(disease) ? prev.filter((item) => item !== disease) : [...prev, disease]
+      prev.includes(disease)
+        ? prev.filter((item) => item !== disease)
+        : [...prev, disease]
     );
   };
 
@@ -126,7 +132,6 @@ const Index: React.FC = () => {
     }
   };
 
-
   const handleShowPersonalInfoChange = (checked: boolean) => {
     setShowPersonalInfo(checked);
     if (checked) {
@@ -136,9 +141,9 @@ const Index: React.FC = () => {
 
   const handleConfirm = async () => {
     const loadingSwal: any = MySwal.fire({
-      title: 'Please wait...',
-      text: 'Approve Request medical, please wait!',
-      icon: 'info',
+      title: "Please wait...",
+      text: "Approve Request medical, please wait!",
+      icon: "info",
       allowOutsideClick: false,
       showConfirmButton: false,
       didOpen: () => {
@@ -147,17 +152,21 @@ const Index: React.FC = () => {
     });
     const token = localStorage.getItem("jwtToken");
 
-
     if (token) {
       const decodedToken: any = jwtDecode(token);
       const response: any = await showdataprofiles(datacheckprofile);
-      const fieldsToShareObject = fieldsToShare.reduce((obj: { [key: string]: string }, field: string) => {
-        const disease = diseaseInfo.find((d: Disease) => d.diseasecode === field);
-        if (disease) {
-          obj[field] = disease.namedisease;
-        }
-        return obj;
-      }, {} as { [key: string]: string });
+      const fieldsToShareObject = fieldsToShare.reduce(
+        (obj: { [key: string]: string }, field: string) => {
+          const disease = diseaseInfo.find(
+            (d: Disease) => d.diseasecode === field
+          );
+          if (disease) {
+            obj[field] = disease.namedisease;
+          }
+          return obj;
+        },
+        {} as { [key: string]: string }
+      );
       const confirmedData = {
         personalInfo: selectedRow?.personalInfo,
         fieldsToShare: fieldsToShareObject,
@@ -168,10 +177,9 @@ const Index: React.FC = () => {
         tokenbranch: selectedRow?.tokenbranch,
         requestContent: selectedRow?.requestContent,
         cccd: decodedToken.cccd,
-        datauser: response
-
+        datauser: response,
       };
-      console.log(confirmedData)
+      console.log(confirmedData);
 
       // console.log("data",decodedToken)
       const res = await ApproveAccessRequests(confirmedData);
@@ -180,23 +188,22 @@ const Index: React.FC = () => {
       if (res) {
         loadingSwal.close();
         Swal.fire({
-          title: 'Update Success!',
-          text: 'Approve Request medicalsuccessful.',
-          icon: 'success',
-          confirmButtonText: 'OK',
+          title: "Update Success!",
+          text: "Approve Request medicalsuccessful.",
+          icon: "success",
+          confirmButtonText: "OK",
         });
       } else {
         Swal.fire({
-          title: 'Update Error!',
-          text: 'Approve Request medical Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK',
+          title: "Update Error!",
+          text: "Approve Request medical Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
     }
     // Có thể thực hiện bất kỳ thao tác nào khác với confirmedData
   };
-
 
   const columns = [
     {
@@ -223,7 +230,14 @@ const Index: React.FC = () => {
       Header: "Hành Động",
       accessor: "action",
       Cell: ({ row }: { row: { original: RowData } }) => (
-        <button className="btn btn-primary" onClick={() => handleShow(row.original)}>
+        <button
+          className="btn btn-info waves-effect waves-light"
+          style={{
+            background: "#102A50",
+            border: "none",
+          }}
+          onClick={() => handleShow(row.original)}
+        >
           Xem Chi Tiết
         </button>
       ),
@@ -251,7 +265,7 @@ const Index: React.FC = () => {
 
   return (
     <>
-      <Row style={{marginTop:"-45px"}}>
+      <Row>
         <PageTitle
           breadCrumbItems={[
             { label: "Tables", path: "/features/tables/advanced" },
@@ -289,7 +303,10 @@ const Index: React.FC = () => {
         <Modal.Body>
           <div className="mb-3">
             <h5>Thông Tin Cá Nhân:</h5>
-            {selectedRow && selectedRow.personalInfo.map((info, index) => <p key={index}>{info}</p>)}
+            {selectedRow &&
+              selectedRow.personalInfo.map((info, index) => (
+                <p key={index}>{info}</p>
+              ))}
           </div>
 
           <div className="form-check">
@@ -330,7 +347,10 @@ const Index: React.FC = () => {
                         checked={fieldsToShare.includes(item.diseasecode)}
                         onChange={() => handleDiseaseChange(item.diseasecode)}
                       />
-                      <label className="form-check-label" htmlFor={`disease-${item.diseasecode}`}>
+                      <label
+                        className="form-check-label"
+                        htmlFor={`disease-${item.diseasecode}`}
+                      >
                         {item.namedisease}
                       </label>
                     </div>
@@ -341,15 +361,21 @@ const Index: React.FC = () => {
               )}
             </div>
           ) : null}
-
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={handleConfirm}>
+          <button
+            className="btn btn-info waves-effect waves-light"
+            style={{
+              background: "#102A50",
+              border: "none",
+            }}
+            onClick={handleConfirm}
+          >
             Xác Nhận
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </>

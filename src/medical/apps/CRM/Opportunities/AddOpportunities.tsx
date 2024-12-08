@@ -22,16 +22,16 @@ const AddOpportunities = ({
     */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      name: yup.string().required("Please enter name"),
+      name: yup.string().required("Vui lòng nhập tên"),
       email: yup
         .string()
-        .required("Please enter email")
-        .email("Please enter valid email"),
+        .required("Vui lòng nhập email")
+        .email("Vui lòng nhập địa chỉ email"),
       phone: yup
         .string()
-        .required("Please enter phone")
-        .matches(/^\d{10}$/, "Phone number is not valid"),
-      category: yup.string().required("Please enter category"),
+        .required("Vui lòng nhập số điện thoại")
+        .matches(/^\d{10}$/, "số điện thoại không tồn tại"),
+      category: yup.string().required("Vui lòng nhập địa chỉ"),
     })
   );
 
