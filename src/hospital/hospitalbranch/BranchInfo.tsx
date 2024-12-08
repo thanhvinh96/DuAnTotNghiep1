@@ -64,7 +64,7 @@ console.log('fdf gia tri mode'+model)
                 </div>
             ) : (
                 <>
-                    <div className="col-xl-5">
+                    <div className="col-xl-12">
                         <div className="row">
                             {[
                                 {
@@ -93,7 +93,7 @@ console.log('fdf gia tri mode'+model)
                             ))}
                         </div>
                     </div>
-                    <div className="col-xl-7">
+                    {/* <div className="col-xl-7">
                         <div className="card custom-card">
                             <div className="card-header">
                                 <div className="card-title fw-bold">Thống Kê Giao Dịch THÁNG 11</div>
@@ -102,7 +102,7 @@ console.log('fdf gia tri mode'+model)
                                 <BarChart />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="col-xl-12">
                         <div className="card custom-card">
                             <div className="card-header justify-content-between">
@@ -215,7 +215,7 @@ console.log('fdf gia tri mode'+model)
 
                                         </tbody>
                                         <tfoot>
-                                            <tr>
+                                            {/* <tr>
                                                 <td>
                                                     <div className="float-right fw-bold">
                                                         Đã thanh toán:
@@ -223,7 +223,7 @@ console.log('fdf gia tri mode'+model)
                                                         <strong style={{ color: "blue" }}>1.880.000đ</strong>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </tr> */}
                                         </tfoot>
                                     </table>
                                 </div>
