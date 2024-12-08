@@ -28,7 +28,7 @@ const BottomLink = () => {
   return (
     <footer className="footer footer-alt">
       <p className="text-muted">
-        {t("Back to")}{" "}
+        {t("Trở lại")}{" "}
         <Link to={"/auth/login2"} className="text-muted ms-1">
           <b>{t("Log in")}</b>
         </Link>

@@ -15,11 +15,11 @@ import { LayoutTypes } from "../constants/layouthospital";
 // components
 import AppMenu from "./Menu";
 import profileImg from "../assets/images/users/user-1.jpg";
-import logoSm from "../assets/images/Logo.png";
-import logoDark from "../assets/images/Logo.png";
-import logoDark2 from "../assets/images/Logo.png";
-import logoLight from "../assets/images/Logo.png";
-import logoLight2 from "../assets/images/Logo.png";
+import logoSm from "../assets/images/LogoWhite.png";
+import logoDark from "../assets/images/LogoWhite.png";
+import logoDark2 from "../assets/images/LogoWhite.png";
+import logoLight from "../assets/images/LogoWhite.png";
+import logoLight2 from "../assets/images/LogoWhite.png";
 
 /* user box */
 const UserBox = () => {
