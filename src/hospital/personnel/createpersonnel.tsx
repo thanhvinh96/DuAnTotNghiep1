@@ -197,7 +197,7 @@ export default function CreatePersonnel() {
             });
           } else {
             // Quay về trang quản lý
-            window.location.href = "/management"; // Đổi link này nếu cần
+            window.location.href = "/hospital/personnel-management"; // Đổi link này nếu cần
           }
         });
       } else {
