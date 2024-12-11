@@ -51,7 +51,7 @@ const StatisticsWidget2 = (props: StatisticsWidgetProps) => {
               </div>
             </Col>
           </Row>
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <h6 className="text-uppercase">
               Target <span className="float-end">{props["progress"]}%</span>
             </h6>
@@ -63,7 +63,7 @@ const StatisticsWidget2 = (props: StatisticsWidgetProps) => {
               visuallyHidden
               variant={props["variant"]}
             />
-          </div>
+          </div> */}
         </Card.Body>
       </Card>
     </>
