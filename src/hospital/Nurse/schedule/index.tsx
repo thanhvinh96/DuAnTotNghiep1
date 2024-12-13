@@ -17,7 +17,7 @@ const getQueryParam = (param:any) => {
 async function laySuKien(): Promise<EventInput[]> {
   try {
     const medical  = getQueryParam('medical')
-    const _response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
+    const _response = await fetch("https://ehrmedical.online/api/medical/cccd", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -27,7 +27,7 @@ async function laySuKien(): Promise<EventInput[]> {
     // console.log(_response);
     const _data: any = await _response.json();
     console.log(_data.data.medicalRecordCode);
-    const response = await fetch("http://127.0.0.1:8000/api/schedule",{
+    const response = await fetch("https://ehrmedical.online/api/schedule",{
       method:"post",
       headers:{
         "Content-Type": "application/json"

@@ -1,6 +1,6 @@
 export const AddBillMedical = async (data: any) => { 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/PatientBillController/add", {
+      const response = await fetch("https://ehrmedical.online/api/PatientBillController/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const AddBillMedical = async (data: any) => {
 
   export const showDetailBill = async (data: any) => { 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/PatientBillController/pyid", {
+      const response = await fetch("https://ehrmedical.online/api/PatientBillController/pyid", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

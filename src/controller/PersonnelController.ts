@@ -67,7 +67,7 @@ export const CreatePersonnels = async(FormData:any)=>{
         console.log(data.success)
         if (data.success ===true) {
         
-            const _res =  await fetch("http://127.0.0.1:8000/api/users", {
+            const _res =  await fetch("https://ehrmedical.online/api/users", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export const CreatePersonnels = async(FormData:any)=>{
 
 export const GetScheduleByDoctor = async (data:any)=>{
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/schedule/bydoctor", {
+    const response = await fetch("https://ehrmedical.online/api/schedule/bydoctor", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

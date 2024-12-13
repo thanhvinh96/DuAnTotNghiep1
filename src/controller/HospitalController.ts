@@ -84,7 +84,7 @@ export const LoginHospital = async (updatedFormData:any) => {
 
 export const getMedicalRecordByDoctorToken = async (data:any) => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bydoctor", {
+      const response = await fetch("https://ehrmedical.online/api/medicaldata/bydoctor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

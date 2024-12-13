@@ -41,7 +41,7 @@ const Dashboard3 = () => {
 
   const showdata = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/schedule/bydoctor', {
+      const res = await fetch('https://ehrmedical.online/api/schedule/bydoctor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const Dashboard3 = () => {
         throw new Error("Error fetching schedule by doctor");
       }
   
-      const _res = await fetch("http://127.0.0.1:8000/api/check-services", {
+      const _res = await fetch("https://ehrmedical.online/api/check-services", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

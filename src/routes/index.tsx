@@ -411,9 +411,9 @@ const authRoutes: RoutesProps[] = [
     route: Route,
   },
   {
-    path: "/medical/auth/logout2",
-    name: "Logout2",
-    element: <Logout2 />,
+    path: "/medical/auth/logout",
+    name: "Logout",
+    element: <LogoutH />,
     route: Route,
   },
   {

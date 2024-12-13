@@ -12,8 +12,6 @@ import { RootState, AppDispatch } from "../redux/store";
 import { LayoutTypes, SideBarTypes } from "../constants/layouthospital";
 
 // import SearchDropdown from '../components/SearchDropdown';
-import LanguageDropdown from "../components/LanguageDropdown";
-import NotificationDropdown from "../components/NotificationDropdown";
 import ProfileDropdown from "../components/ProfileDropdown";
 import profilePic from "../assets/images/users/user-1.jpg";
 import avatar4 from "../assets/images/users/user-4.jpg";
@@ -78,16 +76,6 @@ const ProfileMenus = [
     label: "My Account",
     icon: "fe-user",
     redirectTo: "#",
-  },
-  {
-    label: "Settings",
-    icon: "fe-settings",
-    redirectTo: "#",
-  },
-  {
-    label: "Lock Screen",
-    icon: "fe-lock",
-    redirectTo: "/auth/lock-screen",
   },
   {
     label: "Logout",
@@ -197,17 +185,11 @@ const Topbar = ({
             </button>
           </div>
           <ul className="topbar-menu d-flex align-items-center">
-            <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
-              <LanguageDropdown />
-            </li>
-            <li className="dropdown notification-list">
-              <NotificationDropdown notifications={Notifications} />
-            </li>
             <li className="dropdown">
               <ProfileDropdown
                 profilePic={profilePic}
                 menuItems={ProfileMenus}
-                username={"Geneva"}
+                username={"Hello"}
                 userTitle={"Founder"}
               />
             </li>

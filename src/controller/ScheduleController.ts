@@ -1,6 +1,6 @@
 export const CreaterSchedule = async (data:any)=>{
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/schedule-create", {
+      const response = await fetch("https://ehrmedical.online/api/schedule-create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export const CreaterSchedule = async (data:any)=>{
   }
   export const GetScheduleByClinics = async (data:any)=>{
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/schedule/byclinics", {
+      const response = await fetch("https://ehrmedical.online/api/schedule/byclinics", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const CreaterSchedule = async (data:any)=>{
   }
   export const GetScheduleByMedical = async (data:any)=>{
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/schedule/bymedical", {
+      const response = await fetch("https://ehrmedical.online/api/schedule/bymedical", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export const CreaterSchedule = async (data:any)=>{
 
   export const UpdateDoctorByMedical = async (data:any)=>{
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/schedule/update/reception", {
+      const response = await fetch("https://ehrmedical.online/api/schedule/update/reception", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

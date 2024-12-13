@@ -1,6 +1,6 @@
 export const CreaterDepart = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/department/add", {
+        const response = await fetch("https://ehrmedical.online/api/department/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const CreaterDepart = async (formData: any) => {
 
 export const GetDepartByBranch = async (formData: any) => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/department/bybranch", {
+      const response = await fetch("https://ehrmedical.online/api/department/bybranch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const GetDepartByBranch = async (formData: any) => {
 
 export const DeleTeDepartByBranch = async (formData: any) => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/department/delete", {
+      const response = await fetch("https://ehrmedical.online/api/department/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

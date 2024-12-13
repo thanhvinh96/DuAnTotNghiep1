@@ -35,7 +35,7 @@ const AppMenu: React.FC<AppMenuProps> = ({ menuItems }) => {
       const tokenAdmin = localStorage.getItem("tokenadmin");
       if (tokenAdmin) {
         const decodedToken = jwtDecode<any>(tokenAdmin);
-        const res = await fetch("http://127.0.0.1:8000/api/check-services", {
+        const res = await fetch("https://ehrmedical.online/api/check-services", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
