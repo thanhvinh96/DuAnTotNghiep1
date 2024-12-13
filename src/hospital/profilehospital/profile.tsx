@@ -15,11 +15,11 @@ const Profile = () => {
   const [profileData, setProfileData] = useState<any>(null);
   const [tokenHospital, setTokenHospital] = useState<null | string>(null);
   const [orgData, setOrgData] = useState({
-    nameorg: '',
-    phoneadmin: '',
-    emailadmin: '',
-    addressadmin: '',
-    tokeorg: '',
+    nameorg: '',  // tên tổ chức
+    phoneadmin: '', // địa chỉ
+    emailadmin: '', //mật khẩu
+    addressadmin: '', //họ tên admin
+    tokeorg: '', 
     businessBase64: '',
     timestamp: ''
   });
@@ -246,7 +246,7 @@ const getData = async () => {
                   <label className="form-label">Địa chỉ tổ chức <span className="text-danger">*</span></label>
                   <div className="input-group">
                     <span className="input-group-text"><i className="fa-solid fa-map-marker-alt"></i></span>
-                    <input type="text" className="form-control" value={orgData.addressadmin} readOnly />
+                    <input type="text" className="form-control" value={orgData.phoneadmin} readOnly />
                   </div>
                 </div>
                 <div className="col-md-6 mb-4">
