@@ -1,6 +1,6 @@
 export const CountMedicalByBranch = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/medicalbook/count", {
+        const response = await fetch("https://ehrmedical.online/api/medicalbook/count", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export const CountMedicalByBranch = async (formData: any) => {
 };
 export const CountUserByBranch = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/users/count", {
+        const response = await fetch("https://ehrmedical.online/api/users/count", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

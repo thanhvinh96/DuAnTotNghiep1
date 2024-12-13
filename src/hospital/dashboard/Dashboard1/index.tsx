@@ -40,7 +40,7 @@ const Dashboard1 = () => {
         // Fetch data from the API
         try {
           const data = { tokeorg: decodedToken.tokeorg };
-          const response = await fetch("http://127.0.0.1:8000/api/branches/count", {
+          const response = await fetch("https://ehrmedical.online/api/branches/count", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

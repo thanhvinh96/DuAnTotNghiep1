@@ -133,7 +133,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             if (token) {
 
                 decoded = jwt_decode(token);
-                const response = await fetch("http://127.0.0.1:8000/api/medicaldata/code", {
+                const response = await fetch("https://ehrmedical.online/api/medicaldata/code", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -155,7 +155,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
 
     const handleAccessPatientInfo = async (patientId: string) => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
+            const response = await fetch("https://ehrmedical.online/api/medical/code", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

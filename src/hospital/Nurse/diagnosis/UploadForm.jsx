@@ -55,7 +55,7 @@ const MedicalForm = ({ onSubmit }) => {
 
   const handleAccessPatientInfo = async (patientId) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
+      const response = await fetch("https://ehrmedical.online/api/medical/code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +146,7 @@ const MedicalForm = ({ onSubmit }) => {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/medicaldata/add",
+        "https://ehrmedical.online/api/medicaldata/add",
         {
           method: "POST",
           headers: {

@@ -28,7 +28,7 @@ export default function CreatePersonnel() {
   console.log(model);
   const showDataSeveri = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/department/bybranch", {
+      const res = await fetch("https://ehrmedical.online/api/department/bybranch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

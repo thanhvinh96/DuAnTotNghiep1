@@ -52,7 +52,7 @@ export default function CreateClinic() {
                 branch: model, // Thay bằng token branch thật
             };
             
-            const response = await fetch("http://127.0.0.1:8000/api/users/bybranch", {
+            const response = await fetch("https://ehrmedical.online/api/users/bybranch", {
                 method: "POST", // Method nên là POST
                 headers: {
                     "Content-Type": "application/json", // Xác định kiểu dữ liệu gửi
@@ -111,7 +111,7 @@ export default function CreateClinic() {
             const datas = {
                 branch: model
             };
-            const _res = await fetch('http://127.0.0.1:8000/api/clinics', {
+            const _res = await fetch('https://ehrmedical.online/api/clinics', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ export default function CreateClinic() {
         };
         console.log(newClinic);
         try {
-            const _res = await fetch('http://127.0.0.1:8000/api/clinics/add', {
+            const _res = await fetch('https://ehrmedical.online/api/clinics/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ export default function CreateClinic() {
     // Hàm để gọi API và cập nhật datadepartment
     const showdepartmentByBranch = async () => {
         try {
-            const res = await fetch('http://127.0.0.1:8000/api/department/bybranch', {
+            const res = await fetch('https://ehrmedical.online/api/department/bybranch', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ export default function CreateClinic() {
 
     const handleDeleteClinic = async (index: string) => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/clinics/delete', {
+            const response = await fetch('https://ehrmedical.online/api/clinics/delete', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
