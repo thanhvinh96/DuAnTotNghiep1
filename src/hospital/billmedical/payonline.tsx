@@ -53,7 +53,7 @@ const PaymentPage: React.FC = () => {
     //     });
     // }
 };
-
+const [totalsums,settotalsums] = useState<any>()
   const showdatacode = async () => {
     try {
       const data = {
@@ -61,8 +61,9 @@ const PaymentPage: React.FC = () => {
       };
   
       const _res = await getPayCode(data); // Gọi API và kiểm tra kết quả
-      console.log(_res);
+      console.log("check "+_res.branch[0].totalsum);
       setdatabill(_res.branch[0]);
+      settotalsums(_res.branch[0].totalsum);
     } catch (error) {
       console.error("Error in showdatacode:", error);
     }
@@ -83,17 +84,23 @@ const PaymentPage: React.FC = () => {
     }
     const res =  await ShowBankByIdClient(data);
     const datas = res.branch[0];
-    const qrcode = `https://api.vietqr.io/${datas.name}/${datas.accountNumber}/${databill.totalsum}/${databill.medicalRecordCode}/vietqr_net_2.jpg?accountName=${datas.accountHolder}`
+    const qrcode = `https://api.vietqr.io/${datas.name}/${datas.accountNumber}/${totalsums}/${databill.medicalRecordCode}/vietqr_net_2.jpg?accountName=${datas.accountHolder}`
     setdatabank({
       ...datas, // Sao chép các thuộc tính của `datas`
       qrcode, // Thêm thuộc tính `qrcode`
     });
   }
+  const showdataQr_ = async ()=>{
+    
+  }
+  useEffect(()=>{
+    // setSelectedBanks();
+  },[])
   useEffect(()=>{
     showdataSelect()
     showdatacode()
   },[])
-  
+
   // const currentBank = banks[selectedBank];
 
   const copyToClipboard = (text: string) => {

@@ -186,12 +186,7 @@ const Topbar = ({
             </button>
           </div>
           <ul className="topbar-menu d-flex align-items-center">
-            {/* <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
-              <LanguageDropdown />
-            </li>
-            <li className="dropdown notification-list">
-              <NotificationDropdown notifications={Notifications} />
-            </li> */}
+
             <li className="dropdown">
               <ProfileDropdown
                 profilePic={profilePic}
