@@ -106,7 +106,6 @@ p {
   font-size: 15px;
 }
 #landing {
-
   font-family: $font-family-primary;
   font-size: $font-base;
   background-color: $white;
@@ -184,7 +183,7 @@ p {
           line-height: 26px;
           color: rgba($white, 0.6);
           transition: all 0.4s;
-          background-color: transparent !important;
+          background-color: transparent;
           padding: 6px 10px;
           margin: 0 7px;
           font-weight: 600;

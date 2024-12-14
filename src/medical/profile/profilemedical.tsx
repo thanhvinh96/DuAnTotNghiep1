@@ -148,6 +148,7 @@ const ProfileMedical: React.FC = () => {
       }));
     }
   }, []);
+  
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -275,7 +276,7 @@ const ProfileMedical: React.FC = () => {
       console.error("Lỗi khi tải ảnh lên:", error);
       alert("Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.");
     }
-  };
+  };      
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let phone = e.target.value;
 
