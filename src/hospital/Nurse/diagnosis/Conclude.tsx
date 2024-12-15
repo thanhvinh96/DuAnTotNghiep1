@@ -45,7 +45,11 @@ interface MedicalData {
     // Define structure based on the API response you expect
     [key: string]: any; // Placeholder for actual data fields
 }
-
+interface DiseaseCodeData {
+    key: string;
+    value: string;
+  }
+  
 interface ConclusionFormProps {
     onSubmit: (resultData: any) => void;
     patientInfo?: PatientInfo;
@@ -120,13 +124,64 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
         images: []
     });
     const [cccd, setCccd] = useState<string>('');
+    const [CccdValue, setCccdValue] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [patientData, setPatientInfo] = useState<PatientInfo>({} as PatientInfo);
     const [medicalData, setMedicalData] = useState<MedicalData[]>([]);
     const [previewImages, setPreviewImages] = useState<string[]>([]); // Store preview images
 
+    const [Viewingrights, setViewingrights] = useState<any>({});
+    const [DiseasecodeData,setDiseasecodeData] = useState<any>([]); // Store preview images
+    const [diseaseCodeData, setDiseaseCodeData] = useState<DiseaseCodeData[]>([]);
+
+    const showViewingrights = async () => {
+        try {
+          const token = localStorage.getItem('tokenadmin');
+          let decoded: any = null;
+    
+          if (token) {
+            decoded = jwt_decode(token);
+            const response = await fetch('http://103.179.185.78:3002/medical/diseasecode/org', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                tokeorg: decoded['tokeorg'],
+                tokenbranch: decoded['branch'],
+                cccd: CccdValue,
+              }),
+            });
+    
+            const result = await response.json();
+            if (result.data?.datashare) {
+              // Parse datashare and save to state
+              const parsedData = result.data.datashare.flatMap((item: string) => {
+                try {
+                  const obj = JSON.parse(item);
+                  return Object.entries(obj).map(([key, value]) => ({ key, value }));
+                } catch {
+                  return [];
+                }
+              });
+              console.log("data trar ve "+parsedData)
+              setDiseaseCodeData(parsedData);
+            } else {
+              setDiseaseCodeData([]);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching medical data:', error);
+          setError('Đã xảy ra lỗi khi lấy thông tin khám bệnh.');
+        }
+      };
+    
+    useEffect(()=>{
+        showViewingrights();
+    },[CccdValue])
     const showdata = async (patientId: string) => {
         try {
+            
             const token = localStorage.getItem('tokenadmin');
             let decoded: any = null;
 
@@ -166,6 +221,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             const data = await response.json();
             console.log(data.data.fieldsToShare)
             if (response.ok) {
+                setCccdValue(data.data.cccd)
                 setPatientInfo({
                     fullname: data.data.fullname,
                     birthday: data.data.birthday,
@@ -345,34 +401,39 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                         <Col md={12}>
                             <Form.Label>Lịch sử bệnh nhân đã khám</Form.Label>
                             <Form onSubmit={handleSubmit}>
-                                <Table bordered hover className="mt-4 text-center">
-                                    <thead className="bg-primary text-white">
-                                        <tr style={{ background: '#38adc1' }}>                                            <th scope="col" style={{ color: 'white' }}>STT</th>
-                                            <th scope="col" style={{ color: 'white' }}>Mã bệnh</th>
-                                            <th scope="col" style={{ color: 'white' }}>Tên Bệnh</th>
-                                            <th scope="col" style={{ color: 'white' }}>Hành Động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* Chuyển đổi fieldsToShare thành mảng các cặp key-value */}
-                                        {Object.entries(patientData.fieldsToShare).map(([key, value], index) => (
-                                            <tr key={index}>
-                                                <td>{index + 1}</td>
-                                                <td>{key}</td> {/* Hiển thị mã bệnh */}
-                                                <td>{value}</td> {/* Hiển thị tên bệnh (chuẩn đoán) */}
-                                                <td>
-                                                    <a
-                                                        href={`./hospital/medical-share?code=${key}&cccd=${patientData.cccd}`}
-                                                        style={{ fontSize: '12px', padding: '4px 10px', width: '150px', display: 'inline-block', textAlign: 'center', textDecoration: 'none', color: '#fff', backgroundColor: '#007bff', borderRadius: '4px' }}
-                                                    >
-                                                        Xem chi tiết bệnh
-                                                    </a>
-
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
+                            <Table bordered hover className="mt-4 text-center">
+          <thead className="bg-primary text-white">
+            <tr style={{ background: '#38adc1' }}>
+              <th scope="col" style={{ color: 'white' }}>STT</th>
+              <th scope="col" style={{ color: 'white' }}>Mã bệnh</th>
+              <th scope="col" style={{ color: 'white' }}>Tên Bệnh</th>
+              <th scope="col" style={{ color: 'white' }}>Hành Động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {diseaseCodeData.length > 0 ? (
+              diseaseCodeData.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.key}</td>
+                  <td>{item.value}</td>
+                  <td>
+                    <button
+                      onClick={() => alert(`Hành động cho bệnh: ${item.key}`)}
+                      className="btn btn-primary"
+                    >
+                      Xem chi tiết
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4}>Không có dữ liệu</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
 
                             </Form>
                         </Col>
