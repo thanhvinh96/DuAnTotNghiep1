@@ -144,7 +144,9 @@ const CreateAppointment: React.FC = () => {
         const showdataTable = async ()=>{
         try {
            const data = {
-            patient:medicalRecordCode
+            patient:medicalRecordCode,
+            branch: branch
+
            }
             const res = await GetScheduleByMedical(data)
             console.log(res);
