@@ -373,7 +373,6 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             <Card className="border p-4 mt-4">
                 <Form onSubmit={handleSubmit}>
                     <h4>Chuyên Mục Khám và Kết quả</h4>
-
                     {/* Form nhập CCCD */}
                     {!patientData && (
                         <Row className="mb-3">
