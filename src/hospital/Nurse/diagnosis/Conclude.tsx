@@ -722,7 +722,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                                     Thêm dòng
                                 </Button>
 
-                                <Button
+                                {/* <Button
                                     type="submit"
                                     variant="primary"
                                     style={{
@@ -731,8 +731,8 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
                                         width: "150px",
                                     }}
                                 >
-                                    Lưu kết quả
-                                </Button>
+                                    Lưu kết qu
+                                </Button> */}
                             </div>
                         </Form>
                     </div>
