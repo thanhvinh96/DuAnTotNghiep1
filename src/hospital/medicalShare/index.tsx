@@ -60,8 +60,8 @@ const MedicalRecordDetail: React.FC = (): JSX.Element => {
   return (
     <>
       <PageTitle
-        breadCrumbItems={[{ label: "Phiếu Khám Bệnh", path: "/medical/record/detail" }]}
-        title="Phiếu Khám Bệnh Chi Tiết"
+        breadCrumbItems={[{ label: "Thông tin chi tiết khám bệnh", path: "/medical/record/detail" }]}
+        title="Thông tin chi tiết khám bệnh"
       />
 
       <Row>

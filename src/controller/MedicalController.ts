@@ -329,6 +329,29 @@ export const GetHistoryMedicalDetail = async (data:any)=>{
     throw error;
   }
 }
+export const ShareGetHistoryMedicalDetail = async (data:any)=>{
+  try {
+
+    const response1 = await fetch("http://103.179.185.78:3002/medical/diseasecode/org/detail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response1.ok) {
+      const errorMessage = await response1.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error on first API! status: ${response1.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response1.json();
+    console.log("First API call successful:", result);
+    return result;
+  } catch (error) {
+    console.error("Error during API calls:", error);
+    throw error;
+  }
+}
 export const GetHistoryMedicalShareHospital = async (data:any)=>{
   try {
 
