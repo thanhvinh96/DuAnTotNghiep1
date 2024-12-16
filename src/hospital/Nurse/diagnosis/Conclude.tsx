@@ -4,6 +4,7 @@ import PageTitle from "../../../components/PageTitle";
 import jwt_decode from 'jwt-decode';
 import { PushDataMedical } from "../../../controller/MedicalController"; // Import controller
 import CreateAppointment from "../../hospitalbranch/CreateAppointment"; // Import controller
+import { useNavigate } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -65,6 +66,8 @@ interface ConclusionData {
 }
 
 const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo = {}, examinationHistory = [] }) => {
+    const navigate = useNavigate();
+
     const MySwal = withReactContent(Swal);
     // Hàm để thêm dòng mới vào bảng
     const [tableData, setTableData] = useState<Prescription[]>([]);
@@ -353,7 +356,11 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
         }
     };
 
+const gotoshare=async(item:any)=>{
+    // alert(item)
+    navigate(`/nurse?typeform=form-share&key=${item}`);
 
+}
 
     return (
         <>
@@ -411,27 +418,28 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             </tr>
           </thead>
           <tbody>
-            {diseaseCodeData.length > 0 ? (
-              diseaseCodeData.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.key}</td>
-                  <td>{item.value}</td>
-                  <td>
-                    <button
-                      onClick={() => alert(`Hành động cho bệnh: ${item.key}`)}
-                      className="btn btn-primary"
-                    >
-                      Xem chi tiết
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={4}>Không có dữ liệu</td>
-              </tr>
-            )}
+          {diseaseCodeData.length > 0 ? (
+  diseaseCodeData.map((item, index) => (
+    <tr key={index}>
+      <td>{index + 1}</td>
+      <td>{item.key}</td>
+      <td>{item.value}</td>
+      <td>
+        <button
+          onClick={() => gotoshare(item.key)} // Sửa: truyền item.key thay vì index.key
+          className="btn btn-primary"
+        >
+          Xem chi tiết
+        </button>
+      </td>
+    </tr>
+  ))
+) : (
+  <tr>
+    <td colSpan={4}>Không có dữ liệu</td>
+  </tr>
+)}
+
           </tbody>
         </Table>
 

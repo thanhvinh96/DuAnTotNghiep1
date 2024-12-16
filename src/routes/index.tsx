@@ -84,6 +84,7 @@ const Appointments = React.lazy(()=>import("../hospital/Nurse/appointments/index
 const HospitalMedicalshare =React.lazy(()=>import("../hospital/medicalShare/index"));
 const PayOnline =React.lazy(()=>import("../hospital/billmedical/payonline"));
 const PayBill =React.lazy(()=>import("../hospital/billmedical/paybill"));
+const MedicalShare =React.lazy(()=>import("../hospital/medicalShare/index"));
 // bill medical
 const BillMedical =React.lazy(()=>import("../hospital/billmedical/index"));
 
@@ -155,6 +156,13 @@ const hospitalRouter: RoutesProps = {
       path: "/hospital/create-personnel",
       name: "personnel management",
       element: <CreatePersonnel />,
+      route: PrivateRoute,
+    },
+    {
+
+      path: "/hospital/medical-share",
+      name: "medical share",
+      element: <MedicalShare />,
       route: PrivateRoute,
     },
     {

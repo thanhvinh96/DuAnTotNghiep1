@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import ServiceForm from './ServiceForm';
 import UploadForm from './UploadForm';
 import Conclude from './Conclude.tsx';
+import Formshare from './formshare';
 import PrescriptionForm from './testdon.tsx';
 
 const Diagnosis = () => {
@@ -32,6 +33,7 @@ const Diagnosis = () => {
             {typeform === 'chuyen_muc' && <UploadForm onSubmit={handleServiceSubmit} />}
             {typeform === 'up_file' && <UploadForm onSubmit={handleImageSubmit} />}
             {typeform === 'up_ketluan' && <Conclude onSubmit={handleImageSubmit} />}
+            {typeform === 'form-share' && <Formshare onSubmit={handleImageSubmit} />}
             {typeform === 'thuyen' && <PrescriptionForm onSubmit={handleImageSubmit} />}
 
             {/* Hiển thị dữ liệu đã submit nếu có */}
