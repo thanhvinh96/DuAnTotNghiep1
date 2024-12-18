@@ -83,7 +83,7 @@ const ProfileMenus = [
   {
     label: "Logout",
     icon: "fe-log-out",
-    redirectTo: "/medical/auth/logout",
+    redirectTo: "/hospital/auth/logout",
   },
 ];
 interface TopbarProps {
