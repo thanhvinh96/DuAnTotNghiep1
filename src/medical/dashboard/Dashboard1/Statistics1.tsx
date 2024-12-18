@@ -13,7 +13,7 @@ interface StatisticsProps {
   };
 }
 
-const Statistics: React.FC<StatisticsProps> = ({ data }) => {
+const Statistics: React.FC<StatisticsProps> = ({ data = {} }) => {
   return (
     <>
       <Row style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -41,8 +41,6 @@ const Statistics: React.FC<StatisticsProps> = ({ data }) => {
             description="Nhóm Máu"
             stats={data.bloodType || "N/A"} // Dữ liệu từ API
             icon="fe-droplet"
-            // values="Nhóm Máu"
-
           />
         </Col>
         <Col md={6} xl={3} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -58,5 +56,6 @@ const Statistics: React.FC<StatisticsProps> = ({ data }) => {
     </>
   );
 };
+
 
 export default Statistics;

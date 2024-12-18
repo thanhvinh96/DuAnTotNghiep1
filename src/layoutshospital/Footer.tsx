@@ -11,8 +11,8 @@ const Footer = () => {
         <div className="container-fluid">
           <Row>
             <Col md={6}>
-              {currentYear} &copy; UBold theme by{" "}
-              <Link to="#">Coderthemes</Link>
+              {currentYear} &copy;  Building the EHR system{" "}
+              <Link to="#"></Link>
             </Col>
 
             <Col md={6}>

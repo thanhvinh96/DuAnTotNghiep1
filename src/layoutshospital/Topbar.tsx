@@ -80,16 +80,6 @@ const ProfileMenus = [
     redirectTo: "#",
   },
   {
-    label: "Settings",
-    icon: "fe-settings",
-    redirectTo: "#",
-  },
-  {
-    label: "Lock Screen",
-    icon: "fe-lock",
-    redirectTo: "/auth/lock-screen",
-  },
-  {
     label: "Logout",
     icon: "fe-log-out",
     redirectTo: "/hospital/auth/logout",
@@ -197,17 +187,11 @@ const Topbar = ({
             </button>
           </div>
           <ul className="topbar-menu d-flex align-items-center">
-            <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
-              <LanguageDropdown />
-            </li>
-            <li className="dropdown notification-list">
-              <NotificationDropdown notifications={Notifications} />
-            </li>
             <li className="dropdown">
               <ProfileDropdown
                 profilePic={profilePic}
                 menuItems={ProfileMenus}
-                username={"Geneva"}
+                username={"Hello"}
                 userTitle={"Founder"}
               />
             </li>
