@@ -306,6 +306,50 @@ export const GetHistoryMedical = async (data:any)=>{
     throw error;
   }
 }
+export const PostMedicalMetrics = async (data:any)=>{
+  try{
+    const response1 = await fetch("http://103.179.185.78:3002/medical/update/metrics", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response1.ok) {
+      const errorMessage = await response1.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error on first API! status: ${response1.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response1.json();
+    console.log("First API call successful:", result);
+    return result;
+  } catch (error) {
+    console.error("Error during API calls:", error);
+    throw error;
+  }
+}
+export const ShowMedicalMetrics = async (data:any)=>{
+  try{
+    const response1 = await fetch("http://103.179.185.78:3002/medical/get/metrics", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response1.ok) {
+      const errorMessage = await response1.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error on first API! status: ${response1.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response1.json();
+    console.log("First API call successful:", result);
+    return result;
+  } catch (error) {
+    console.error("Error during API calls:", error);
+    throw error;
+  }
+}
 export const GetHistoryMedicalDetail = async (data:any)=>{
   try {
 
@@ -473,3 +517,77 @@ export const ShowInfoMedicalBycccd = async (data: any) => {
     throw error;
   }
 };
+export const ShowInfoMedicalByBranch = async (data: any) => { 
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/medicalbook/bybranch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
+export const ShowInfoMedicalByOrg = async (data: any) => { 
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/medicalbook/byorg", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
+
+export const ShowMedicalByCode = async (data: any) => { 
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/medicalconclusion/show/branch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Kiểm tra mã trạng thái
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Lấy thông báo lỗi từ server nếu có
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+};
+

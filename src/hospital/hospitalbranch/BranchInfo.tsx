@@ -4,6 +4,7 @@ import StatisticsWidget from "../../components/StatisticsWidget";
 import BankTable from "./BankInfo";
 import { useNavigate, useLocation } from "react-router-dom";
 import {ShowBankByMoth,ShowBankByAll} from "../../controller/BankController";
+import { Card, Table, Button, Modal, Row, Col } from "react-bootstrap";
 
 const Dashboard = () => {
     const [showConfig, setShowConfig] = useState(false);
@@ -32,9 +33,10 @@ const model = queryParams.get("model");
 console.log('fdf gia tri mode'+model)
     return (
         <div className="row">
-            
+             <Col md={12} lg={12}>
+                    <Card>
+                        <Card.Body>
             {!showConfig && (
-                <div className="col-xl-12">
                     <div>
                         <button
                             className="btn btn-primary btn-sm label-btn mb-3 fw-bold"
@@ -44,7 +46,6 @@ console.log('fdf gia tri mode'+model)
                             <i className="ri-settings-4-line label-btn-icon me-2"></i> CẤU HÌNH
                         </button>
                     </div>
-                </div>
             )}
 
                 
@@ -64,7 +65,6 @@ console.log('fdf gia tri mode'+model)
                 </div>
             ) : (
                 <>
-                    <div className="col-xl-12">
                         <div className="row">
                             {[
                                 {
@@ -92,7 +92,6 @@ console.log('fdf gia tri mode'+model)
                                 </div>
                             ))}
                         </div>
-                    </div>
                     {/* <div className="col-xl-7">
                         <div className="card custom-card">
                             <div className="card-header">
@@ -103,7 +102,6 @@ console.log('fdf gia tri mode'+model)
                             </div>
                         </div>
                     </div> */}
-                    <div className="col-xl-12">
                         <div className="card custom-card">
                             <div className="card-header justify-content-between">
                                 <div className="card-title fw-bold">LỊCH SỬ NẠP TIỀN TỰ ĐỘNG</div>
@@ -229,9 +227,13 @@ console.log('fdf gia tri mode'+model)
                                 </div>
                             </div>
                         </div>
-                    </div>
+                  
                 </>
             )}
+              </Card.Body>
+                    </Card>
+                </Col>
+
         </div>
     );
 };

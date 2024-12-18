@@ -10,7 +10,7 @@ import {CountMedicalByBranch,CountUserByBranch} from "../../../controller/Hospit
 import CreateDepartment from "../createdepartment";
 import CreatePersonnel from "../../personnel/createpersonnel";
 import CreateService from "../createrseveri"
-
+import PatientStatistics from "../PatientStatistics";
 import CreateClinic from "../createrclinic"
 import BranchInfo from "../BranchInfo"
 // Quản lý
@@ -97,88 +97,110 @@ const Management = () => {
               />
             </Col>
           </Row>
-      <Tab.Container defaultActiveKey="1">
-        <Card>
-          <Card.Body>
-            <Nav
-              variant="pills"
-              className="nav nav-pills navtab-bg nav-justified mb-3"
-            >
-              <Nav.Item>
-                <Nav.Link eventKey="1" className="nav-link cursor-pointer py-2">
-                  <i
-                    className={classnames(
-                      "mdi mdi-account-circle",
-                      "d-block",
-                      "font-24"
-                    )}
-                  ></i>
-                  <span className="d-none d-md-block">Tạo thành viên</span>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="2" className="nav-link cursor-pointer py-2">
-                  <i
-                    className={classnames(
-                      "mdi mdi-clipboard-plus",
-                      "d-block",
-                      "font-24"
-                    )}
-                  ></i>
-                  <span className="d-none d-md-block">Tạo dịch vụ</span>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="3" className="nav-link cursor-pointer py-2">
-                  <i
-                    className={classnames(
-                      "mdi mdi-office-building",
-                      "d-block",
-                      "font-24"
-                    )}
-                  ></i>
-                  <span className="d-none d-md-block">Tạo khoa</span>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="4" className="nav-link cursor-pointer py-2">
-                  <i
-                    className={classnames(
-                      "mdi mdi-hospital-building",
-                      "d-block",
-                      "font-24"
-                    )}
-                  ></i>
-                  <span className="d-none d-md-block">Tạo phòng khám</span>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="5" className="nav-link cursor-pointer py-2">
-                  <i
-                    className={classnames(
-                      "mdi mdi-pencil",
-                      "d-block",
-                      "font-24"
-                    )}
-                  ></i>
-                  <span className="d-none d-md-block">Cập nhật thông tin</span>
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Tab.Content className="p-3">
-              <Tab.Pane eventKey="1">
-                <CreatePersonnel />
-              </Tab.Pane>
-              <Tab.Pane eventKey="2"> <CreateService /></Tab.Pane>
-              <Tab.Pane eventKey="3">
-                <CreateDepartment />
-              </Tab.Pane>
-              <Tab.Pane eventKey="4"> <CreateClinic /> </Tab.Pane>
-              <Tab.Pane eventKey="5"><BranchInfo /></Tab.Pane>
-            </Tab.Content>
-          </Card.Body>
-        </Card>
-      </Tab.Container>
+          <Tab.Container defaultActiveKey="1">
+  <Card>
+    <Card.Body>
+      <Nav
+        variant="pills"
+        className="nav nav-pills navtab-bg nav-justified mb-3"
+      >
+        <Nav.Item>
+          <Nav.Link eventKey="1" className="nav-link cursor-pointer py-2">
+            <i
+              className={classnames(
+                "mdi mdi-account-circle",
+                "d-block",
+                "font-24"
+              )}
+            ></i>
+            <span className="d-none d-md-block">Tạo thành viên</span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="2" className="nav-link cursor-pointer py-2">
+            <i
+              className={classnames(
+                "mdi mdi-clipboard-plus",
+                "d-block",
+                "font-24"
+              )}
+            ></i>
+            <span className="d-none d-md-block">Tạo dịch vụ</span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="3" className="nav-link cursor-pointer py-2">
+            <i
+              className={classnames(
+                "mdi mdi-office-building",
+                "d-block",
+                "font-24"
+              )}
+            ></i>
+            <span className="d-none d-md-block">Tạo khoa</span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="4" className="nav-link cursor-pointer py-2">
+            <i
+              className={classnames(
+                "mdi mdi-hospital-building",
+                "d-block",
+                "font-24"
+              )}
+            ></i>
+            <span className="d-none d-md-block">Tạo phòng khám</span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="5" className="nav-link cursor-pointer py-2">
+            <i
+              className={classnames(
+                "mdi mdi-pencil",
+                "d-block",
+                "font-24"
+              )}
+            ></i>
+            <span className="d-none d-md-block">Cập nhật thông tin</span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="6" className="nav-link cursor-pointer py-2">
+            <i
+              className={classnames(
+                "mdi mdi-chart-bar",
+                "d-block",
+                "font-24"
+              )}
+            ></i>
+            <span className="d-none d-md-block">Thống kê bệnh nhân</span>
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <Tab.Content className="p-3">
+        <Tab.Pane eventKey="1">
+          <CreatePersonnel />
+        </Tab.Pane>
+        <Tab.Pane eventKey="2">
+          <CreateService />
+        </Tab.Pane>
+        <Tab.Pane eventKey="3">
+          <CreateDepartment />
+        </Tab.Pane>
+        <Tab.Pane eventKey="4">
+          <CreateClinic />
+        </Tab.Pane>
+        <Tab.Pane eventKey="5">
+          <BranchInfo />
+        </Tab.Pane>
+        <Tab.Pane eventKey="6">
+          <PatientStatistics />
+        </Tab.Pane>
+      </Tab.Content>
+    </Card.Body>
+  </Card>
+</Tab.Container>
+
     </>
   );
 };

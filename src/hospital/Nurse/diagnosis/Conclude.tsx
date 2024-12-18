@@ -5,7 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { PushDataMedical } from "../../../controller/MedicalController"; // Import controller
 import CreateAppointment from "../../hospitalbranch/CreateAppointment"; // Import controller
 import { useNavigate } from 'react-router-dom';
-
+import Ts from './basicexamination';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 // Define types for props and state
@@ -376,6 +376,7 @@ const gotoshare=async(item:any)=>{
                 ]}
                 title={"Chuẩn đoán Kết Luận Bệnh Nhân"}
             /> */}
+            <Ts initialValue={CccdValue} />
             <CreateAppointment />
             <Card className="border p-4 mt-4">
                 <Form onSubmit={handleSubmit}>

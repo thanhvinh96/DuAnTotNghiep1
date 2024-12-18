@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Modal, ListGroup, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Statistics from "./Statistics";
+import Statistics from "./Statistics1";
 
 // Components
 import PageTitle from "../../../components/PageTitle";
@@ -9,9 +9,9 @@ import Table from "../../../components/Table";
 import jwtDecode from "jwt-decode";
 
 // API
-import { GetHistoryMedical } from "../../../controller/MedicalController";
+import { GetHistoryMedical,ShowMedicalMetrics } from "../../../controller/MedicalController";
 
-// Define type for row data
+// Define type for row data 
 interface RowData {
   id: number;
   date: string;
@@ -85,30 +85,33 @@ function Index(): JSX.Element {
   useEffect(() => {
     checkToken();
   }, []);
-
+  const [dataMetrics, setdataMetrics] = useState<any>({});
   const showdata = async () => {
     try {
       const token: any = localStorage.getItem("jwtToken");
-      console.log("du lieu token");
-      console.log(token);
       const decodedToken: any = jwtDecode(token);
-
+  
       const data = {
         tokenmedical: decodedToken.tokenmedical,
         cccd: decodedToken.cccd,
       };
       const res = await GetHistoryMedical(data);
-      console.log(res.data.diseaseInfo);
+      const res1 = await ShowMedicalMetrics(data);
+      
+      console.log(res1);  // Log dữ liệu từ API
+      setdataMetrics(res1.data);
+  
       const records = res.data.diseaseInfo.map((item: any, index: number) => ({
-        id: index + 1, // tạo ID cho mỗi dòng
-        recordCode: item.diseasecode || "N/A", // giả sử `recordCode` là mã hồ sơ
-        date: item.namedisease || "N/A", // giả sử `date` là thời gian khám
+        id: index + 1,
+        recordCode: item.diseasecode || "N/A",
+        date: item.namedisease || "N/A",
       }));
       setTableData(records);
     } catch (e) {
       console.error("Error fetching medical history:", e);
     }
   };
+  
 
   useEffect(() => {
     showdata();
@@ -118,7 +121,7 @@ function Index(): JSX.Element {
     <>
       <div className="dashboard-container">
         {/* Statistics Section */}
-        <Statistics />
+        <Statistics data={dataMetrics} />
         {/* User Balances Section */}
         <Modal
           show={showModal}
