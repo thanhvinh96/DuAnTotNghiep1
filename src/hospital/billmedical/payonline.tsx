@@ -243,6 +243,11 @@ const [totalsums,settotalsums] = useState<any>()
 >
   {/* Logo Section */}
   <div style={{ textAlign: "center", marginBottom: "30px" }}>
+    <img
+      src="https://cmsnt.net/logo.png"
+      alt="CMSNT Logo"
+      style={{ maxWidth: "100%", marginBottom: "10px" }}
+    />
     <p style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>EHR Solution</p>
   </div>
 

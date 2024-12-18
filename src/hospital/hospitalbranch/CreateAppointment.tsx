@@ -149,7 +149,7 @@ const CreateAppointment: React.FC = () => {
 
             }
             const res = await GetScheduleByMedical(data)
-            console.log("vinh", res);
+            console.log(res);
             if (res.status === true) {
                 setcodeMedicalBool(res.data[0].patient)
                 setDataTable(res.data);  // Lưu dữ liệu vào state
@@ -309,31 +309,6 @@ const CreateAppointment: React.FC = () => {
         }
     };
     const handleExportInvoice = () => {
-        // const invoiceData: any = [];
-
-        // // Duyệt qua tất cả các lịch hẹn trong dataTable
-        // dataTable.forEach((schedule: any) => {
-        //     const patient = schedule.patient || 'Chưa có thông tin bệnh nhân';
-
-        //     // Tìm xem bệnh nhân đã có trong mảng invoiceData chưa
-        //     let existingPatient = invoiceData.find((item: any) => item.medical === patient);
-
-        //     if (!existingPatient) {
-        //         // Nếu chưa có, tạo mới đối tượng cho bệnh nhân này
-        //         existingPatient = {
-        //             medical: patient,
-        //             dataservers: []  // Mảng chứa các lịch hẹn của bệnh nhân
-        //         };
-        //         // Thêm đối tượng bệnh nhân vào invoiceData
-        //         invoiceData.push(existingPatient);
-        //     }
-
-        //     // Thêm lịch hẹn vào mảng dataservers của bệnh nhân
-        //     existingPatient.dataservers.push(schedule);
-        // });
-
-        // // Log kết quả ra ngoài vòng lặp
-        // console.log(invoiceData);
         window.location.href = `hospital/medicalbill?medical=${codeMedicalBook}`;
     };
 
@@ -348,74 +323,6 @@ const CreateAppointment: React.FC = () => {
 
 
             <Row className="justify-content-center">
-                <Col md={12}>
-                    <Card>
-                        <Card.Body>
-                            <h4 className="header-title mb-4">Khám Và Đo Các Chỉ Số</h4>
-                            <Form onSubmit={handleSubmit}>
-                                <Row className="mb-3">
-                                    <Col md={6}>
-                                        <Form.Group controlId="department">
-                                            <Form.Label>Nhịp Tim</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name="title"
-                                                placeholder="Nhập Nhịp Tim"
-                                                value={appointmentData.title}
-                                                onChange={handleInputChange}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Form.Group controlId="clinic">
-                                            <Form.Label>Huyết Áp</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name="title"
-                                                placeholder="Nhập Nhịp Tim"
-                                                value={appointmentData.title}
-                                                onChange={handleInputChange}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col md={6}>
-                                        <Form.Group controlId="title">
-                                            <Form.Label>Nhóm Máu</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name="title"
-                                                placeholder="Nhập Nhóm Máu"
-                                                value={appointmentData.title}
-                                                onChange={handleInputChange}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Form.Group controlId="title">
-                                            <Form.Label>Chiều Cao</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name="title"
-                                                placeholder="Nhập Chiều Cao"
-                                                value={appointmentData.title}
-                                                onChange={handleInputChange}
-                                            >
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-
-                                <div className="mt-4 text-end">
-                                    <Button variant="primary" type="submit">
-                                        Submit
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
                 <Col md={12}>
                     <Card>
                         <Card.Body>
@@ -524,7 +431,6 @@ const CreateAppointment: React.FC = () => {
                                                 <option value="completed">Kết thúc</option>
                                                 <option value="cancelled">Đã hủy</option>
                                             </Form.Control>
-
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -569,206 +475,52 @@ const CreateAppointment: React.FC = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col md={12}>
-                    <Card>
-                        <Card.Body>
-                            <h4 className="header-title mb-4">Quản Lý Lịch Hẹn</h4>
-                            <Form.Group controlId="searchBranch" className="mb-3">
-                                <Form.Label>Tìm Kiếm Theo Phòng Khám</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Nhập ID phòng khám"
-                                    value={searchBranch}
-                                    onChange={handleSearchChange}
-                                />
-                            </Form.Group>
-                            <div style={{ overflowX: 'auto' }}>
-                                <Table bordered hover className="mt-4 text-center table-responsive">
-                                    <thead className="bg-primary text-white">
-                                        <tr style={{ background: '#38adc1' }}>
-                                            <th style={{ color: 'white' }}>Phòng Khám</th>
-                                            <th style={{ color: 'white' }}>Khoa</th>
-                                            <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
-                                            <th style={{ color: 'white' }}>Trạng Thái</th>
-                                            <th style={{ color: 'white' }}>Thời Gian</th>
-                                            <th style={{ color: 'white' }}>Loại Lịch Hẹn</th>
-                                            <th style={{ color: 'white' }}>Bác Sĩ Tiếp Nhận</th>
-                                            <th style={{ color: 'white' }}>Phí Dịch Vụ</th>
+            </Row>
+
+            <Col md={12}>
+                <Card>
+                    <Card.Body>
+                        <h4 className="header-title mb-4">Quản Lý Lịch Hẹn</h4>
+                        <Form.Group controlId="searchBranch" className="mb-3">
+                            <Form.Label>Tìm Kiếm Theo Phòng Khám</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Nhập ID phòng khám"
+                                value={searchBranch}
+                                onChange={handleSearchChange}
+                            />
+                        </Form.Group>
+                        <div style={{ overflowX: 'auto' }}>
+                            <Table bordered hover className="mt-4 text-center table-responsive">
+                                <thead className="bg-primary text-white">
+                                    <tr style={{ background: '#38adc1' }}>
+                                        <th style={{ color: 'white' }}>Phòng Khám</th>
+                                        {/* <th style={{ color: 'white' }}>Khoa</th> */}
+                                        <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
+                                        <th style={{ color: 'white' }}>Trạng Thái</th>
+                                        <th style={{ color: 'white' }}>Thời Gian</th>
+                                        <th style={{ color: 'white' }}>Loại Lịch Hẹn</th>
+                                        <th style={{ color: 'white' }}>Bác Sĩ Tiếp Nhận</th>
+                                        <th style={{ color: 'white' }}>Phí Dịch Vụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {dataTable.map((schedule, index) => (
+                                        <tr key={schedule._id}>
+                                            <td>{schedule.clinics?.name}</td>
+                                            {/* <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td> */}
+                                            <td>{schedule.patient || 'Chưa có chuyên khoa'}</td>
+                                            <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
+                                            <td>{new Date(schedule.timeschedule).toLocaleString()}</td>
+                                            <td>{schedule.notes}</td>
+                                            <td>{schedule.accepted_by_doctor || 'Chưa cập nhật'}</td>
+                                            <td>{schedule.clinics?.service_branch?.serviceFees || 'Không có phí'}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {dataTable.map((schedule, index) => (
-                                            <tr key={schedule._id}>
-                                                <td>{schedule.clinics?.name}</td>
-                                                <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td>
-                                                <td>{schedule.patient || 'Chưa có chuyên khoa'}</td>
-                                                <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
-                                                <td>{new Date(schedule.timeschedule).toLocaleString()}</td>
-                                                <td>{schedule.notes}</td>
-                                                <td>{schedule.accepted_by_doctor || 'Chưa cập nhật'}</td>
-                                                <td>{schedule.clinics?.service_branch?.serviceFees || 'Không có phí'}</td>
-                                            </tr>
-                                        ))}
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-
-                        {/* Các trường còn lại */}
-                        <Row className="mb-3">
-                            <Col md={12}>
-                                <Form.Group controlId="timeschedule">
-                                    <Form.Label>Thời Gian Lịch Hẹn</Form.Label>
-                                    <Form.Control
-                                        type="datetime-local"
-                                        name="timeschedule"
-                                        value={appointmentData.timeschedule}
-                                        onChange={handleInputChange}
-                                    />
-                                </Form.Group>
-                            </Col>
-
-                           
-                        </Row>
-                      
-                        <Row className="mb-3">
-                            <Col md={6}>
-                                <Form.Group controlId="title">
-                                    <Form.Label>Tiêu Đề Lịch Hẹn</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="title"
-                                        placeholder="Nhập tiêu đề"
-                                        value={appointmentData.title}
-                                        onChange={handleInputChange}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="type">
-                                    <Form.Label>Loại Lịch Hẹn</Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        name="type"
-                                        value={appointmentData.type}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="initial">Lịch hẹn trưởng khoa</option>
-                                        <option value="follow_up">Lịch hẹn khám bác sĩ</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row className="mb-3">
-                        <Col md={12}>
-                                <Form.Group controlId="className">
-                                    <Form.Label>Trạng thái lịch hẹn</Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        name="className"
-                                        value={appointmentData.className}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="">Chọn trạng thái lịch hẹn</option>
-                                        <option value="pending">Tiếp nhận</option>
-                                        <option value="confirmed">Chờ khám</option>
-                                        <option value="completed">Kết thúc</option>
-                                        <option value="cancelled">Đã hủy</option>
-                                    </Form.Control>
-                                  
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row className="mb-3">
-    <Col md={6}>
-        <Form.Group controlId="condition">
-            <Form.Label>Trạng Thái Bệnh Nhân</Form.Label>
-            <Form.Control
-                as="select"
-                name="condition"
-                value={appointmentData.condition}
-                onChange={handleInputChange}
-            >
-                <option value="">Chọn trạng thái bệnh nhân</option>
-                <option value="healthy">Khám</option>
-                <option value="under_treatment">Đang điều trị</option>
-                <option value="recovered">Đã hồi phục</option>
-            </Form.Control>
-        </Form.Group>
-    </Col>
-
-    <Col md={6}>
-        <Form.Group controlId="notes">
-            <Form.Label>Ghi Chú</Form.Label>
-            <Form.Control
-                type="text"
-                name="notes"
-                placeholder="Nhập ghi chú"
-                value={appointmentData.notes}
-                onChange={handleInputChange}
-            />
-        </Form.Group>
-    </Col>
-</Row>
-
-                        <div className="mt-4 text-end">
-                            <Button variant="primary" type="submit">
-                                Tạo Lịch Hẹn
-                            </Button>
+                                    ))}
+                                </tbody>
+                            </Table>
                         </div>
-                    </Form>
-                </Card.Body>
-            </Card>
-        </Col>
-    </Row>
-
-        <Col md={12}>
-            <Card>
-                <Card.Body>
-                    <h4 className="header-title mb-4">Quản Lý Lịch Hẹn</h4>
-                    <Form.Group controlId="searchBranch" className="mb-3">
-                        <Form.Label>Tìm Kiếm Theo Phòng Khám</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Nhập ID phòng khám"
-                            value={searchBranch}
-                            onChange={handleSearchChange}
-                        />
-                    </Form.Group>
-                    <div style={{ overflowX: 'auto' }}>
-  <Table bordered hover className="mt-4 text-center table-responsive">
-    <thead className="bg-primary text-white">
-      <tr style={{ background: '#38adc1' }}>
-        <th style={{ color: 'white' }}>Phòng Khám</th>
-        {/* <th style={{ color: 'white' }}>Khoa</th> */}
-        <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
-        <th style={{ color: 'white' }}>Trạng Thái</th>
-        <th style={{ color: 'white' }}>Thời Gian</th>
-        <th style={{ color: 'white' }}>Loại Lịch Hẹn</th>
-        <th style={{ color: 'white' }}>Bác Sĩ Tiếp Nhận</th>
-        <th style={{ color: 'white' }}>Phí Dịch Vụ</th>
-      </tr>
-    </thead>
-    <tbody>
-      {dataTable.map((schedule, index) => (
-        <tr key={schedule._id}>
-          <td>{schedule.clinics?.name}</td>
-          {/* <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td> */}
-          <td>{schedule.patient || 'Chưa có chuyên khoa'}</td>
-          <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
-          <td>{new Date(schedule.timeschedule).toLocaleString()}</td>
-          <td>{schedule.notes}</td>
-          <td>{schedule.accepted_by_doctor || 'Chưa cập nhật'}</td>
-          <td>{schedule.clinics?.service_branch?.serviceFees || 'Không có phí'}</td>
-        </tr>
-      ))}
-    </tbody>
-  </Table>
-</div>
-
-
-                    <div className="d-flex justify-content-between mt-4">
-                          
+                        <div className="d-flex justify-content-between mt-4">
                             <Button
                                 type="submit"
                                 variant="primary"
@@ -780,38 +532,12 @@ const CreateAppointment: React.FC = () => {
                                 onClick={handleExportInvoice} // Gọi hàm khi nhấn nút
 
                             >
-                               Xuất Hóa Đơn
+                                Xuất Hóa Đơn
                             </Button>
                         </div>
-                </Card.Body>
-            </Card>
-        </Col>
-</>
-                                    </tbody>
-                                </Table>
-                            </div>
-
-
-                            <div className="d-flex justify-content-between mt-4">
-
-                                <Button
-                                    type="submit"
-                                    variant="primary"
-                                    style={{
-                                        fontSize: "14px",
-                                        padding: "6px 20px",
-                                        width: "150px",
-                                    }}
-                                    onClick={handleExportInvoice} // Gọi hàm khi nhấn nút
-
-                                >
-                                    Xuất Hóa Đơn
-                                </Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+                    </Card.Body>
+                </Card>
+            </Col>
         </>
 
     );

@@ -49,7 +49,7 @@ const BottomLink = () => {
       <p className="text-muted">
         {t("Trở lại ")}{" "}
         <Link
-          to={"/"}
+          to={"/hospital/organization-loginorg"}
           className="text-muted ms-1"
         >
           <b>{t("Đăng nhập")}</b>

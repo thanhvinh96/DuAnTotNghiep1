@@ -519,7 +519,7 @@ export const ShowInfoMedicalBycccd = async (data: any) => {
 };
 export const ShowInfoMedicalByBranch = async (data: any) => { 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/medicalbook/bybranch", {
+    const response = await fetch("https://ehrmedical.online/api/medicalbook/bybranch", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -543,7 +543,7 @@ export const ShowInfoMedicalByBranch = async (data: any) => {
 };
 export const ShowInfoMedicalByOrg = async (data: any) => { 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/medicalbook/byorg", {
+    const response = await fetch("https://ehrmedical.online/api/medicalbook/byorg", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -568,7 +568,7 @@ export const ShowInfoMedicalByOrg = async (data: any) => {
 
 export const ShowMedicalByCode = async (data: any) => { 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/medicalconclusion/show/branch", {
+    const response = await fetch("https://ehrmedical.online/api/medicalconclusion/show/branch", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

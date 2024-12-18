@@ -78,8 +78,6 @@ const Index: React.FC = () => {
       console.error("Error fetching data:", error);
     }
   };
-
-
   const MySwal = withReactContent(Swal);
   const [diseaseInfo, setDiseaseInfo] = useState<Disease[]>([]);
   const ShowFunDiseasecodes = async () => {

@@ -381,6 +381,7 @@ const gotoshare=async(item:any)=>{
             <Card className="border p-4 mt-4">
                 <Form onSubmit={handleSubmit}>
                     <h4>Chuyên Mục Khám và Kết quả</h4>
+
                     {/* Form nhập CCCD */}
                     {!patientData && (
                         <Row className="mb-3">
@@ -730,7 +731,7 @@ const gotoshare=async(item:any)=>{
                                     Thêm dòng
                                 </Button>
 
-                                {/* <Button
+                                <Button
                                     type="submit"
                                     variant="primary"
                                     style={{
@@ -739,8 +740,8 @@ const gotoshare=async(item:any)=>{
                                         width: "150px",
                                     }}
                                 >
-                                    Lưu kết qu
-                                </Button> */}
+                                    Lưu kết quả
+                                </Button>
                             </div>
                         </Form>
                     </div>

@@ -122,8 +122,8 @@ const ManagementRequest: React.FC = () => {
 
         try {
             const loadingSwal = MySwal.fire({
-                title: 'Vui lòng Chờ...',
-                text: 'Đang kết nối đến sổ khám, Vui lòng Chờ!',
+                title: 'Please wait...',
+                text: 'Request Medical, please wait!',
                 icon: 'info',
                 allowOutsideClick: false,
                 showConfirmButton: false,
@@ -138,8 +138,8 @@ const ManagementRequest: React.FC = () => {
             if (res.status === true) {
                 Swal.close();
                 Swal.fire({
-                    title: 'Hoàn Thành!',
-                    text: 'Đã gửi yêu cầu thành công',
+                    title: 'Request Medical Success!',
+                    text: 'Your Request Medical was successful.',
                     icon: 'success',
                     confirmButtonText: 'OK',
                 });
