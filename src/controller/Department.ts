@@ -1,6 +1,6 @@
 export const getClinicsByDepartmentType = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/department/bybranch", {
+        const response = await fetch("https://ehrmedical.online/api/department/bybranch", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

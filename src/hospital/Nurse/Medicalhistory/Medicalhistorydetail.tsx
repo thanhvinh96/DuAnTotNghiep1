@@ -32,7 +32,7 @@ const Medicalhistorydetail: React.FC = () => {
          
     const handleAccessPatientInfo = async (patientId: any) => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
+            const response = await fetch("https://ehrmedical.online/api/medical/code", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -68,7 +68,7 @@ const Medicalhistorydetail: React.FC = () => {
     const showdata = async (patientId: any) => {
         try {
 
-            const response = await fetch("http://127.0.0.1:8000/api/medicaldata/bycode", {
+            const response = await fetch("https://ehrmedical.online/api/medicaldata/bycode", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -87,7 +87,7 @@ const Medicalhistorydetail: React.FC = () => {
     };
     const showdatadetail = async (patientId: any) => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/medicalconclusion/getbycode", {
+            const response = await fetch("https://ehrmedical.online/api/medicalconclusion/getbycode", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

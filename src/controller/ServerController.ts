@@ -1,6 +1,6 @@
 export const GetSchedule = async (data:any)=>{
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/services", {
+      const response = await fetch("https://ehrmedical.online/api/services", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export const GetSchedule = async (data:any)=>{
   }
   export const GetScheduleID = async (data:any)=>{
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/services/id", {
+      const response = await fetch("https://ehrmedical.online/api/services/id", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

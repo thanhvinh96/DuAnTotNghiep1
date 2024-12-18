@@ -1,6 +1,6 @@
 export const getPayCode = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/PatientBillController/pycode", {
+        const response = await fetch("https://ehrmedical.online/api/PatientBillController/pycode", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const getPayCode = async (formData: any) => {
 
 export const getPayCodeUpdate = async (formData: any) => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/brank/checktransaction", {
+      const response = await fetch("https://ehrmedical.online/api/brank/checktransaction", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const getPayCodeUpdate = async (formData: any) => {
 
 export const CrontData = async () => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/brank/cronjob");
+      const response = await fetch("https://ehrmedical.online/api/brank/cronjob");
   
       if (response.ok) {
         const data = await response.json();

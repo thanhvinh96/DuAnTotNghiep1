@@ -1,6 +1,6 @@
 export const addBankByBracnh = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/brank/add", {
+        const response = await fetch("https://ehrmedical.online/api/brank/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const addBankByBracnh = async (formData: any) => {
 
 export const ShowBankByBracnh = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/brank/bybranch", {
+        const response = await fetch("https://ehrmedical.online/api/brank/bybranch", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const ShowBankByBracnh = async (formData: any) => {
 
 export const ShowBankByClient = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/brank/client", {
+        const response = await fetch("https://ehrmedical.online/api/brank/client", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export const ShowBankByClient = async (formData: any) => {
 
 export const ShowBankByIdClient = async (formData: any) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/brank/idclient", {
+        const response = await fetch("https://ehrmedical.online/api/brank/idclient", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export const ShowBankByIdClient = async (formData: any) => {
 
 export const ShowBankByMoth = async () => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/brank/monthly", {
+      const response = await fetch("https://ehrmedical.online/api/brank/monthly", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -138,7 +138,7 @@ export const ShowBankByMoth = async () => {
 };
 export const ShowBankByAll = async () => {
   try {
-      const response = await fetch("http://127.0.0.1:8000/api/brank/all", {
+      const response = await fetch("https://ehrmedical.online/api/brank/all", {
         method: "GET",
        
       });

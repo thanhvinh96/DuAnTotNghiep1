@@ -191,7 +191,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             if (token) {
 
                 decoded = jwt_decode(token);
-                const response = await fetch("http://127.0.0.1:8000/api/medicaldata/code", {
+                const response = await fetch("https://ehrmedical.online/api/medicaldata/code", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -213,7 +213,7 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
 
     const handleAccessPatientInfo = async (patientId: string) => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
+            const response = await fetch("https://ehrmedical.online/api/medical/code", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -381,7 +381,6 @@ const gotoshare=async(item:any)=>{
             <Card className="border p-4 mt-4">
                 <Form onSubmit={handleSubmit}>
                     <h4>Chuyên Mục Khám và Kết quả</h4>
-
                     {/* Form nhập CCCD */}
                     {!patientData && (
                         <Row className="mb-3">
@@ -731,7 +730,7 @@ const gotoshare=async(item:any)=>{
                                     Thêm dòng
                                 </Button>
 
-                                <Button
+                                {/* <Button
                                     type="submit"
                                     variant="primary"
                                     style={{
@@ -740,8 +739,8 @@ const gotoshare=async(item:any)=>{
                                         width: "150px",
                                     }}
                                 >
-                                    Lưu kết quả
-                                </Button>
+                                    Lưu kết qu
+                                </Button> */}
                             </div>
                         </Form>
                     </div>

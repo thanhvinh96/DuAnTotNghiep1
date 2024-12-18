@@ -20,7 +20,7 @@ import { VerticalForm, FormInput } from "../../components";
 
 import AuthLayout from "./AuthLayout";
 
-interface UserData {
+interface UserData {                    
   username: string;
 }
 

@@ -23,7 +23,7 @@ export const CreateBranchs = async (formData: any) => {
     // Proceed if the response from the first API was successful
     if (data.success === true) {
       // Second API call to create the branch in a different service
-      const _response = await fetch("http://127.0.0.1:8000/api/branches", {
+      const _response = await fetch("https://ehrmedical.online/api/branches", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

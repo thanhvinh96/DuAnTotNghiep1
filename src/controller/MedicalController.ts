@@ -269,7 +269,7 @@ export const ApproveAccessRequests= async (data: any) => {
       fieldsToShare: data.fieldsToShare,
   };
   
-    const _response:any = await fetch("http://127.0.0.1:8000/api/medical-record-books", {
+    const _response:any = await fetch("https://ehrmedical.online/api/medical-record-books", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -440,7 +440,7 @@ export const PushDataMedical = async (data: any) => {
     console.log("First API call successful:", result1);
 
     // Nếu API đầu tiên thành công, tiếp tục gửi đến API thứ hai
-    const response2 = await fetch("http://127.0.0.1:8000/api/medicalconclusion/add", {
+    const response2 = await fetch("https://ehrmedical.online/api/medicalconclusion/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -470,7 +470,7 @@ export const PushDataMedical = async (data: any) => {
 };
 export const ShowCodeMedicalBycccd = async (data: any) => { 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
+    const response = await fetch("https://ehrmedical.online/api/medical/cccd", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -495,7 +495,7 @@ export const ShowCodeMedicalBycccd = async (data: any) => {
 
 export const ShowInfoMedicalBycccd = async (data: any) => { 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/medical/code", {
+    const response = await fetch("https://ehrmedical.online/api/medical/code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -24,7 +24,7 @@ const CreateService: React.FC = () => {
 
     const showDataSeveri = async () => {
         try {
-            const res = await fetch('http://127.0.0.1:8000/api/services', {
+            const res = await fetch('https://ehrmedical.online/api/services', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const CreateService: React.FC = () => {
         console.log("Service Data:", newService);
 
         try {
-            const res = await fetch('http://127.0.0.1:8000/api/services/create', {
+            const res = await fetch('https://ehrmedical.online/api/services/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

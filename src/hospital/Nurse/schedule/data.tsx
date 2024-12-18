@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 // Hàm để lấy dữ liệu từ API
 async function fetchEvents(): Promise<EventInput[]> {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/schedule");
+    const response = await fetch("https://ehrmedical.online/api/schedule");
     const data = await response.json();
 
     // Chuyển đổi dữ liệu từ API thành EventInput cho FullCalendar

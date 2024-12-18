@@ -59,7 +59,7 @@ const AddEditEvent = ({
   const getDataMedical = async () => {
     if (medical) {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/medical/cccd", {
+        const response = await fetch("https://ehrmedical.online/api/medical/cccd", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -83,7 +83,7 @@ const AddEditEvent = ({
   // Hàm lấy dữ liệu dịch vụ dựa trên mã chi nhánh
   const fetchDataServices = async (branch: string) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/services", {
+      const response = await fetch("https://ehrmedical.online/api/services", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +136,7 @@ const AddEditEvent = ({
     setSelectedDepartment(department);
     setFormData({ ...formData, department });
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/check-by-name", {
+      const response = await fetch("https://ehrmedical.online/api/check-by-name", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ specialized: department }),
@@ -167,7 +167,7 @@ const AddEditEvent = ({
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/schedule-create",
+        "https://ehrmedical.online/api/schedule-create",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
