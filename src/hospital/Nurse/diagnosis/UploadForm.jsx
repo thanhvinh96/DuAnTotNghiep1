@@ -34,9 +34,9 @@ const MedicalForm = ({ onSubmit }) => {
       const decoded = jwt_decode(token);
       console.log("gias tri");
       console.log(decoded["tokenuser"]);
-      settokenuser(decoded["tokenuser"]);
-      settokenbranch(decoded["tokenuser"]);
-      settokeorg(decoded["tokenuser"]);
+      settokenuser(decoded['tokenuser'])
+      settokenbranch(decoded['branch'])
+      settokeorg(decoded['tokeorg'])
     }
   };
   const addRow = () => {

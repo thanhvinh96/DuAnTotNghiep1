@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="container-fluid">
           <Row>
             <Col md={6}>
-              {currentYear} &copy;  Building the EHR system{" "}
+              {currentYear} &copy; Building the EHR system
               <Link to="#"></Link>
             </Col>
 

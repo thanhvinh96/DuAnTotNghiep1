@@ -41,11 +41,8 @@ const StatisticsWidgetvv = (props: StatisticsWidgetProps) => {
                 <p className="text-dark mb-2.9 text-truncate font-18">
                   {props["description"]}
                 </p>
-                
-                <h3 style={{marginTop:"37px"}} className="text-dark">
-                  <span>
-                      {props["stats"]} 
-                  </span>
+                <h3 style={{marginTop:"36px"}} className="text-dark text-truncate">
+                  {props["stats"]}
                 </h3>
               </div>
             </Col>

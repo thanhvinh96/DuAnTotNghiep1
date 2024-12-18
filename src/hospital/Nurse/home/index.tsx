@@ -281,7 +281,6 @@ const Dashboard3 = () => {
                   <thead className="table-light">
                     <tr>
                       <th>Mã lịch hẹn</th>
-                      <th>Tên bệnh nhân</th>
                       <th>Nội dung khám</th>
                       <th>Thời gian</th>
                       <th>Trạng thái</th>
@@ -293,7 +292,6 @@ const Dashboard3 = () => {
                     {dataSchedule.length ? (
                       dataSchedule.map((appt: any, idx: number) => (
                         <tr key={appt._id || idx}>
-                          <td>{appt._id}</td>
                           <td>{appt.patient || "N/A"}</td>
                           <td>{appt.notes || "Nội dung không có"}</td>
                           <td>{appt.timeschedule ? new Date(appt.timeschedule).toLocaleString() : "N/A"}</td>

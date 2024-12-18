@@ -13,6 +13,7 @@ interface Doctor {
     tokenuser: string;
     specialized: { value: string, label: string }[]; // Cập nhật kiểu specialized là mảng đối tượng có value và label
 }
+
 interface Clinic {
     _id: string;
     code: string;

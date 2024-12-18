@@ -72,7 +72,7 @@ const MedicalRecordDetail: React.FC = (): JSX.Element => {
     }
     const req:any =await ShowInfoMedicalBycccd(data);
     console.log("hia tri"+req['data'])
-    await setdataccdByshare({
+    setdataccdByshare({
         tokeorg:decoded['tokeorg'] ,
         tokenbranch:decoded['branch'] ,        
         diseasecode: req['data'].diseasecode ,
@@ -84,42 +84,45 @@ const MedicalRecordDetail: React.FC = (): JSX.Element => {
     postData(code)
   },[code])
 
-  useEffect(() => {
 
-    const fetchData = async () => {
-      if (!datacheckprofile.cccd || !datacheckprofile.tokenmedical || !code) return;
-
-      try {
-        const data = {
-          cccd: dataccdByshare.cccd,
-          tokeorg: dataccdByshare.tokeorg,
-          tokenbranch: dataccdByshare.tokenbranch,
-          diseasecode: code,
-        };
-
-        const res = await ShareGetHistoryMedicalDetail(data);
-        console.log("data res"+res.data)
-        // Parse disease detail data
-        console.clear()
-        // const parsedData = JSON.parse(res.data);
-        console.log("rate"+res['data']['diseaseInfo']['data']);
-
-// Chuyển dữ liệu từ chuỗi JSON về đối tượng
-const rawData = res['data']['diseaseInfo']['data'];
-try {
-    const medicalData = JSON.parse(rawData); // Chuyển từ chuỗi JSON sang đối tượng
-    setMedicalData(medicalData);
-} catch (error) {
-    console.error("Failed to parse JSON:", error);
-    // Xử lý lỗi nếu JSON không hợp lệ
-}
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [dataccdByshare, code]);
+    useEffect(() => {
+      const fetchData = async () => {
+        // Kiểm tra xem các giá trị cần thiết đã có chưa
+        if (!dataccdByshare.cccd || !dataccdByshare.tokeorg || !dataccdByshare.tokenbranch || !code) {
+          console.error("Dữ liệu chưa đầy đủ để gọi ShareGetHistoryMedicalDetail");
+          return;
+        }
+    
+        try {
+          const data = {
+            cccd: dataccdByshare.cccd,
+            tokeorg: dataccdByshare.tokeorg,
+            tokenbranch: dataccdByshare.tokenbranch,
+            diseasecode: code,
+          };
+          console.clear();
+          console.log("Đang gọi ShareGetHistoryMedicalDetail với dữ liệu:", data);
+    
+          // Gọi API
+          const res = await ShareGetHistoryMedicalDetail(data);
+          console.log("Dữ liệu trả về từ ShareGetHistoryMedicalDetail:", res);
+    
+          // Xử lý dữ liệu trả về
+          const rawData = res?.data?.diseaseInfo?.data;
+          try {
+            const medicalData = JSON.parse(rawData); // Chuyển chuỗi JSON thành đối tượng
+            setMedicalData(medicalData);
+          } catch (error) {
+            console.error("Lỗi khi phân tích JSON:", error);
+          }
+        } catch (error) {
+          console.error("Lỗi khi gọi API ShareGetHistoryMedicalDetail:", error);
+        }
+      };
+    
+      fetchData();
+    }, [dataccdByshare, code]);
+    
 
   return (
     <>
