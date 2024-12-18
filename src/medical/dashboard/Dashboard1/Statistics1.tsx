@@ -29,7 +29,7 @@ const Statistics: React.FC<StatisticsProps> = ({ data = {} }) => {
         <Col md={6} xl={3} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           <StatisticsWidget
             variant="success"
-            description="Huyết áp 130/"
+            description="Huyết áp"
             stats={data.bloodPressure || "N/A"} // Dữ liệu từ API
             icon="fe-activity"
             values="mmHg"

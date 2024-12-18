@@ -45,11 +45,7 @@ const StatisticsWidget = (props: StatisticsWidgetProps) => {
                 </p>
                 <h3 className="text-dark mb-0">
                   <span>
-                    <CountUp
-                      duration={1}
-                      end={props["stats"]}
-                      {...props["counterOptions"]}
-                    />
+                      {props["stats"]} 
                   </span>
                 </h3>
                 <p className="text-dark text-truncate">
