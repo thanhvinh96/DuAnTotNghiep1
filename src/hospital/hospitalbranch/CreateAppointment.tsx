@@ -521,7 +521,7 @@ const CreateAppointment: React.FC = () => {
     <thead className="bg-primary text-white">
       <tr style={{ background: '#38adc1' }}>
         <th style={{ color: 'white' }}>Phòng Khám</th>
-        <th style={{ color: 'white' }}>Khoa</th>
+        {/* <th style={{ color: 'white' }}>Khoa</th> */}
         <th style={{ color: 'white' }}>Mã Hồ Sơ</th>
         <th style={{ color: 'white' }}>Trạng Thái</th>
         <th style={{ color: 'white' }}>Thời Gian</th>
@@ -534,7 +534,7 @@ const CreateAppointment: React.FC = () => {
       {dataTable.map((schedule, index) => (
         <tr key={schedule._id}>
           <td>{schedule.clinics?.name}</td>
-          <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td>
+          {/* <td>{schedule.departments?.departmentName || 'Không có thông tin'}</td> */}
           <td>{schedule.patient || 'Chưa có chuyên khoa'}</td>
           <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
           <td>{new Date(schedule.timeschedule).toLocaleString()}</td>

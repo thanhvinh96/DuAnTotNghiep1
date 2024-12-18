@@ -6,6 +6,9 @@ import { getClinicsByDepartmentDoctor } from "../../../controller/ClinicscContro
 import { GetScheduleByClinics, UpdateDoctorByMedical } from "../../../controller/ScheduleController";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { GetScheduleByDoctor } from "../../../controller/PersonnelController";
+import { GetpersonnelByToken } from "../../../controller/PersonnelController";
+
 import {GetScheduleID} from "../../../controller/ServerController"
 interface Appointment {
   id: number;
@@ -80,57 +83,88 @@ const Dashboard3 = () => {
 
   const handleAccept = async (id: string) => {
     try {
-      // Log thông tin về lịch hẹn đang xử lý
+      // Log thông tin cơ bản
       console.log(`Attempting to accept appointment with ID: ${id}`);
-
-      // Kiểm tra token và id trước khi tiếp tục
+      
       if (!decodedToken || !decodedToken['tokenuser']) {
         console.error("Token for doctor is missing");
-        return alert("Failed to accept: Doctor authentication token is invalid.");
+        return MySwal.fire({
+          icon: 'error',
+          title: 'Lỗi xác thực',
+          text: 'Token của bác sĩ không hợp lệ. Vui lòng đăng nhập lại.',
+        });
       }
+  
       if (!id) {
         console.error("Patient ID is missing");
-        return alert("Failed to accept: Patient ID is missing.");
+        return MySwal.fire({
+          icon: 'error',
+          title: 'Lỗi dữ liệu',
+          text: 'ID của bệnh nhân không được để trống.',
+        });
       }
-
-      // Chuẩn bị dữ liệu cần gửi
-      const data = {
-        accepted_by_doctor: decodedToken['tokenuser'], // Lấy token của bác sĩ
+  
+      // Chuẩn bị dữ liệu để lấy thông tin bác sĩ
+      const updatedDataget = {
+        tokenuser: decodedToken['tokenuser'],
+        tokeorg: decodedToken['tokeorg'],
+        value: "org1",
+      };
+  
+      // Lấy thông tin bác sĩ
+      const personnelResponse = await GetpersonnelByToken(updatedDataget);
+      const doctorInfo = personnelResponse?.data;
+  
+      if (!doctorInfo?.fullname) {
+        console.error("Doctor's full name could not be retrieved");
+        return MySwal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Không thể lấy thông tin bác sĩ. Vui lòng thử lại sau.',
+        });
+      }
+  
+      console.log(`Doctor's full name: ${doctorInfo.fullname}`);
+  
+      // Chuẩn bị dữ liệu để cập nhật cuộc hẹn
+      const requestData = {
+        accepted_by_doctor: decodedToken['tokenuser'], // Token của bác sĩ
+        accepted_by_name_doctor: doctorInfo.fullname, // Tên của bác sĩ
         medical: id, // ID của bệnh nhân
       };
-
-      // Gửi yêu cầu cập nhật dữ liệu
-      const res = await UpdateDoctorByMedical(data);
-      console.log(res.status);
-      // Kiểm tra phản hồi từ API
-      if (res.status === true) {
-        console.log("Appointment accepted successfully:", res.data);
+  
+      // Gửi yêu cầu cập nhật
+      const updateResponse = await UpdateDoctorByMedical(requestData);
+  
+      if (updateResponse?.status === true) {
+        console.log("Appointment accepted successfully:", updateResponse.data);
         MySwal.fire({
           icon: 'success',
           title: 'Thành công',
           text: 'Cuộc hẹn đã được tiếp nhận thành công.',
         });
+  
+        // Làm mới dữ liệu phòng khám
+        showdataClinic();
       } else {
-        console.error("Failed to accept appointment:", res);
+        console.error("Failed to accept appointment:", updateResponse);
         MySwal.fire({
           icon: 'error',
           title: 'Lỗi',
           text: 'Không thể tiếp nhận cuộc hẹn. Vui lòng thử lại.',
         });
       }
-
-      // Làm mới dữ liệu phòng khám sau khi cập nhật thành công
-      showdataClinic();
     } catch (error) {
-      // Ghi log lỗi và hiển thị thông báo lỗi
+      // Log lỗi chi tiết
       console.error("Error occurred while accepting appointment:", error);
       MySwal.fire({
         icon: 'error',
-        title: 'Lỗi',
-        text: 'Đã xảy ra lỗi khi xử lý cuộc hẹn. Vui lòng thử lại sau.',
+        title: 'Lỗi hệ thống',
+        text: 'Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại sau.',
       });
     }
   };
+  
 
   const handleExamine = (id: string) => {
     // Logic to examine the patient

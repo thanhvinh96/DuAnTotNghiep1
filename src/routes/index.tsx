@@ -85,6 +85,8 @@ const HospitalMedicalshare =React.lazy(()=>import("../hospital/medicalShare/inde
 const PayOnline =React.lazy(()=>import("../hospital/billmedical/payonline"));
 const PayBill =React.lazy(()=>import("../hospital/billmedical/paybill"));
 const MedicalShare =React.lazy(()=>import("../hospital/medicalShare/index"));
+const PatientDetails =React.lazy(()=>import("../hospital/hospitalbranch/patientdetails"));
+const PatientManagent =React.lazy(()=>import("../hospital/patientmanagement"));
 // bill medical
 const BillMedical =React.lazy(()=>import("../hospital/billmedical/index"));
 
@@ -335,6 +337,18 @@ const hospitalRouter: RoutesProps = {
       element: <PayBill />,
       route: PrivateRoute,
     },
+    {
+      path: "/hospital/patientdetails",
+      name: "hospital/patientdetails",
+      element: <PatientDetails />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/hospital/patient-management",
+      name: "/hospital/patient-management",
+      element: <PatientManagent />,
+      route: PrivateRoute,
+    }
   ],
 };
 const dashboardRoutes: RoutesProps = {
@@ -384,7 +398,8 @@ const dashboardRoutes: RoutesProps = {
       name: "medical-managent-approve",
       element: <Managentapprove />,
       route: PrivateRoute,
-    }
+    },
+
   ],
 };
 
