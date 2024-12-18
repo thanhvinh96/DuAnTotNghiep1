@@ -29,8 +29,8 @@ const ServiceForm = ({ onSubmit }) => {
           console.log('gias tri')
           console.log(decoded['tokenuser'])
           settokenuser(decoded['tokenuser'])
-          settokenbranch(decoded['tokenuser'])
-          settokeorg(decoded['tokenuser'])
+          settokenbranch(decoded['branch'])
+          settokeorg(decoded['tokeorg'])
       
         }
       };

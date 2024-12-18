@@ -191,13 +191,15 @@ const ConclusionForm: React.FC<ConclusionFormProps> = ({ onSubmit, patientInfo =
             if (token) {
 
                 decoded = jwt_decode(token);
+                console.clear()
+                console.log("sdfsdfsdf"+decoded['branch']);
                 const response = await fetch("http://127.0.0.1:8000/api/medicaldata/code", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        doctor: decoded['tokenuser'],
+                        token_branch: decoded['branch'],
                         medicalRecordCode: patientId
                     })
                 });

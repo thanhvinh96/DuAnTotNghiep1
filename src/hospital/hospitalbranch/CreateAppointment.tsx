@@ -140,7 +140,7 @@ const CreateAppointment: React.FC = () => {
         }
     };
     const [codeMedicalBook,setcodeMedicalBool] = useState<any>({});
-    const [dataTable, setDataTable] = useState<Schedule[]>([]);
+    const [dataTable, setDataTable] = useState<any[]>([]);
         const showdataTable = async ()=>{
         try {
            const data = {
@@ -539,7 +539,7 @@ const CreateAppointment: React.FC = () => {
           <td>{schedule.className === 'Received' ? 'Đã tiếp nhận' : schedule.className}</td>
           <td>{new Date(schedule.timeschedule).toLocaleString()}</td>
           <td>{schedule.notes}</td>
-          <td>{schedule.accepted_by_doctor || 'Chưa cập nhật'}</td>
+          <td>{schedule.accepted_by_name_doctor || 'Chưa cập nhật'}</td>
           <td>{schedule.clinics?.service_branch?.serviceFees || 'Không có phí'}</td>
         </tr>
       ))}
